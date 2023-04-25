@@ -5,7 +5,8 @@ Class {
 		'random',
 		'targetClass',
 		'length',
-		'chromosome'
+		'chromosome',
+		'chromosomeType'
 	],
 	#category : #'GeneticallyCreatedTests-Core'
 }
@@ -13,7 +14,8 @@ Class {
 { #category : #building }
 GCT >> addObjectCreationStatement [
 
-	chromosome add: self buildObjectCreationStatement
+	chromosome add: self buildObjectCreationStatement.
+	chromosomeType add: chromosome last second.
 ]
 
 { #category : #building }
@@ -57,7 +59,8 @@ GCT >> chromosome [
 GCT >> initialize [
 	super initialize.
 	length := 2.
-	chromosome := OrderedCollection new
+	chromosome := OrderedCollection new.
+	chromosomeType := OrderedCollection new
 ]
 
 { #category : #accessing }
@@ -99,4 +102,11 @@ GCT >> targetClass [
 GCT >> targetClass: aPharoClass [
 
 	targetClass := aPharoClass
+]
+
+{ #category : #building }
+GCT >> typeOfVariable: aSymbol [
+	| index |
+	index := chromosome findFirst: [ :tp | tp first == aSymbol ].
+	^ chromosomeType at: index
 ]
