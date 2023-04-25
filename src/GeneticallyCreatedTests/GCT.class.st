@@ -12,6 +12,17 @@ Class {
 }
 
 { #category : #building }
+GCT >> addMessageStatement [
+
+	| obj |
+	chromosome add: self buildMessageStatement.
+
+	"We now need to know what is the type of the added message statement"
+	obj := self executeStatement: chromosome last.
+	chromosomeType add: obj class.
+]
+
+{ #category : #building }
 GCT >> addObjectCreationStatement [
 
 	chromosome add: self buildObjectCreationStatement.
@@ -32,12 +43,17 @@ GCT >> buildChromosome [
 
 { #category : #building }
 GCT >> buildMessageStatement [
-	^ self buildMessageStatementFor: targetClass
+	^ self buildMessageStatementForVariable: (self definedVariables atRandom: random)
 ]
 
 { #category : #building }
 GCT >> buildMessageStatementFor: aClass [
 	^ {  }
+]
+
+{ #category : #building }
+GCT >> buildMessageStatementForVariable: aVariable [
+	^ { self newVarName . aVariable . ((self typeOfVariable: aVariable) selectors atRandom: random) }
 ]
 
 { #category : #building }
@@ -53,6 +69,11 @@ GCT >> buildObjectCreationStatementFor: aClass [
 { #category : #building }
 GCT >> chromosome [
 	^ chromosome
+]
+
+{ #category : #building }
+GCT >> definedVariables [
+	^ chromosome collect: #first as: Array
 ]
 
 { #category : #initialization }

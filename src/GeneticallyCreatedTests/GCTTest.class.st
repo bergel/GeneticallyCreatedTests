@@ -27,3 +27,24 @@ GCTTest >> testCreationStatement02 [
 	self assert: gct chromosome first equals: { #v1 . MyPoint . #new }.
 	self assert: (gct typeOfVariable: #v1) == MyPoint
 ]
+
+{ #category : #tests }
+GCTTest >> testCreationStatement03 [
+	gct addObjectCreationStatement.
+	gct addMessageStatement.
+	self assert: gct chromosome size equals: 1.
+	self assert: gct chromosome first equals: { #v1 . MyPoint . #new }.
+	self assert: (gct typeOfVariable: #v1) == MyPoint
+]
+
+{ #category : #tests }
+GCTTest >> testDefinedVariables [
+
+	self assert: gct definedVariables isEmpty.
+	gct addObjectCreationStatement.
+	self assert: gct definedVariables equals: { #v1 }.
+	
+	gct addObjectCreationStatement.
+	gct addObjectCreationStatement.
+	self assert: gct definedVariables equals: { #v1 . #v2 . #v3}.
+]
