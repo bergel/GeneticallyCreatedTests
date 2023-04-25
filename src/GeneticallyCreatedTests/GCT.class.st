@@ -3,19 +3,78 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'random',
-		'targetClass'
+		'targetClass',
+		'length',
+		'chromosome'
 	],
 	#category : #'GeneticallyCreatedTests-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
+GCT >> addObjectCreationStatement [
+
+	chromosome add: self buildObjectCreationStatement
+]
+
+{ #category : #building }
+GCT >> buildChromosome [
+
+	self addObjectCreationStatement.
+
+	length - 1 timesRepeat: [ 
+		random next > 0.5
+			ifTrue: [ self addMessageStatement ]
+			ifFalse: [ self addObjectCreationStatement ] ].
+	^ chromosome asArray
+]
+
+{ #category : #building }
+GCT >> buildMessageStatement [
+	^ self buildMessageStatementFor: targetClass
+]
+
+{ #category : #building }
+GCT >> buildMessageStatementFor: aClass [
+	^ {  }
+]
+
+{ #category : #building }
 GCT >> buildObjectCreationStatement [
 	^ self buildObjectCreationStatementFor: targetClass
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
 GCT >> buildObjectCreationStatementFor: aClass [
-	^ { aClass . #new }
+	^ { self newVarName . aClass . #new }
+]
+
+{ #category : #building }
+GCT >> chromosome [
+	^ chromosome
+]
+
+{ #category : #initialization }
+GCT >> initialize [
+	super initialize.
+	length := 2.
+	chromosome := OrderedCollection new
+]
+
+{ #category : #accessing }
+GCT >> length [
+
+	^ length
+]
+
+{ #category : #accessing }
+GCT >> length: anObject [
+
+	length := anObject
+]
+
+{ #category : #building }
+GCT >> newVarName [
+	^ ('v', ((chromosome size + 1) asString)) asSymbol
 ]
 
 { #category : #accessing }

@@ -17,5 +17,5 @@ GCTTest >> setUp [
 
 { #category : #tests }
 GCTTest >> testCreationStatement [
-	self assert: gct buildObjectCreationStatement equals: { MyPoint . #new }
+	self assert: gct buildObjectCreationStatement equals: { #v1 . MyPoint . #new }
 ]
