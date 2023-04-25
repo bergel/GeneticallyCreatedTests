@@ -14,3 +14,28 @@ MyPoint >> initialize [
 	x := 0.
 	y := 0
 ]
+
+{ #category : #arithmetic }
+MyPoint >> negated [
+	^ MyPoint new x: x negated; y: y negated
+]
+
+{ #category : #accessing }
+MyPoint >> x [
+	^ x
+]
+
+{ #category : #accessing }
+MyPoint >> x: anX [ 
+	x := anX
+]
+
+{ #category : #accessing }
+MyPoint >> y [
+	^ y
+]
+
+{ #category : #accessing }
+MyPoint >> y: anY [
+	y := anY
+]

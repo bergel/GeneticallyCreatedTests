@@ -17,24 +17,38 @@ GCTTest >> setUp [
 
 { #category : #tests }
 GCTTest >> testCreationStatement [
-	self assert: gct buildObjectCreationStatement equals: { #v1 . MyPoint . #new }
+	| obj |
+	obj := gct buildObjectCreationStatement.
+	self assert: obj class equals: GCTObjectCreationStatement.
+	self assert: obj classToBeInstantiated equals: MyPoint.
+	self assert: obj newVariable equals: #v1
 ]
 
 { #category : #tests }
 GCTTest >> testCreationStatement02 [
+	| obj |
 	gct addObjectCreationStatement.
 	self assert: gct chromosome size equals: 1.
-	self assert: gct chromosome first equals: { #v1 . MyPoint . #new }.
-	self assert: (gct typeOfVariable: #v1) == MyPoint
+	
+	obj := gct chromosome first.
+	self assert: obj newVariable equals: #v1.
+	self assert: obj type equals: MyPoint.
+	self assert: (gct typeOfVariable: #v1) equals: MyPoint
 ]
 
 { #category : #tests }
 GCTTest >> testCreationStatement03 [
 	gct addObjectCreationStatement.
 	gct addMessageStatement.
-	self assert: gct chromosome size equals: 1.
-	self assert: gct chromosome first equals: { #v1 . MyPoint . #new }.
-	self assert: (gct typeOfVariable: #v1) == MyPoint
+	self assert: gct chromosome size equals: 2.
+	
+	self assert: (gct typeOfVariable: #v1) == MyPoint.
+	self assert: (gct typeOfVariable: #v2) == SmallInteger.
+	
+	self assert: gct buildCode equals: 
+'	v1 := MyPoint new.
+	v2 := v1 y.
+'
 ]
 
 { #category : #tests }

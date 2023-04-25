@@ -5,8 +5,7 @@ Class {
 		'random',
 		'targetClass',
 		'length',
-		'chromosome',
-		'chromosomeType'
+		'chromosome'
 	],
 	#category : #'GeneticallyCreatedTests-Core'
 }
@@ -18,15 +17,13 @@ GCT >> addMessageStatement [
 	chromosome add: self buildMessageStatement.
 
 	"We now need to know what is the type of the added message statement"
-	obj := self executeStatement: chromosome last.
-	chromosomeType add: obj class.
+	"obj := self executeStatement: chromosome last.
+	chromosomeType add: obj class."
 ]
 
 { #category : #building }
 GCT >> addObjectCreationStatement [
-
 	chromosome add: self buildObjectCreationStatement.
-	chromosomeType add: chromosome last second.
 ]
 
 { #category : #building }
@@ -41,19 +38,41 @@ GCT >> buildChromosome [
 	^ chromosome asArray
 ]
 
+{ #category : #'as yet unclassified' }
+GCT >> buildCode [
+
+	^ String
+		streamContents: [ :s |
+			chromosome do: [ :g | g buildCodeOn: s ] ]
+
+]
+
 { #category : #building }
 GCT >> buildMessageStatement [
 	^ self buildMessageStatementForVariable: (self definedVariables atRandom: random)
 ]
 
 { #category : #building }
-GCT >> buildMessageStatementFor: aClass [
-	^ {  }
-]
-
-{ #category : #building }
 GCT >> buildMessageStatementForVariable: aVariable [
-	^ { self newVarName . aVariable . ((self typeOfVariable: aVariable) selectors atRandom: random) }
+	| s aSelector newObject relevantSelectors |
+	s := self statementForVariable: aVariable.
+	relevantSelectors := s type selectors copyWithoutAll: #(#initialize).
+	
+	"For now, only test method that do not have any argument"
+	relevantSelectors := relevantSelectors reject: [ :k | (k includes: $:) ].
+	
+	relevantSelectors ifEmpty: [ self error: ('Class ', s type asString, ' cannot be tested since it has no method') ].
+	aSelector := relevantSelectors atRandom: random.
+	newObject := s objectExample perform: aSelector.
+	^ GCTMessageStatement new
+			newVariable: self newVarName;
+			selector: aSelector;
+			variable: aVariable;
+			objectExample: newObject;
+			type: newObject class;
+			yourself
+			
+			
 ]
 
 { #category : #building }
@@ -63,7 +82,9 @@ GCT >> buildObjectCreationStatement [
 
 { #category : #building }
 GCT >> buildObjectCreationStatementFor: aClass [
-	^ { self newVarName . aClass . #new }
+	^ GCTObjectCreationStatement new
+			classToBeInstantiated: aClass;
+			newVariable: self newVarName
 ]
 
 { #category : #building }
@@ -73,7 +94,7 @@ GCT >> chromosome [
 
 { #category : #building }
 GCT >> definedVariables [
-	^ chromosome collect: #first as: Array
+	^ chromosome collect: #newVariable as: Array
 ]
 
 { #category : #initialization }
@@ -81,7 +102,7 @@ GCT >> initialize [
 	super initialize.
 	length := 2.
 	chromosome := OrderedCollection new.
-	chromosomeType := OrderedCollection new
+	
 ]
 
 { #category : #accessing }
@@ -113,6 +134,12 @@ GCT >> random: aRandom [
 	random := aRandom
 ]
 
+{ #category : #building }
+GCT >> statementForVariable: aSymbol [
+
+	^ chromosome detect: [ :tp | tp newVariable == aSymbol ]
+]
+
 { #category : #accessing }
 GCT >> targetClass [
 
@@ -127,7 +154,6 @@ GCT >> targetClass: aPharoClass [
 
 { #category : #building }
 GCT >> typeOfVariable: aSymbol [
-	| index |
-	index := chromosome findFirst: [ :tp | tp first == aSymbol ].
-	^ chromosomeType at: index
+
+	^ (self statementForVariable: aSymbol) type
 ]
