@@ -5,7 +5,8 @@ Class {
 		'random',
 		'targetClass',
 		'length',
-		'chromosome'
+		'chromosome',
+		'typeRepository'
 	],
 	#category : #'GeneticallyCreatedTests-Core'
 }
@@ -13,17 +14,20 @@ Class {
 { #category : #building }
 GCT >> addMessageStatement [
 
-	| obj |
 	chromosome add: self buildMessageStatement.
 
-	"We now need to know what is the type of the added message statement"
-	"obj := self executeStatement: chromosome last.
-	chromosomeType add: obj class."
 ]
 
 { #category : #building }
 GCT >> addObjectCreationStatement [
 	chromosome add: self buildObjectCreationStatement.
+]
+
+{ #category : #building }
+GCT >> buildAssertionsOn: s [
+	self variableLeaves do: [ :v |
+		s nextPutAll: '	self assert: ', v asString, 'printString equals: ''', (self statementForVariable: v) objectExample printString, '''.'.
+		s cr ]
 ]
 
 { #category : #building }
@@ -38,41 +42,53 @@ GCT >> buildChromosome [
 	^ chromosome asArray
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
 GCT >> buildCode [
 
 	^ String
 		streamContents: [ :s |
-			chromosome do: [ :g | g buildCodeOn: s ] ]
+			self buildCodeOn: s ]
+
+]
+
+{ #category : #building }
+GCT >> buildCodeOn: s [
+
+	chromosome do: [ :g | g buildCodeOn: s ]
+
+]
+
+{ #category : #building }
+GCT >> buildCodeWithAssertion [
+
+	^ String
+		streamContents: [ :s |
+			self buildCodeOn: s.
+			self buildAssertionsOn: s ]
 
 ]
 
 { #category : #building }
 GCT >> buildMessageStatement [
-	^ self buildMessageStatementForVariable: (self definedVariables atRandom: random)
+	^ self buildMessageStatementForVariable: ((self definedVariablesOfType: targetClass) atRandom: random)
 ]
 
 { #category : #building }
 GCT >> buildMessageStatementForVariable: aVariable [
-	| s aSelector newObject relevantSelectors |
-	s := self statementForVariable: aVariable.
-	relevantSelectors := s type selectors copyWithoutAll: #(#initialize).
+	"This method adds one or more statements to send a selector to aVariable. Two situations may happen:
+		- If the selector does not have any argument, then creating the MessageStatement is trivial
+		- If the selector excepts arguments, then:
+				- We look for a variable that has the expected type, or
+				- We create a few (1 - 3?) statements (both objectcreation and messages) to create the expected argument"
+
+	"Need to check if the candidate statement already exist. If yes, then we check if the result is the same. If this is the case, then we can assume that the call does not do any side effect, and therefore can be discarded"
+	| s |
+	1 to: 10 do: [ :i |
+		s := self buildRawMessageStatementForVariable: aVariable.
+		(self isNewStatement: s) ifTrue: [ ^ s ]
+	].
+	self error: 'Cannot create a new message statement'.
 	
-	"For now, only test method that do not have any argument"
-	relevantSelectors := relevantSelectors reject: [ :k | (k includes: $:) ].
-	
-	relevantSelectors ifEmpty: [ self error: ('Class ', s type asString, ' cannot be tested since it has no method') ].
-	aSelector := relevantSelectors atRandom: random.
-	newObject := s objectExample perform: aSelector.
-	^ GCTMessageStatement new
-			newVariable: self newVarName;
-			selector: aSelector;
-			variable: aVariable;
-			objectExample: newObject;
-			type: newObject class;
-			yourself
-			
-			
 ]
 
 { #category : #building }
@@ -88,6 +104,35 @@ GCT >> buildObjectCreationStatementFor: aClass [
 ]
 
 { #category : #building }
+GCT >> buildRawMessageStatementForVariable: aVariable [
+	"This method adds one or more statements to send a selector to aVariable. Two situations may happen:
+		- If the selector does not have any argument, then creating the MessageStatement is trivial
+		- If the selector excepts arguments, then:
+				- We look for a variable that has the expected type, or
+				- We create a few (1 - 3?) statements (both objectcreation and messages) to create the expected argument"
+
+	| s aSelector newObject relevantSelectors |
+	s := self statementForVariable: aVariable.
+	relevantSelectors := s type selectors copyWithoutAll: #(#initialize).
+	
+	"For now, only test method that do not have any argument"
+	"@@@ WILL NEED TO MODIFY THIS SOON"
+	relevantSelectors := relevantSelectors reject: [ :k | (k includes: $:) ].
+	
+	relevantSelectors ifEmpty: [ self error: ('Class ', s type asString, ' cannot be tested since it has no method') ].
+	aSelector := relevantSelectors atRandom: random.
+	newObject := s objectExample perform: aSelector.
+	^ GCTMessageStatement new
+			newVariable: self newVarName;
+			selector: aSelector;
+			variable: aVariable;
+			objectExample: newObject;
+			type: newObject class;
+			yourself.
+	
+]
+
+{ #category : #building }
 GCT >> chromosome [
 	^ chromosome
 ]
@@ -97,12 +142,24 @@ GCT >> definedVariables [
 	^ chromosome collect: #newVariable as: Array
 ]
 
+{ #category : #accessing }
+GCT >> definedVariablesOfType: aType [
+	self assert: [ aType isBehavior ].
+	^ (chromosome select: [ :s | s type == aType ]) collect: #newVariable as: Array
+]
+
 { #category : #initialization }
 GCT >> initialize [
 	super initialize.
 	length := 2.
 	chromosome := OrderedCollection new.
-	
+	typeRepository := GCTProvidedTypeRepository new
+]
+
+{ #category : #testing }
+GCT >> isNewStatement: aStatement [
+	self assert: [ aStatement isKindOf: GCTStatement ].
+	^ chromosome noneSatisfy: [ :s | s isSimilarTo: aStatement ]
 ]
 
 { #category : #accessing }
@@ -156,4 +213,17 @@ GCT >> targetClass: aPharoClass [
 GCT >> typeOfVariable: aSymbol [
 
 	^ (self statementForVariable: aSymbol) type
+]
+
+{ #category : #accessing }
+GCT >> typeRepository [
+	^ typeRepository
+]
+
+{ #category : #accessing }
+GCT >> variableLeaves [
+	"Return variables that are not used. Useful when writing the assertions"
+	| usedVariables |
+	usedVariables := chromosome select: [ :s | s class == GCTMessageStatement ] thenCollect: #variable.
+	^ (self definedVariables copyWithoutAll: usedVariables) asSet asArray asSortedCollection asArray
 ]

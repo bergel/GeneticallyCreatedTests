@@ -2,6 +2,7 @@ Class {
 	#name : #GCTStatement,
 	#superclass : #Object,
 	#instVars : [
+		'gct',
 		'newVariable',
 		'objectExample',
 		'type'
@@ -11,6 +12,33 @@ Class {
 
 { #category : #'as yet unclassified' }
 GCTStatement >> buildCodeOn: stream [
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
+GCTStatement >> gct [
+
+	^ gct
+]
+
+{ #category : #accessing }
+GCTStatement >> gct: anObject [
+
+	gct := anObject
+]
+
+{ #category : #testing }
+GCTStatement >> isSimilarTo: aStatement [
+	self subclassResponsibility
+]
+
+{ #category : #testing }
+GCTStatement >> isSimilarToMessage: aStatement [
+	self subclassResponsibility
+]
+
+{ #category : #testing }
+GCTStatement >> isSimilarToObjectCreation: aStatement [
 	self subclassResponsibility
 ]
 

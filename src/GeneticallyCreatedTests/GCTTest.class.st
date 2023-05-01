@@ -43,12 +43,52 @@ GCTTest >> testCreationStatement03 [
 	self assert: gct chromosome size equals: 2.
 	
 	self assert: (gct typeOfVariable: #v1) == MyPoint.
+	self assert: (gct statementForVariable: #v1) class == GCTObjectCreationStatement.
+	self assert: (gct statementForVariable: #v1) objectExample class == MyPoint.
+	self assert: (gct statementForVariable: #v1) type == MyPoint.
+	
 	self assert: (gct typeOfVariable: #v2) == SmallInteger.
+	self assert: (gct statementForVariable: #v2) objectExample class == SmallInteger.
+	
+	self assert: (gct definedVariablesOfType: MyPoint) = { #v1 }.
+	self assert: (gct definedVariablesOfType: SmallInteger) = { #v2 }.
 	
 	self assert: gct buildCode equals: 
 '	v1 := MyPoint new.
 	v2 := v1 y.
 '
+]
+
+{ #category : #tests }
+GCTTest >> testCreationStatement04 [
+	gct addObjectCreationStatement.
+	gct addMessageStatement.
+	gct addMessageStatement.
+	gct addMessageStatement.
+	self assert: gct chromosome size equals: 4.
+	
+	self assert: (gct typeOfVariable: #v1) == MyPoint.
+	self assert: (gct typeOfVariable: #v2) == SmallInteger.
+	
+	self assert: gct buildCode equals: 
+'	v1 := MyPoint new.
+	v2 := v1 y.
+	v3 := v1 x.
+	v4 := v1 negated.
+'.
+
+	self assert: gct variableLeaves equals: #(#v2 #v3 #v4).
+	
+	self assert: gct buildCodeWithAssertion equals: 
+'	v1 := MyPoint new.
+	v2 := v1 y.
+	v3 := v1 x.
+	v4 := v1 negated.
+	self assert: v2printString equals: ''0''.
+	self assert: v3printString equals: ''0''.
+	self assert: v4printString equals: ''a MyPoint''.
+'.
+
 ]
 
 { #category : #tests }

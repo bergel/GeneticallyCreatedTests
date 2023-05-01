@@ -34,6 +34,21 @@ GCTMessageStatement >> buildCodeOn: stream [
 		<< String cr.
 ]
 
+{ #category : #testing }
+GCTMessageStatement >> isSimilarTo: aStatement [
+	^ aStatement isSimilarToMessage: self
+]
+
+{ #category : #testing }
+GCTMessageStatement >> isSimilarToMessage: aStatement [
+	^ (self variable == aStatement variable) and: [ self selector == aStatement selector ]
+]
+
+{ #category : #testing }
+GCTMessageStatement >> isSimilarToObjectCreation: aStatement [
+	^ false
+]
+
 { #category : #accessing }
 GCTMessageStatement >> selector [
 

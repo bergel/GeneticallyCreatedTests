@@ -31,3 +31,18 @@ GCTObjectCreationStatement >> classToBeInstantiated: aClass [
 	type := aClass.
 	objectExample := aClass new
 ]
+
+{ #category : #testing }
+GCTObjectCreationStatement >> isSimilarTo: aStatement [
+	^ aStatement isSimilarToObjectCreation: self
+]
+
+{ #category : #testing }
+GCTObjectCreationStatement >> isSimilarToMessage: aStatement [
+	^ false
+]
+
+{ #category : #testing }
+GCTObjectCreationStatement >> isSimilarToObjectCreation: aStatement [
+	^ self classToBeInstantiated == aStatement classToBeInstantiated
+]
