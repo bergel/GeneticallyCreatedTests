@@ -10,7 +10,7 @@ Class {
 
 { #category : #accessing }
 MyPoint >> add: anotherPoint [
-	^ MyPoint new x: x + anotherPoint x; y: y + anotherPoint + y; yourself
+	^ MyPoint new x: x + anotherPoint x; y: y + anotherPoint y; yourself
 ]
 
 { #category : #initialization }

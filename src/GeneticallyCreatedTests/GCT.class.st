@@ -26,8 +26,12 @@ GCT >> addObjectCreationStatement [
 { #category : #building }
 GCT >> buildAssertionsOn: s [
 	self variableLeaves do: [ :v |
-		s nextPutAll: '	self assert: ', v asString, 'printString equals: ''', (self statementForVariable: v) objectExample printString, '''.'.
-		s cr ]
+		| st |
+		st := self statementForVariable: v.
+		
+		st isSelfEvaluating ifTrue: [ 
+			s nextPutAll: '	self assert: ', v asString, ' equals: ', st objectExample printString, '.'.
+			s cr ] ]
 ]
 
 { #category : #building }
@@ -85,7 +89,8 @@ GCT >> buildMessageStatementForVariable: aVariable [
 	| s |
 	1 to: 10 do: [ :i |
 		s := self buildRawMessageStatementForVariable: aVariable.
-		(self isNewStatement: s) ifTrue: [ ^ s ]
+		
+		(s notNil and: [ (self isNewStatement: s) ]) ifTrue: [ ^ s ]
 	].
 	self error: 'Cannot create a new message statement'.
 	
@@ -111,19 +116,34 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 				- We look for a variable that has the expected type, or
 				- We create a few (1 - 3?) statements (both objectcreation and messages) to create the expected argument"
 
-	| s aSelector newObject relevantSelectors |
+	| s aSelector newObject relevantSelectors numberOfArguments arguments argumentsVariables signature |
 	s := self statementForVariable: aVariable.
 	relevantSelectors := s type selectors copyWithoutAll: #(#initialize).
-	
-	"For now, only test method that do not have any argument"
-	"@@@ WILL NEED TO MODIFY THIS SOON"
-	relevantSelectors := relevantSelectors reject: [ :k | (k includes: $:) ].
-	
+		
 	relevantSelectors ifEmpty: [ self error: ('Class ', s type asString, ' cannot be tested since it has no method') ].
 	aSelector := relevantSelectors atRandom: random.
-	newObject := s objectExample perform: aSelector.
+	
+	numberOfArguments := (aSelector select: [ :c | c == $: ]) size.
+	
+	numberOfArguments > 0 
+		ifTrue: [ 
+			signature := typeRepository classNamed: s objectExample class name method: aSelector.
+			argumentsVariables := self pick: numberOfArguments withTypes: signature third.
+			
+			"If we cannot build it, then we simply return nil, to build another statement"
+			argumentsVariables ifEmpty: [ ^ nil ].
+	
+			arguments := OrderedCollection new.
+			argumentsVariables do: [ :v |
+				arguments add: (self statementForVariable: v) objectExample ] ]
+		ifFalse: [ 
+			arguments := #().
+			argumentsVariables := #() ].
+
+	newObject := s objectExample perform: aSelector withArguments: arguments asArray.
 	^ GCTMessageStatement new
 			newVariable: self newVarName;
+			arguments: argumentsVariables;
 			selector: aSelector;
 			variable: aVariable;
 			objectExample: newObject;
@@ -179,6 +199,33 @@ GCT >> newVarName [
 	^ ('v', ((chromosome size + 1) asString)) asSymbol
 ]
 
+{ #category : #building }
+GCT >> pick: numberOfArguments withTypes: someTypes [
+	"someTypes is not used for now"
+	| result vs |
+	self assert: [ someTypes isCollection ].
+	self assert: [ someTypes allSatisfy: #isSymbol ].
+	
+	result := OrderedCollection new.
+	1 to: numberOfArguments do: [ :i |
+		vs := self variablesOfType: (someTypes at: i).
+		
+		"We cannot build the statement. Let's build another"
+		vs ifEmpty: [ ^ #() ].
+		
+		result add: (vs atRandom: random)
+	].
+	"
+	vs := self definedVariables copy.
+	result := OrderedCollection new.
+	numberOfArguments timesRepeat: [ 
+		i := random nextInteger: vs size.
+		result add: (vs at: i).
+		vs := vs copyWithout: (vs at: i)
+		 ]."
+	^ result
+]
+
 { #category : #accessing }
 GCT >> random [
 
@@ -226,4 +273,15 @@ GCT >> variableLeaves [
 	| usedVariables |
 	usedVariables := chromosome select: [ :s | s class == GCTMessageStatement ] thenCollect: #variable.
 	^ (self definedVariables copyWithoutAll: usedVariables) asSet asArray asSortedCollection asArray
+]
+
+{ #category : #building }
+GCT >> variablesOfType: aSymbol [
+
+	| result |
+	result := OrderedCollection new.
+	chromosome do: [ :st | 
+		st type name == aSymbol ifTrue: [ result add: st newVariable ]
+	].
+	^ result
 ]

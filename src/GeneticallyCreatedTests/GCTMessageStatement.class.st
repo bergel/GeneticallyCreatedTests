@@ -16,9 +16,10 @@ GCTMessageStatement >> arguments [
 ]
 
 { #category : #accessing }
-GCTMessageStatement >> arguments: anObject [
-
-	arguments := anObject
+GCTMessageStatement >> arguments: variableArguments [
+	self assert: [ variableArguments isCollection ].
+	self assert: [ variableArguments allSatisfy: [ :k | k isSymbol ] ].
+	arguments := variableArguments
 ]
 
 { #category : #'as yet unclassified' }
@@ -28,10 +29,25 @@ GCTMessageStatement >> buildCodeOn: stream [
 		<<	newVariable; 
 		<< ' := ';
 		<< variable;
-		<< ' ';
-		<< selector;
+		<< ' '.
+	
+	(selector includes: $:)
+		ifTrue: 
+			[	selector keywords doWithIndex: [ :key :index | 
+					stream << key.
+					stream << ' '.
+					stream << (arguments at: index).
+				].]
+		ifFalse: [ 
+			stream << selector ].
+	stream 
 		<< '.';
 		<< String cr.
+]
+
+{ #category : #testing }
+GCTMessageStatement >> isSelfEvaluating [
+	^ objectExample isSelfEvaluating
 ]
 
 { #category : #testing }

@@ -12,7 +12,13 @@ GCTTest >> setUp [
 	super setUp.
 	gct := GCT new.
 	gct random: (Random seed: 42).
-	gct targetClass: MyPoint 
+	gct targetClass: MyPoint.
+	
+	gct typeRepository
+		classNamed: #MyPoint method: #x: argumentsTypes: #(#Number) returnType: #MyPoint;
+		classNamed: #MyPoint method: #y: argumentsTypes: #(#Number) returnType: #MyPoint;
+		classNamed: #MyPoint method: #add: argumentsTypes: #(#MyPoint) returnType: #MyPoint.
+		.
 ]
 
 { #category : #tests }
@@ -62,6 +68,39 @@ GCTTest >> testCreationStatement03 [
 { #category : #tests }
 GCTTest >> testCreationStatement04 [
 	gct addObjectCreationStatement.
+	gct addMessageStatement.
+	gct addMessageStatement.
+	gct addMessageStatement.
+	self assert: gct chromosome size equals: 4.
+	
+	self assert: (gct typeOfVariable: #v1) == MyPoint.
+	self assert: (gct typeOfVariable: #v2) == SmallInteger.
+	
+	self assert: gct buildCode equals: 
+'	v1 := MyPoint new.
+	v2 := v1 y.
+	v3 := v1 x.
+	v4 := v1 negated.
+'.
+
+	self assert: gct variableLeaves equals: #(#v2 #v3 #v4).
+	
+	self assert: gct buildCodeWithAssertion equals: 
+'	v1 := MyPoint new.
+	v2 := v1 y.
+	v3 := v1 x.
+	v4 := v1 negated.
+	self assert: v2printString equals: ''0''.
+	self assert: v3printString equals: ''0''.
+	self assert: v4printString equals: ''a MyPoint''.
+'.
+
+]
+
+{ #category : #tests }
+GCTTest >> testCreationStatement05 [
+	gct addObjectCreationStatement.
+	gct addMessageStatement.
 	gct addMessageStatement.
 	gct addMessageStatement.
 	gct addMessageStatement.
