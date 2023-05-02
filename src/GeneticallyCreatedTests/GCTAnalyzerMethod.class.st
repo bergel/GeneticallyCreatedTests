@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'signature'
 	],
-	#category : #'GeneticallyCreatedTests-TypeProfiler'
+	#category : #'GeneticallyCreatedTests-Profiling-TypeProfiler'
 }
 
 { #category : #hooks }

@@ -27,6 +27,17 @@ GCTTest >> setUp [
 ]
 
 { #category : #tests }
+GCTTest >> testCoverage01 [
+
+	| prof |
+	prof := GCTCoverageProfiler profile: [ 
+		| p |
+		p := MyPoint new x: 3; y: 10.
+		p add: (MyPoint new x: 1; y: 12) ] onClasses: { MyPoint }.
+	self assert: prof coverage > 0.8
+]
+
+{ #category : #tests }
 GCTTest >> testCreationStatement [
 	| obj |
 	obj := gct buildObjectCreationStatement.
@@ -146,4 +157,14 @@ GCTTest >> testDefinedVariables [
 	gct addObjectCreationStatement.
 	gct addObjectCreationStatement.
 	self assert: gct definedVariables equals: { #v1 . #v2 . #v3}.
+]
+
+{ #category : #'as yet unclassified' }
+GCTTest >> testGENERATED [
+	v1 := MyPoint new.
+	v3 := v1 x.
+	v3 := v1 x.
+	v2 := v1 add: v1.
+	self assert: v3 equals: 0.
+
 ]

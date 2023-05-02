@@ -66,6 +66,12 @@ GCTStatement >> objectExample: anObject [
 	objectExample := anObject
 ]
 
+{ #category : #'as yet unclassified' }
+GCTStatement >> relevantSelectors [
+	"Return the relevant selectors to be invoked"
+	^ type selectors copyWithoutAll: #( #initialize )
+]
+
 { #category : #accessing }
 GCTStatement >> type [
 
