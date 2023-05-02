@@ -48,11 +48,12 @@ GCT >> buildAssertionsOn: s [
 
 { #category : #building }
 GCT >> buildChromosome [
-
+	chromosome := OrderedCollection new.
+	
 	self addObjectCreationStatement.
 
 	length - 1 timesRepeat: [ 
-		random next > 0.5
+		random next > 0.3
 			ifTrue: [ self addMessageStatement ]
 			ifFalse: [ self addObjectCreationStatement ] ].
 	^ chromosome asArray
