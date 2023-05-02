@@ -6,7 +6,7 @@ Class {
 		'selector',
 		'arguments'
 	],
-	#category : #'GeneticallyCreatedTests-Core'
+	#category : #'GeneticallyCreatedTests-Core-CodeGeneration'
 }
 
 { #category : #accessing }

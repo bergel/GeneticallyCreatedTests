@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'types'
 	],
-	#category : #'GeneticallyCreatedTests-Core'
+	#category : #'GeneticallyCreatedTests-Core-CodeGeneration'
 }
 
 { #category : #'as yet unclassified' }

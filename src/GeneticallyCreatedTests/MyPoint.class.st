@@ -5,7 +5,7 @@ Class {
 		'x',
 		'y'
 	],
-	#category : #'GeneticallyCreatedTests-Core'
+	#category : #'GeneticallyCreatedTests-Tests'
 }
 
 { #category : #accessing }

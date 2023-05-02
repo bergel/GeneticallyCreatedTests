@@ -4,8 +4,13 @@ Class {
 	#instVars : [
 		'classToBeInstantiated'
 	],
-	#category : #'GeneticallyCreatedTests-Core'
+	#category : #'GeneticallyCreatedTests-Core-CodeGeneration'
 }
+
+{ #category : #accessing }
+GCTObjectCreationStatement >> arguments [
+	^ #()
+]
 
 { #category : #'as yet unclassified' }
 GCTObjectCreationStatement >> buildCodeOn: stream [

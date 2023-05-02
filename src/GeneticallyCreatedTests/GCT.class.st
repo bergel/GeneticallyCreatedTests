@@ -8,7 +8,7 @@ Class {
 		'chromosome',
 		'typeRepository'
 	],
-	#category : #'GeneticallyCreatedTests-Core'
+	#category : #'GeneticallyCreatedTests-Core-CodeGeneration'
 }
 
 { #category : #building }
@@ -25,13 +25,25 @@ GCT >> addObjectCreationStatement [
 
 { #category : #building }
 GCT >> buildAssertionsOn: s [
+	| vars |
 	self variableLeaves do: [ :v |
 		| st |
 		st := self statementForVariable: v.
 		
-		st isSelfEvaluating ifTrue: [ 
-			s nextPutAll: '	self assert: ', v asString, ' equals: ', st objectExample printString, '.'.
-			s cr ] ]
+		st isSelfEvaluating 
+			ifTrue: [ 
+				s nextPutAll: '	self assert: ', v asString, ' equals: ', st objectExample printString, '.'.
+				s cr ]
+			ifFalse: [ 
+				vars := (self definedVariablesOfExampleObject: st objectExample) copyWithout: v.
+				vars ifNotEmpty: [ 
+					vars do: [ :vv |
+						s nextPutAll: '	self assert: ', v asString, ' equals: ', vv, '.'.
+						s cr 
+						 ]
+					 ]
+				 ]
+			 ]
 ]
 
 { #category : #building }
@@ -162,7 +174,12 @@ GCT >> definedVariables [
 	^ chromosome collect: #newVariable as: Array
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - statements' }
+GCT >> definedVariablesOfExampleObject: anObject [
+	^ (chromosome select: [ :s | s objectExample == anObject ]) collect: #newVariable as: Array
+]
+
+{ #category : #'accessing - statements' }
 GCT >> definedVariablesOfType: aType [
 	self assert: [ aType isBehavior ].
 	^ (chromosome select: [ :s | s type == aType ]) collect: #newVariable as: Array
@@ -238,6 +255,11 @@ GCT >> random: aRandom [
 	random := aRandom
 ]
 
+{ #category : #accessing }
+GCT >> spyRepository: aSpyProfiler [
+	typeRepository := GCTSpyTypeRepository new profiler: aSpyProfiler
+]
+
 { #category : #building }
 GCT >> statementForVariable: aSymbol [
 
@@ -256,7 +278,7 @@ GCT >> targetClass: aPharoClass [
 	targetClass := aPharoClass
 ]
 
-{ #category : #building }
+{ #category : #'accessing - variables' }
 GCT >> typeOfVariable: aSymbol [
 
 	^ (self statementForVariable: aSymbol) type
@@ -271,11 +293,14 @@ GCT >> typeRepository [
 GCT >> variableLeaves [
 	"Return variables that are not used. Useful when writing the assertions"
 	| usedVariables |
-	usedVariables := chromosome select: [ :s | s class == GCTMessageStatement ] thenCollect: #variable.
+	usedVariables := Set new.
+	chromosome do: [ :s |
+		s class == GCTMessageStatement 
+			ifTrue: [ usedVariables addAll: s arguments; add: s variable ] ].
 	^ (self definedVariables copyWithoutAll: usedVariables) asSet asArray asSortedCollection asArray
 ]
 
-{ #category : #building }
+{ #category : #'accessing - variables' }
 GCT >> variablesOfType: aSymbol [
 
 	| result |
