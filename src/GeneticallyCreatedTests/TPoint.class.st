@@ -1,5 +1,5 @@
 Class {
-	#name : #MyPoint,
+	#name : #TPoint,
 	#superclass : #Object,
 	#instVars : [
 		'x',
@@ -9,38 +9,38 @@ Class {
 }
 
 { #category : #accessing }
-MyPoint >> add: anotherPoint [
-	^ MyPoint new x: x + anotherPoint x; y: y + anotherPoint y; yourself
+TPoint >> add: anotherPoint [
+	^ TPoint new x: x + anotherPoint x; y: y + anotherPoint y; yourself
 ]
 
 { #category : #initialization }
-MyPoint >> initialize [
+TPoint >> initialize [
 	super initialize.
 	x := 0.
 	y := 0
 ]
 
 { #category : #arithmetic }
-MyPoint >> negated [
-	^ MyPoint new x: x negated; y: y negated
+TPoint >> negated [
+	^ TPoint new x: x negated; y: y negated
 ]
 
 { #category : #accessing }
-MyPoint >> x [
+TPoint >> x [
 	^ x
 ]
 
 { #category : #accessing }
-MyPoint >> x: anX [ 
+TPoint >> x: anX [ 
 	x := anX
 ]
 
 { #category : #accessing }
-MyPoint >> y [
+TPoint >> y [
 	^ y
 ]
 
 { #category : #accessing }
-MyPoint >> y: anY [
+TPoint >> y: anY [
 	y := anY
 ]

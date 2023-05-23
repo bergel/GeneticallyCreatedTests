@@ -15,12 +15,61 @@ GCTEvolution >> run [
 	"-------"
 	gct := GCT new.
 	gct random: (Random seed: 42).
-	gct targetClass: MyPoint.
+	gct targetClass: TPoint.
 	
 	gct spyRepository: (GCTAnalyzer profile: [ 
 		| p |
-		p := MyPoint new x: 3; y: 10.
-		p add: (MyPoint new x: 1; y: 12) ] onClasses: { MyPoint }).
+		p := TPoint new x: 3; y: 10.
+		p add: (TPoint new x: 1; y: 12) ] onClasses: { TPoint }).
+
+	gct length: 4.	
+	gct buildChromosome.
+	"-------"
+	
+	g := GAEngine new.
+	g populationSize: 5.
+	g numberOfGenes: chromosomeLength.
+	
+	indCache := Dictionary new.
+	g createGeneBlock: [ :rand :index :ind | 
+		(indCache includesKey: ind) ifFalse: [ gct buildChromosome. indCache at: ind put: gct chromosome. ].
+		(indCache at: ind) atRandom: rand ].
+	
+	g fitnessBlock: [ :genes | 
+			GCT new 
+				chromosome: genes; 
+				targetClass: gct targetClass; 
+				measureCoverage ].
+		
+	g run.
+	
+	self halt.
+	"TO INSPECT:"
+	(GCT new chromosome: g logs first fittestIndividual genes) buildCodeWithAssertion.
+	g logs collect: [ :l | l fittestIndividual fitness ].
+	
+]
+
+{ #category : #running }
+GCTEvolution >> runRSCanvas [
+	"
+	self new runRSCanvas
+	"
+	| g chromosomeLength indCache gct |
+	chromosomeLength := 4.
+	
+	"-------"
+	gct := GCT new.
+	gct random: (Random seed: 42).
+	gct targetClass: RSCanvas.
+	
+	gct spyRepository: (GCTAnalyzer profile: [ 
+		| c |
+		c := RSCanvas new.
+		c add: RSBox new.
+		c add: RSBox new.
+		RSGridLayout on: c shapes.
+		c open delete. ] onClasses: { RSCanvas }).
 
 	gct length: 4.	
 	gct buildChromosome.
