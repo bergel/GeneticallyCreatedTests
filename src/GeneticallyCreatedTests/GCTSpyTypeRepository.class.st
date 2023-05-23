@@ -9,7 +9,10 @@ Class {
 
 { #category : #'as yet unclassified' }
 GCTSpyTypeRepository >> classNamed: className method: selector [
-	^ (self profiler >> className >> selector) signature
+	| cls |
+	cls := self profiler >> className.
+	(cls hasMethodNamed: selector) ifFalse: [ ^ nil ].
+	^ (cls >> selector) signature
 ]
 
 { #category : #'as yet unclassified' }

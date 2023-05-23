@@ -160,3 +160,12 @@ GCTTest >> testDefinedVariables [
 	gct addObjectCreationStatement.
 	self assert: gct definedVariables equals: { #v1 . #v2 . #v3}.
 ]
+
+{ #category : #'as yet unclassified' }
+GCTTest >> testGENERATED [
+	v1 := RSCanvas new.
+	v3 := RSCanvas new.
+	v3 := RSCanvas new.
+	v2 := v1 defaultShapeCollection.
+
+]

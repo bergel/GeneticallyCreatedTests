@@ -135,8 +135,11 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 	relevantSelectors ifEmpty: [ 
 		self error: 'Class ' , s type asString
 			, ' cannot be tested since it has no method' ].
+	
 	aSelector := relevantSelectors atRandom: random.
-
+	[ (typeRepository classNamed: s objectExample class name method: aSelector) isNil ] 
+		whileTrue: [ aSelector := relevantSelectors atRandom: random ].
+		
 	numberOfArguments := self numberOfArgumentsOfSelector: aSelector.
 
 	numberOfArguments > 0
