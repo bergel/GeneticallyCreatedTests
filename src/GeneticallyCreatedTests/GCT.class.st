@@ -13,7 +13,6 @@ Class {
 
 { #category : #building }
 GCT >> addMessageStatement [
-
 	chromosome add: self buildMessageStatement.
 
 ]
@@ -135,11 +134,8 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 	relevantSelectors ifEmpty: [ 
 		self error: 'Class ' , s type asString
 			, ' cannot be tested since it has no method' ].
-	
 	aSelector := relevantSelectors atRandom: random.
-	[ (typeRepository classNamed: s objectExample class name method: aSelector) isNil ] 
-		whileTrue: [ aSelector := relevantSelectors atRandom: random ].
-		
+
 	numberOfArguments := self numberOfArgumentsOfSelector: aSelector.
 
 	numberOfArguments > 0
@@ -172,6 +168,20 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 		  objectExample: newObject;
 		  type: newObject class;
 		  yourself
+]
+
+{ #category : #building }
+GCT >> buildTest [
+
+	^ String
+		streamContents: [ :s |
+			s << 'testGENERATED'; cr.
+			s << '	| '.
+			chromosome do: [ :st | s << st newVariable << ' ' ].
+			s << '| '; cr.
+			self buildCodeOn: s.
+			self buildAssertionsOn: s ]
+
 ]
 
 { #category : #building }
@@ -229,17 +239,15 @@ GCT >> length: anInteger [
 
 { #category : #'as yet unclassified' }
 GCT >> measureCoverage [
-	| prof |
-	GCTTest compile: 'testGENERATED', String cr, self buildCodeWithAssertion.
-	prof := GCTCoverageProfiler profile: [ GCTTest new testGENERATED ] onClasses: { targetClass }.
-	^ prof coverage
+	^ self measureCoverageOnClass: GCTTest
 ]
 
 { #category : #'as yet unclassified' }
 GCT >> measureCoverageOnClass: aClassTest [
 	| prof |
-	aClassTest compile: 'testGENERATED', String cr, self buildCodeWithAssertion.
+	aClassTest compile: self buildTest.
 	prof := GCTCoverageProfiler profile: [ aClassTest new testGENERATED ] onClasses: { targetClass }.
+	GCTTest removeSelector: #testGENERATED.
 	^ prof coverage
 ]
 

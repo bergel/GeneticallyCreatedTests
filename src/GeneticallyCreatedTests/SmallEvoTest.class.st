@@ -33,10 +33,8 @@ SmallEvoTest >> initialize [
 
 { #category : #running }
 SmallEvoTest >> run [
-	"
-	self new runTPoint
-	"
 	| g indCache gct |
+	self assert: [ targetClass notNil ].
 	
 	"-------"
 	gct := GCT new.
@@ -62,7 +60,7 @@ SmallEvoTest >> run [
 			GCT new 
 				chromosome: genes; 
 				targetClass: gct targetClass; 
-				measureCoverage ].
+				measureCoverageOnClass: self testClassUnderGeneration ].
 		
 	g run.
 	
@@ -140,4 +138,16 @@ SmallEvoTest new
 { #category : #accessing }
 SmallEvoTest >> targetClass: aClass [
 	targetClass := aClass
+]
+
+{ #category : #running }
+SmallEvoTest >> testClassUnderGeneration [
+
+	(Smalltalk includesKey: generateTestNamed) ifFalse: [
+		TestCase
+			subclass: generateTestNamed
+			instanceVariableNames: ''
+			classVariableNames: ''
+			package: 'GeneticallyCreatedTestsResults' ].
+	^ Smalltalk at: generateTestNamed
 ]
