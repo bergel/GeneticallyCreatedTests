@@ -32,10 +32,19 @@ SmallEvoTest >> initialize [
 ]
 
 { #category : #running }
+SmallEvoTest >> removeTestClassUnderGenerationIfNecessary [
+
+	(Smalltalk includesKey: generateTestNamed) ifTrue: [
+		(Smalltalk at: generateTestNamed) removeFromSystemUnlogged ].
+
+]
+
+{ #category : #running }
 SmallEvoTest >> run [
 	| g indCache gct |
 	self assert: [ targetClass notNil ].
 	
+	self removeTestClassUnderGenerationIfNecessary.
 	"-------"
 	gct := GCT new.
 	gct random: (Random seed: 42).
@@ -48,13 +57,21 @@ SmallEvoTest >> run [
 	"-------"
 	
 	g := GAEngine new.
+	g endIfFitnessIsAbove: 1.0.
 	g populationSize: populationSize.
 	g numberOfGenes: chromosomeLength.
+
+	g crossoverOperator: (GATestCreationCrossoverOperation new).
+	g mutationOperator: (GANoMutationOperation new mutationRate: 0; yourself).
 	
 	indCache := Dictionary new.
+
 	g createGeneBlock: [ :rand :index :ind | 
-		(indCache includesKey: ind) ifFalse: [ gct buildChromosome. indCache at: ind put: gct chromosome. ].
-		(indCache at: ind) atRandom: rand ].
+		(indCache includesKey: ind) ifFalse: [ 
+			gct buildChromosome. 
+			indCache at: ind put: gct chromosome copy.
+			 ].
+		(indCache at: ind) at: index ].
 	
 	g fitnessBlock: [ :genes | 
 			GCT new 
@@ -64,9 +81,16 @@ SmallEvoTest >> run [
 		
 	g run.
 	
+	"INSTALL TEST RESULTS"
+	g logs last population doWithIndex: [ :ind :index |
+		gct := GCT new.
+		gct chromosome: ind genes.
+		self testClassUnderGeneration compile: (gct buildTestSuffix: index asString).
+	].
+	
 	self halt.
 	"TO INSPECT:"
-	(GCT new chromosome: g logs first fittestIndividual genes) buildCodeWithAssertion.
+	(GCT new chromosome: g logs last fittestIndividual genes) buildCodeWithAssertion.
 	g logs collect: [ :l | l fittestIndividual fitness ].
 	
 ]

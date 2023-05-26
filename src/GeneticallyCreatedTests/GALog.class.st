@@ -7,7 +7,8 @@ Class {
 		'fittestIndividual',
 		'worseFitness',
 		'averageFitness',
-		'time'
+		'time',
+		'population'
 	],
 	#category : #'GeneticallyCreatedTests-GeneticAlgorithm-Core'
 }
@@ -58,6 +59,18 @@ GALog >> generationNumber: generationNumberAsInteger [
 GALog >> initialize [
 	super initialize.
 	time := DateAndTime now
+]
+
+{ #category : #accessing }
+GALog >> population [
+
+	^ population
+]
+
+{ #category : #accessing }
+GALog >> population: someIndividuals [
+
+	population := someIndividuals
 ]
 
 { #category : #'as yet unclassified' }

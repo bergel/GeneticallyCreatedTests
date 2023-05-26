@@ -265,6 +265,7 @@ GAEngine >> run [
                 self produceNewPopulation.
                     
                 log := GALog new.
+					 log population: population copy.
                 log generationNumber: gen.
                 log fittestIndividual: selection fittest.
                 log worseFitness: ((population collect: #fitness) inject: log bestFitness into: [ :wFit :current | (compareFitness value: wFit value: current) ifTrue: [ current ] ifFalse: [ wFit ] ]).

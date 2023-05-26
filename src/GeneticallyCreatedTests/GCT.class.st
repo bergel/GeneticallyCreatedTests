@@ -34,13 +34,18 @@ GCT >> buildAssertionsOn: s [
 				s nextPutAll: '	self assert: ', v asString, ' equals: ', st objectExample printString, '.'.
 				s cr ]
 			ifFalse: [ 
+				"Check for equality between variables"
 				vars := (self definedVariablesOfExampleObject: st objectExample) copyWithout: v.
 				vars ifNotEmpty: [ 
 					vars do: [ :vv |
 						s nextPutAll: '	self assert: ', v asString, ' equals: ', vv, '.'.
 						s cr 
 						 ]
-					 ]
+					 ].
+				
+				"Check for printing"
+				s nextPutAll: '	self assert: ', v asString, ' printString equals: ''', st objectExample printString, '''.'.
+				s cr
 				 ]
 			 ]
 ]
@@ -173,9 +178,15 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 { #category : #building }
 GCT >> buildTest [
 
+	^ self buildTestSuffix: ''
+]
+
+{ #category : #building }
+GCT >> buildTestSuffix: aSuffix [
+
 	^ String
 		streamContents: [ :s |
-			s << 'testGENERATED'; cr.
+			s << 'testGENERATED'; << aSuffix; cr.
 			s << '	| '.
 			chromosome do: [ :st | s << st newVariable << ' ' ].
 			s << '| '; cr.
@@ -247,7 +258,7 @@ GCT >> measureCoverageOnClass: aClassTest [
 	| prof |
 	aClassTest compile: self buildTest.
 	prof := GCTCoverageProfiler profile: [ aClassTest new testGENERATED ] onClasses: { targetClass }.
-	GCTTest removeSelector: #testGENERATED.
+	aClassTest removeSelector: #testGENERATED.
 	^ prof coverage
 ]
 
