@@ -1,33 +1,56 @@
 Class {
-	#name : #GCTEvolution,
+	#name : #SmallEvoTest,
 	#superclass : #Object,
+	#instVars : [
+		'chromosomeLength',
+		'populationSize',
+		'targetClass',
+		'executionScenario',
+		'generateTestNamed'
+	],
 	#category : #'GeneticallyCreatedTests-Core-Evolution'
 }
 
-{ #category : #running }
-GCTEvolution >> run [
-	"
-	self new run
-	"
-	| g chromosomeLength indCache gct |
+{ #category : #accessing }
+SmallEvoTest >> executionScenario: aBlock [
+	executionScenario := aBlock 
+]
+
+{ #category : #accessing }
+SmallEvoTest >> generateTestNamed: aSymbol [
+	"Set the name of the unit test to be generated"
+	generateTestNamed := aSymbol
+]
+
+{ #category : #initialization }
+SmallEvoTest >> initialize [
+	super initialize.
 	chromosomeLength := 4.
+	populationSize := 5.
+	targetClass := nil. "Need to be manually set!"
+	executionScenario := [  ]
+]
+
+{ #category : #running }
+SmallEvoTest >> run [
+	"
+	self new runTPoint
+	"
+	| g indCache gct |
 	
 	"-------"
 	gct := GCT new.
 	gct random: (Random seed: 42).
-	gct targetClass: TPoint.
+	gct targetClass: targetClass.
 	
-	gct spyRepository: (GCTAnalyzer profile: [ 
-		| p |
-		p := TPoint new x: 3; y: 10.
-		p add: (TPoint new x: 1; y: 12) ] onClasses: { TPoint }).
+	gct spyRepository: (GCTAnalyzer profile: executionScenario onClasses: { targetClass }).
 
-	gct length: 4.	
+	gct length: chromosomeLength.	
 	gct buildChromosome.
 	"-------"
 	
 	g := GAEngine new.
-	g populationSize: 5.
+	g populationSize: populationSize.
 	g numberOfGenes: chromosomeLength.
 	
 	indCache := Dictionary new.
@@ -51,7 +74,7 @@ GCTEvolution >> run [
 ]
 
 { #category : #running }
-GCTEvolution >> runRSCanvas [
+SmallEvoTest >> runRSCanvas [
 	"
 	self new runRSCanvas
 	"
@@ -97,4 +120,24 @@ GCTEvolution >> runRSCanvas [
 	(GCT new chromosome: g logs first fittestIndividual genes) buildCodeWithAssertion.
 	g logs collect: [ :l | l fittestIndividual fitness ].
 	
+]
+
+{ #category : #running }
+SmallEvoTest >> runTPoint [
+	"
+	self new runTPoint
+	"
+SmallEvoTest new
+	targetClass: TPoint;
+	generateTestNamed: #TPointTest;
+	executionScenario: [ 
+		| p |
+		p := TPoint new x: 3; y: 10.
+		p add: (TPoint new x: 1; y: 12) ];
+	run
+]
+
+{ #category : #accessing }
+SmallEvoTest >> targetClass: aClass [
+	targetClass := aClass
 ]

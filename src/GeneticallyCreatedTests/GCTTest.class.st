@@ -163,9 +163,10 @@ GCTTest >> testDefinedVariables [
 
 { #category : #'as yet unclassified' }
 GCTTest >> testGENERATED [
-	v1 := RSCanvas new.
-	v3 := RSCanvas new.
-	v3 := RSCanvas new.
-	v2 := v1 defaultShapeCollection.
+	v1 := TPoint new.
+	v3 := v1 add: v1.
+	v3 := v1 add: v1.
+	v2 := v1 x.
+	self assert: v2 equals: 0.
 
 ]

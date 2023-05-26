@@ -221,9 +221,10 @@ GCT >> length [
 ]
 
 { #category : #accessing }
-GCT >> length: anObject [
+GCT >> length: anInteger [
+	"Set the length of a chromosome (ie. number of statements in the generated test)"
 
-	length := anObject
+	length := anInteger
 ]
 
 { #category : #'as yet unclassified' }
@@ -231,6 +232,14 @@ GCT >> measureCoverage [
 	| prof |
 	GCTTest compile: 'testGENERATED', String cr, self buildCodeWithAssertion.
 	prof := GCTCoverageProfiler profile: [ GCTTest new testGENERATED ] onClasses: { targetClass }.
+	^ prof coverage
+]
+
+{ #category : #'as yet unclassified' }
+GCT >> measureCoverageOnClass: aClassTest [
+	| prof |
+	aClassTest compile: 'testGENERATED', String cr, self buildCodeWithAssertion.
+	prof := GCTCoverageProfiler profile: [ aClassTest new testGENERATED ] onClasses: { targetClass }.
 	^ prof coverage
 ]
 
