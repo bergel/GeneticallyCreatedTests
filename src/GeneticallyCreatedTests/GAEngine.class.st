@@ -34,6 +34,17 @@ GAEngine >> beforeRun [
 ]
 
 { #category : #'as yet unclassified' }
+GAEngine >> buildNewIndividual [
+	| ind |
+	ind := GAIndividual new.
+	ind
+				random: random;
+				set: numberOfGenes genesUsing: createGeneBlock.
+	^ ind.
+
+]
+
+{ #category : #'as yet unclassified' }
 GAEngine >> checkIfReadyToRun [
 	"Raise an exception if the configuration is not ready to be run"
 	self assert: [ fitnessBlock notNil ] 
@@ -78,6 +89,13 @@ GAEngine >> endIfFitnessIsAbove: aFitnessValueThreshold [
 	"End the algorithm if the best fitness value is above a particular threshold"
 	terminationBlock := 
 		[ logs last fittestIndividual fitness >= aFitnessValueThreshold ]
+]
+
+{ #category : #'as yet unclassified' }
+GAEngine >> endIfFitnessIsAbove: aFitnessValueThreshold orMax: aMaximum [
+	"End the algorithm if the best fitness value is above a particular threshold"
+	terminationBlock := 
+		[ (logs last fittestIndividual fitness >= aFitnessValueThreshold) or: [ logs last generationNumber >= aMaximum ] ]
 ]
 
 { #category : #'as yet unclassified' }

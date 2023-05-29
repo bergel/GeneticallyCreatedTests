@@ -17,9 +17,19 @@ GCTObjectCreationStatement >> buildCodeOn: stream [
 	stream 
 		<< '	';
 		<<	newVariable; 
-		<< ' := ';
-		<< classToBeInstantiated asString;
-		<< ' new.';
+		<< ' := '.
+		 
+	objectExample isSelfEvaluating 
+		ifTrue: [ 
+			stream 
+				<< objectExample asString
+				<< '.' ]
+		ifFalse: [ 
+			stream	
+				<< classToBeInstantiated asString;
+				<< ' new.' ].
+		
+	stream
 		<< String cr
 ]
 
@@ -34,6 +44,9 @@ GCTObjectCreationStatement >> classToBeInstantiated: aClass [
 
 	classToBeInstantiated := aClass.
 	type := aClass.
+	
+	aClass == SmallInteger ifTrue: [ objectExample := (gct random nextInteger: 1000) - 500. ^ self ].
+	aClass == Float ifTrue: [ objectExample := (gct random next * 1000) - 500. ^ self ].
 	objectExample := aClass new
 ]
 

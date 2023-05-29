@@ -72,6 +72,11 @@ GCTStatement >> relevantSelectors [
 	^ type selectors copyWithoutAll: #( #initialize )
 ]
 
+{ #category : #initialization }
+GCTStatement >> resetObjectExample [
+	objectExample := nil
+]
+
 { #category : #accessing }
 GCTStatement >> type [
 

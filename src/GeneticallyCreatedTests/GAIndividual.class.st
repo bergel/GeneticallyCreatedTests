@@ -34,6 +34,12 @@ GAIndividual class >> create: numberOfIndividuals individualsAndInitialize: numb
 	^ someIndividuals
 ]
 
+{ #category : #initialization }
+GAIndividual >> adjustArguments [
+	GCT new chromosome: genes; random: random; adjustArguments.
+
+]
+
 { #category : #'as yet unclassified' }
 GAIndividual >> computeFitnessUsing: fitnessBlock [
 	"Compute the fitness of myself if not already computed"
@@ -68,6 +74,12 @@ GAIndividual >> genes: someGenes [
 GAIndividual >> numberOfGenes [
 	"Return the number of genes the individual has"
 	^ self genes size
+]
+
+{ #category : #initialization }
+GAIndividual >> resetObjectExample [
+	GCT new chromosome: genes; resetObjectExample.
+
 ]
 
 { #category : #'as yet unclassified' }

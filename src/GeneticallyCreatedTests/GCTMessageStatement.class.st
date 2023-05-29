@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'variable',
 		'selector',
-		'arguments'
+		'arguments',
+		'expectedArgumentTypes'
 	],
 	#category : #'GeneticallyCreatedTests-Core-CodeGeneration'
 }
@@ -19,6 +20,7 @@ GCTMessageStatement >> arguments [
 GCTMessageStatement >> arguments: variableArguments [
 	self assert: [ variableArguments isCollection ].
 	self assert: [ variableArguments allSatisfy: [ :k | k isSymbol ] ].
+	self assert: [ (variableArguments includes: variable) not ].
 	arguments := variableArguments
 ]
 
@@ -43,6 +45,17 @@ GCTMessageStatement >> buildCodeOn: stream [
 	stream 
 		<< '.';
 		<< String cr.
+]
+
+{ #category : #accessing }
+GCTMessageStatement >> expectedArgumentTypes [
+	^ expectedArgumentTypes
+]
+
+{ #category : #accessing }
+GCTMessageStatement >> expectedArgumentTypes: someTypes [
+	expectedArgumentTypes := someTypes 
+	
 ]
 
 { #category : #testing }

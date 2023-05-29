@@ -12,6 +12,12 @@ Class {
 }
 
 { #category : #accessing }
+SmallEvoTest >> chromosomeLength: anInteger [
+	chromosomeLength := anInteger 
+	
+]
+
+{ #category : #accessing }
 SmallEvoTest >> executionScenario: aBlock [
 	executionScenario := aBlock 
 ]
@@ -41,7 +47,7 @@ SmallEvoTest >> removeTestClassUnderGenerationIfNecessary [
 
 { #category : #running }
 SmallEvoTest >> run [
-	| g indCache gct |
+	| g indCache gct evolution cs mu |
 	self assert: [ targetClass notNil ].
 	
 	self removeTestClassUnderGenerationIfNecessary.
@@ -51,18 +57,21 @@ SmallEvoTest >> run [
 	gct targetClass: targetClass.
 	
 	gct spyRepository: (GCTAnalyzer profile: executionScenario onClasses: { targetClass }).
-
 	gct length: chromosomeLength.	
 	gct buildChromosome.
 	"-------"
 	
 	g := GAEngine new.
-	g endIfFitnessIsAbove: 1.0.
+	g endIfFitnessIsAbove: 1.0 orMax: 10.
 	g populationSize: populationSize.
 	g numberOfGenes: chromosomeLength.
 
-	g crossoverOperator: (GATestCreationCrossoverOperation new).
-	g mutationOperator: (GANoMutationOperation new mutationRate: 0; yourself).
+	cs := GATestCreationCrossoverOperation new.
+	mu := GAMutationFromCSOperation new crossOver: cs.
+	mu newIndividualBlock: [ gct buildChromosome ].
+	mu engine: g.
+	g crossoverOperator: cs.
+	g mutationOperator: mu.
 	
 	indCache := Dictionary new.
 
@@ -88,10 +97,11 @@ SmallEvoTest >> run [
 		self testClassUnderGeneration compile: (gct buildTestSuffix: index asString).
 	].
 	
+	evolution := g logs collect: [ :l | l fittestIndividual fitness ].
 	self halt.
 	"TO INSPECT:"
 	(GCT new chromosome: g logs last fittestIndividual genes) buildCodeWithAssertion.
-	g logs collect: [ :l | l fittestIndividual fitness ].
+	
 	
 ]
 
@@ -100,7 +110,7 @@ SmallEvoTest >> runRSCanvas [
 	"
 	self new runRSCanvas
 	"
-	| g chromosomeLength indCache gct |
+	| g indCache gct |
 	chromosomeLength := 4.
 	
 	"-------"
@@ -151,6 +161,7 @@ SmallEvoTest >> runTPoint [
 	"
 SmallEvoTest new
 	targetClass: TPoint;
+	chromosomeLength: 8;
 	generateTestNamed: #TPointTest;
 	executionScenario: [ 
 		| p |

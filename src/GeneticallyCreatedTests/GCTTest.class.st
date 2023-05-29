@@ -109,6 +109,7 @@ GCTTest >> testCreationStatement04 [
 	v4 := v3 y: v2.
 	self assert: v4 equals: v1.
 	self assert: v4 equals: v3.
+	self assert: v4 printString equals: ''a TPoint''.
 '.
 
 ]
@@ -144,6 +145,7 @@ GCTTest >> testCreationStatement05 [
 	v5 := v1 x.
 	self assert: v4 equals: v1.
 	self assert: v4 equals: v3.
+	self assert: v4 printString equals: ''a TPoint''.
 	self assert: v5 equals: 0.
 '.
 

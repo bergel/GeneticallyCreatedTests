@@ -6,7 +6,8 @@ Class {
 		'targetClass',
 		'length',
 		'chromosome',
-		'typeRepository'
+		'typeRepository',
+		'classesToBeInstantiated'
 	],
 	#category : #'GeneticallyCreatedTests-Core-CodeGeneration'
 }
@@ -20,6 +21,47 @@ GCT >> addMessageStatement [
 { #category : #building }
 GCT >> addObjectCreationStatement [
 	chromosome add: self buildObjectCreationStatement.
+]
+
+{ #category : #building }
+GCT >> addObjectCreationStatementFor: aClass [
+	chromosome add: (self buildObjectCreationStatementFor: aClass)
+]
+
+{ #category : #initialization }
+GCT >> adjustArguments [
+	| newVariables newVariable |
+	chromosome do: [ :stmt |
+		stmt class == GCTMessageStatement 
+			ifTrue: [ 
+				newVariables := OrderedCollection new.
+				stmt arguments with: stmt expectedArgumentTypes do: [ :vName :vType |
+					(self statementForVariable: vName) type ~~ vType
+						ifTrue: [ 
+							newVariable := ((self definedVariablesOfType: vType) copyWithout: vName) atRandom: random.
+							newVariables add: newVariable
+							 ]
+						ifFalse: [
+							newVariables add: vName
+							].
+				self assert: [ (newVariables includes: stmt variable) not ].
+				self assert: [ (newVariables includes: stmt newVariable) not ].
+				stmt arguments: newVariables asArray.
+					
+				].
+"				s := self statementForVariable: stm variable.
+				
+				arguments := OrderedCollection new.
+				stm arguments do: [ :v | 
+					arguments add: (self statementForVariable: v) objectExample ].
+			
+				newObject := s objectExample
+		             perform: stm selector
+		             withArguments: arguments asArray.
+				stm objectExample: newObject."
+				 ]
+	].
+	
 ]
 
 { #category : #building }
@@ -38,6 +80,7 @@ GCT >> buildAssertionsOn: s [
 				vars := (self definedVariablesOfExampleObject: st objectExample) copyWithout: v.
 				vars ifNotEmpty: [ 
 					vars do: [ :vv |
+						"(v asString = 'v6' and: [ vv asString = 'v8' ]) ifTrue: [ self halt ]."
 						s nextPutAll: '	self assert: ', v asString, ' equals: ', vv, '.'.
 						s cr 
 						 ]
@@ -54,7 +97,7 @@ GCT >> buildAssertionsOn: s [
 GCT >> buildChromosome [
 	chromosome := OrderedCollection new.
 	
-	self addObjectCreationStatement.
+	self addObjectCreationStatementFor: targetClass.
 
 	length - 1 timesRepeat: [ 
 		random next > 0.3
@@ -114,12 +157,13 @@ GCT >> buildMessageStatementForVariable: aVariable [
 
 { #category : #building }
 GCT >> buildObjectCreationStatement [
-	^ self buildObjectCreationStatementFor: targetClass
+	^ self buildObjectCreationStatementFor: (classesToBeInstantiated atRandom: random)
 ]
 
 { #category : #building }
 GCT >> buildObjectCreationStatementFor: aClass [
 	^ GCTObjectCreationStatement new
+			gct: self;
 			classToBeInstantiated: aClass;
 			newVariable: self newVarName
 ]
@@ -133,7 +177,7 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 				- We look for a variable that has the expected type, or
 				- We create a few (1 - 3?) statements (both objectcreation and messages) to create the expected argument"
 
-	| s aSelector newObject relevantSelectors numberOfArguments arguments argumentsVariables signature |
+	| s aSelector newObject relevantSelectors numberOfArguments arguments argumentsVariables signature expectedArgumentTypes |
 	s := self statementForVariable: aVariable.
 	relevantSelectors := s relevantSelectors.
 	relevantSelectors ifEmpty: [ 
@@ -165,8 +209,11 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 	newObject := s objectExample
 		             perform: aSelector
 		             withArguments: arguments asArray.
+	expectedArgumentTypes := arguments asArray collect: #class.
 	^ GCTMessageStatement new
+		  gct: self;
 		  newVariable: self newVarName;
+ 		  expectedArgumentTypes: expectedArgumentTypes;
 		  arguments: argumentsVariables;
 		  selector: aSelector;
 		  variable: aVariable;
@@ -219,6 +266,19 @@ GCT >> definedVariablesOfExampleObject: anObject [
 GCT >> definedVariablesOfType: aType [
 	self assert: [ aType isBehavior ].
 	^ (chromosome select: [ :s | s type == aType ]) collect: #newVariable as: Array
+]
+
+{ #category : #building }
+GCT >> determineClassesToBeInstantiated [
+	| spyCls |
+	spyCls := typeRepository profiler >> targetClass name.
+	self assert: [ spyCls notNil ].
+	
+	classesToBeInstantiated := OrderedCollection new.
+	classesToBeInstantiated addAll: spyCls allClassesUsedAsArguments.
+	classesToBeInstantiated add: targetClass.
+	classesToBeInstantiated removeDuplicates.
+
 ]
 
 { #category : #initialization }
@@ -312,9 +372,31 @@ GCT >> random: aRandom [
 	random := aRandom
 ]
 
+{ #category : #initialization }
+GCT >> resetObjectExample [
+	| s arguments newObject |
+	chromosome do: [ :stm |
+		stm class == GCTMessageStatement 
+			ifTrue: [ 
+				s := self statementForVariable: stm variable.
+				
+				arguments := OrderedCollection new.
+				stm arguments do: [ :v | 
+					arguments add: (self statementForVariable: v) objectExample ].
+			
+				newObject := s objectExample
+		             perform: stm selector
+		             withArguments: arguments asArray.
+				stm objectExample: newObject.
+				 ]
+	].
+	
+]
+
 { #category : #accessing }
 GCT >> spyRepository: aSpyProfiler [
-	typeRepository := GCTSpyTypeRepository new profiler: aSpyProfiler
+	typeRepository := GCTSpyTypeRepository new profiler: aSpyProfiler.
+	self determineClassesToBeInstantiated.
 ]
 
 { #category : #building }

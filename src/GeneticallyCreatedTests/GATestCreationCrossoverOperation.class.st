@@ -12,6 +12,9 @@ GATestCreationCrossoverOperation >> crossover: partnerA with: partnerB [
 		pointcut := self pickCutPointFor: partnerA.
 		((partnerA genes at: pointcut) type == (partnerB genes at: pointcut) type) ifTrue: [ 
 			result := self crossover: partnerA with: partnerB midpoint: pointcut.
+			
+			result adjustArguments.
+			result resetObjectExample.
 			^ result ]
 	].
 	self error: 'Cannot do an crossover'
