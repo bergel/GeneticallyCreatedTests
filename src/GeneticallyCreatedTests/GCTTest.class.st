@@ -27,6 +27,58 @@ GCTTest >> setUp [
 ]
 
 { #category : #tests }
+GCTTest >> testAdjustArguments [
+	| genCode |
+	gct addObjectCreationStatement.
+	gct addObjectCreationStatement.
+	gct addObjectCreationStatement.
+	gct addMessageStatement.
+	gct addMessageStatement.
+	gct addMessageStatement.
+	gct addMessageStatement.
+	gct addMessageStatement.
+	gct addMessageStatement.
+	gct addMessageStatement.
+	self assert: gct chromosome size equals: 10.
+	
+	genCode := gct buildCode.
+	self assert: genCode equals: 
+'	v1 := TPoint new.
+	v2 := 236.
+	v3 := TPoint new.
+	v4 := v1 negated.
+	v5 := v4 y: v2.
+	v6 := v3 x.
+	v7 := v5 add: v3.
+	v8 := v3 negated.
+	v9 := v3 y.
+	v10 := v5 x.
+'.
+
+
+	gct chromosome at: 2 put: (GCTObjectCreationStatement new gct: gct; classToBeInstantiated: TPoint; newVariable: #v2).
+	gct chromosome at: 3 put: (GCTObjectCreationStatement new gct: gct; classToBeInstantiated: SmallInteger; newVariable: #v3).
+	
+	gct adjustArguments.
+
+	self deny: gct buildCode equals: genCode.
+	self assert: gct buildCode equals:
+'	v1 := TPoint new.
+	v2 := TPoint new.
+	v3 := 40.
+	v4 := v1 negated.
+	v5 := v4 y: v3.
+	v6 := v3 x.
+	v7 := v5 add: v5.
+	v8 := v3 negated.
+	v9 := v3 y.
+	v10 := v5 x.
+'
+	
+
+]
+
+{ #category : #tests }
 GCTTest >> testCoverage01 [
 
 	| prof |

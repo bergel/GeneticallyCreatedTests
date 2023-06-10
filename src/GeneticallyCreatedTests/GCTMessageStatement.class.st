@@ -2,10 +2,10 @@ Class {
 	#name : #GCTMessageStatement,
 	#superclass : #GCTStatement,
 	#instVars : [
-		'variable',
 		'selector',
 		'arguments',
-		'expectedArgumentTypes'
+		'expectedArgumentTypes',
+		'receiver'
 	],
 	#category : #'GeneticallyCreatedTests-Core-CodeGeneration'
 }
@@ -20,7 +20,7 @@ GCTMessageStatement >> arguments [
 GCTMessageStatement >> arguments: variableArguments [
 	self assert: [ variableArguments isCollection ].
 	self assert: [ variableArguments allSatisfy: [ :k | k isSymbol ] ].
-	self assert: [ (variableArguments includes: variable) not ].
+	"self assert: [ (variableArguments includes: receiver) not ]."
 	arguments := variableArguments
 ]
 
@@ -30,7 +30,7 @@ GCTMessageStatement >> buildCodeOn: stream [
 		<< '	';
 		<<	newVariable; 
 		<< ' := ';
-		<< variable;
+		<< receiver;
 		<< ' '.
 	
 	(selector includes: $:)
@@ -60,7 +60,7 @@ GCTMessageStatement >> expectedArgumentTypes: someTypes [
 
 { #category : #testing }
 GCTMessageStatement >> isSelfEvaluating [
-	^ objectExample isSelfEvaluating
+	^ example isSelfEvaluating
 ]
 
 { #category : #testing }
@@ -93,11 +93,11 @@ GCTMessageStatement >> selector: anObject [
 { #category : #accessing }
 GCTMessageStatement >> variable [
 
-	^ variable
+	^ receiver
 ]
 
 { #category : #accessing }
 GCTMessageStatement >> variable: anObject [
 
-	variable := anObject
+	receiver := anObject
 ]

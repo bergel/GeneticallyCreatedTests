@@ -31,20 +31,21 @@ GCT >> addObjectCreationStatementFor: aClass [
 { #category : #initialization }
 GCT >> adjustArguments [
 	| newVariables newVariable |
-	chromosome do: [ :stmt |
+	chromosome doWithIndex: [ :stmt :indexStmt |
 		stmt class == GCTMessageStatement 
 			ifTrue: [ 
 				newVariables := OrderedCollection new.
 				stmt arguments with: stmt expectedArgumentTypes do: [ :vName :vType |
 					(self statementForVariable: vName) type ~~ vType
 						ifTrue: [ 
-							newVariable := ((self definedVariablesOfType: vType) copyWithout: vName) atRandom: random.
+							newVariable := ((self definedVariablesOfType: vType lowerThan: indexStmt) copyWithout: vName) atRandom: random.
 							newVariables add: newVariable
 							 ]
 						ifFalse: [
 							newVariables add: vName
 							].
-				self assert: [ (newVariables includes: stmt variable) not ].
+				"Could we have a variable as receiver and argument?"
+				"self assert: [ (newVariables includes: stmt variable) not ]."
 				self assert: [ (newVariables includes: stmt newVariable) not ].
 				stmt arguments: newVariables asArray.
 					
@@ -268,6 +269,15 @@ GCT >> definedVariablesOfType: aType [
 	^ (chromosome select: [ :s | s type == aType ]) collect: #newVariable as: Array
 ]
 
+{ #category : #'accessing - statements' }
+GCT >> definedVariablesOfType: aType lowerThan: aMaxIndex [
+	self assert: [ aType isBehavior ].
+	
+	^ (chromosome withIndexSelect: [ :s :index | s type == aType and: [ index < aMaxIndex ] ]) 
+			collect: #newVariable as: Array
+	"^ (chromosome select: [ :s | s type == aType ]) collect: #newVariable as: Array"
+]
+
 { #category : #building }
 GCT >> determineClassesToBeInstantiated [
 	| spyCls |
@@ -401,6 +411,7 @@ GCT >> spyRepository: aSpyProfiler [
 
 { #category : #building }
 GCT >> statementForVariable: aSymbol [
+	"Return the statement of variable provided as argument"
 
 	^ chromosome detect: [ :tp | tp newVariable == aSymbol ]
 ]

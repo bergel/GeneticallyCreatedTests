@@ -4,8 +4,9 @@ Class {
 	#instVars : [
 		'gct',
 		'newVariable',
-		'objectExample',
-		'type'
+		'type',
+		'example',
+		'index'
 	],
 	#category : #'GeneticallyCreatedTests-Core-CodeGeneration'
 }
@@ -22,9 +23,21 @@ GCTStatement >> gct [
 ]
 
 { #category : #accessing }
-GCTStatement >> gct: anObject [
+GCTStatement >> gct: aGCT [
 
-	gct := anObject
+	gct := aGCT
+]
+
+{ #category : #accessing }
+GCTStatement >> index [
+
+	^ index
+]
+
+{ #category : #accessing }
+GCTStatement >> index: anObject [
+
+	index := anObject
 ]
 
 { #category : #testing }
@@ -57,13 +70,13 @@ GCTStatement >> newVariable: anObject [
 { #category : #accessing }
 GCTStatement >> objectExample [
 
-	^ objectExample
+	^ example
 ]
 
 { #category : #accessing }
 GCTStatement >> objectExample: anObject [
 
-	objectExample := anObject
+	example := anObject
 ]
 
 { #category : #'as yet unclassified' }
@@ -74,7 +87,7 @@ GCTStatement >> relevantSelectors [
 
 { #category : #initialization }
 GCTStatement >> resetObjectExample [
-	objectExample := nil
+	example := nil
 ]
 
 { #category : #accessing }
