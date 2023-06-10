@@ -55,6 +55,7 @@ GASelection >> doSelection [
     fittest := initialPopulation first.
     initialPopulation
         do: [ :ind | 
+				"self assert: [ (ind genes collect: #newVariable) = { #v1 . #v2 . #v3 . #v4 } ]."
             ind computeFitnessUsing: fitnessBlock.
             (self isIndividual: ind betterThan: fittest)
                 ifTrue: [ fittest := ind ] ].

@@ -45,6 +45,7 @@ GCTMessageStatement >> buildCodeOn: stream [
 	stream 
 		<< '.';
 		<< String cr.
+
 ]
 
 { #category : #accessing }

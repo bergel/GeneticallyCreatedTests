@@ -271,6 +271,7 @@ GAEngine >> run [
     self beforeRun.
     self initializePopulation.
     selection initialPopulation: population.
+	"self assert: [ population allSatisfy: [ :ind | (ind genes collect: #newVariable) = { #v1 . #v2 . #v3 . #v4 } ] ]."
     selection compareFitness: compareFitness.
     UIManager default
         informUserDuring: [ :bar | 

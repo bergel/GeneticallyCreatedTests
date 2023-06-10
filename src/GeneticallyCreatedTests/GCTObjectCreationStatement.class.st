@@ -47,6 +47,7 @@ GCTObjectCreationStatement >> classToBeInstantiated: aClass [
 	
 	aClass == SmallInteger ifTrue: [ example := (gct random nextInteger: 1000) - 500. ^ self ].
 	aClass == Float ifTrue: [ example := (gct random next * 1000) - 500. ^ self ].
+	aClass == ByteString ifTrue: [ example := '''' , (ZnMessageBenchmark new randomAsciiString: 5 random: gct random), ''''. ^ self ].
 	example := aClass new
 ]
 

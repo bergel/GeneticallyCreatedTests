@@ -110,6 +110,25 @@ SmallEvoTest >> runRSCanvas [
 	"
 	self new runRSCanvas
 	"
+SmallEvoTest new
+	targetClass: RSCanvas;
+	chromosomeLength: 8;
+	generateTestNamed: #TRSCanvasTest;
+	executionScenario: [ 
+		| c |
+		c := RSCanvas new.
+		c add: RSBox new.
+		c add: RSBox new.
+		RSGridLayout on: c shapes.
+		c open delete. ];
+	run
+]
+
+{ #category : #running }
+SmallEvoTest >> runRSCanvasOLD [
+	"
+	self new runRSCanvasOLD
+	"
 	| g indCache gct |
 	chromosomeLength := 4.
 	
@@ -140,6 +159,7 @@ SmallEvoTest >> runRSCanvas [
 		(indCache at: ind) atRandom: rand ].
 	
 	g fitnessBlock: [ :genes | 
+				self assert: [ (genes collect: #newVariable) = { #v1 . #v2 . #v3 . #v4 } ].
 			GCT new 
 				chromosome: genes; 
 				targetClass: gct targetClass; 

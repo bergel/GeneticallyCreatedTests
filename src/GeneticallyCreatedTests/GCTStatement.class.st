@@ -97,7 +97,7 @@ GCTStatement >> type [
 ]
 
 { #category : #accessing }
-GCTStatement >> type: anObject [
-
-	type := anObject
+GCTStatement >> type: aClass [
+	self assert: [ aClass ~~ nil class ].
+	type := aClass
 ]

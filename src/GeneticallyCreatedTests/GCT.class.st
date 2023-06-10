@@ -81,14 +81,17 @@ GCT >> buildAssertionsOn: s [
 				vars := (self definedVariablesOfExampleObject: st objectExample) copyWithout: v.
 				vars ifNotEmpty: [ 
 					vars do: [ :vv |
-						"(v asString = 'v6' and: [ vv asString = 'v8' ]) ifTrue: [ self halt ]."
 						s nextPutAll: '	self assert: ', v asString, ' equals: ', vv, '.'.
 						s cr 
 						 ]
 					 ].
 				
 				"Check for printing"
-				s nextPutAll: '	self assert: ', v asString, ' printString equals: ''', st objectExample printString, '''.'.
+				st objectExample isString 
+					ifTrue: [ 
+					 	s nextPutAll: '	self assert: ', v asString, ' printString equals: ', st objectExample printString, '.' ]
+					ifFalse: [ 
+						s nextPutAll: '	self assert: ', v asString, ' printString equals: ''', st objectExample printString, '''.' ].
 				s cr
 				 ]
 			 ]
@@ -193,6 +196,7 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 			signature := typeRepository
 				             classNamed: s objectExample class name
 				             method: aSelector.
+			signature ifNil: [ ^ nil ].
 			argumentsVariables := self
 				                      pick: numberOfArguments
 				                      withTypes: signature third.
