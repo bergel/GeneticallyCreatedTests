@@ -36,7 +36,7 @@ GAIndividual class >> create: numberOfIndividuals individualsAndInitialize: numb
 
 { #category : #initialization }
 GAIndividual >> adjustArguments [
-	GCT new chromosome: genes; random: random; adjustArguments.
+	^ GCT new chromosome: genes; random: random; adjustArguments.
 
 ]
 

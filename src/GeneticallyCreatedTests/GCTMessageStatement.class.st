@@ -5,7 +5,8 @@ Class {
 		'selector',
 		'arguments',
 		'expectedArgumentTypes',
-		'receiver'
+		'receiver',
+		'receiverType'
 	],
 	#category : #'GeneticallyCreatedTests-Core-CodeGeneration'
 }
@@ -77,6 +78,18 @@ GCTMessageStatement >> isSimilarToMessage: aStatement [
 { #category : #testing }
 GCTMessageStatement >> isSimilarToObjectCreation: aStatement [
 	^ false
+]
+
+{ #category : #accessing }
+GCTMessageStatement >> receiverType [
+
+	^ receiverType
+]
+
+{ #category : #accessing }
+GCTMessageStatement >> receiverType: aClass [
+	self assert: [ aClass isBehavior ].
+	receiverType := aClass
 ]
 
 { #category : #accessing }

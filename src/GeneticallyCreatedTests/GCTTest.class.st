@@ -65,7 +65,7 @@ GCTTest >> testAdjustArguments [
 	self assert: gct buildCode equals:
 '	v1 := TPoint new.
 	v2 := TPoint new.
-	v3 := 40.
+	v3 := -266.
 	v4 := v1 negated.
 	v5 := v4 y: v3.
 	v6 := v5 x.
@@ -115,7 +115,7 @@ GCTTest >> testAdjustArguments02 [
 
 	self deny: gct buildCode equals: genCode.
 	self assert: gct buildCode equals:
-'	v1 := 40.
+'	v1 := -35.
 	v2 := TPoint new.
 	v3 := TPoint new.
 	v4 := v2 negated.
@@ -250,7 +250,7 @@ GCTTest >> testCreationStatement05 [
 	self assert: v4 equals: v1.
 	self assert: v4 equals: v3.
 	self assert: v4 printString equals: ''a TPoint''.
-	self assert: v5 equals: 0.
+	self assert: v5 equals: (0).
 '.
 
 ]

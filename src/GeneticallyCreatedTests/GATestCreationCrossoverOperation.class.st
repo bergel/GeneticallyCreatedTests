@@ -7,15 +7,16 @@ Class {
 { #category : #'as yet unclassified' }
 GATestCreationCrossoverOperation >> crossover: partnerA with: partnerB [
 	"Return a new child, which is the result of mixing myself with the argument"
-	| pointcut result |
+	| pointcut result wasFound |
 	1 to: 5 do: [ :i |
 		pointcut := self pickCutPointFor: partnerA.
 		 
 		result := self crossover: partnerA with: partnerB midpoint: pointcut.
 			
-		result adjustArguments.
-		result resetObjectExample.
-		^ result
+		wasFound := result adjustArguments.
+		wasFound ifNotNil: [
+			"result resetObjectExample."
+			^ result ]
 	].
 	self error: 'Cannot do an crossover'
 ]

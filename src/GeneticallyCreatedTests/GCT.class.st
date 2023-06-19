@@ -31,11 +31,13 @@ GCT >> addObjectCreationStatementFor: aClass [
 { #category : #initialization }
 GCT >> adjustArguments [
 
-	| newVariables newVariable newVarReceiver |
+	| newVariables newVariable newVarReceiver candidateVariables |
+	
 	chromosome doWithIndex: [ :stmt :indexStmt |
 		stmt class == GCTMessageStatement ifTrue: [ 
 			"self haltIf: [ stmt newVariable == #v6 ]."
 			"ADJUST RECEIVER"
+			targetClass := stmt receiverType.
 			targetClass ~~ (self typeOfVariable: stmt variable) ifTrue: [
 				newVarReceiver := (self
 					                   definedVariablesOfType: targetClass
@@ -49,9 +51,11 @@ GCT >> adjustArguments [
 				do: [ :vName :vType |
 					(self statementForVariable: vName) type ~~ vType
 						ifTrue: [
-							newVariable := ((self
+							candidateVariables := self
 								                 definedVariablesOfType: vType
-								                 lowerThan: indexStmt) copyWithout: vName)
+								                 lowerThan: indexStmt.
+							candidateVariables ifEmpty: [ ^ nil ].
+							newVariable := (candidateVariables copyWithout: vName)
 								               atRandom: random.
 							newVariables add: newVariable ]
 						ifFalse: [ newVariables add: vName ].
@@ -69,10 +73,9 @@ GCT >> buildAssertionsOn: s [
 	self variableLeaves do: [ :v |
 		| st |
 		st := self statementForVariable: v.
-		
 		st isSelfEvaluating 
 			ifTrue: [ 
-				s nextPutAll: '	self assert: ', v asString, ' equals: ', st objectExample printString, '.'.
+				s nextPutAll: '	self assert: ', v asString, ' equals: (', st objectExample printString, ').'.
 				s cr ]
 			ifFalse: [ 
 				"Check for equality between variables"
@@ -89,7 +92,9 @@ GCT >> buildAssertionsOn: s [
 					ifTrue: [ 
 					 	s nextPutAll: '	self assert: ', v asString, ' printString equals: ', st objectExample printString, '.' ]
 					ifFalse: [ 
-						s nextPutAll: '	self assert: ', v asString, ' printString equals: ''', st objectExample printString, '''.' ].
+						(self shouldClassBeConsideredForAssertion: st objectExample class)
+							ifTrue: [ 
+								s nextPutAll: '	self assert: ', v asString, ' printString equals: ''', st objectExample printString, '''.' ] ] .
 				s cr
 				 ]
 			 ]
@@ -172,7 +177,6 @@ GCT >> buildObjectCreationStatementFor: aClass [
 
 { #category : #building }
 GCT >> buildRawMessageStatementForVariable: aVariable [
-
 	"This method adds one or more statements to send a selector to aVariable. Two situations may happen:
 		- If the selector does not have any argument, then creating the MessageStatement is trivial
 		- If the selector excepts arguments, then:
@@ -182,7 +186,7 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 	| s aSelector newObject relevantSelectors numberOfArguments arguments argumentsVariables signature expectedArgumentTypes |
 	s := self statementForVariable: aVariable.
 	relevantSelectors := s relevantSelectors.
-	relevantSelectors ifEmpty: [ 
+	relevantSelectors ifEmpty: [
 		self error: 'Class ' , s type asString
 			, ' cannot be tested since it has no method' ].
 	aSelector := relevantSelectors atRandom: random.
@@ -190,7 +194,7 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 	numberOfArguments := self numberOfArgumentsOfSelector: aSelector.
 
 	numberOfArguments > 0
-		ifTrue: [ 
+		ifTrue: [
 			signature := typeRepository
 				             classNamed: s objectExample class name
 				             method: aSelector.
@@ -203,9 +207,9 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 			argumentsVariables ifEmpty: [ ^ nil ].
 
 			arguments := OrderedCollection new.
-			argumentsVariables do: [ :v | 
+			argumentsVariables do: [ :v |
 				arguments add: (self statementForVariable: v) objectExample ] ]
-		ifFalse: [ 
+		ifFalse: [
 			arguments := #(  ).
 			argumentsVariables := #(  ) ].
 
@@ -216,7 +220,8 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 	^ GCTMessageStatement new
 		  gct: self;
 		  newVariable: self newVarName;
- 		  expectedArgumentTypes: expectedArgumentTypes;
+		  receiverType: targetClass;
+		  expectedArgumentTypes: expectedArgumentTypes;
 		  arguments: argumentsVariables;
 		  selector: aSelector;
 		  variable: aVariable;
@@ -233,7 +238,7 @@ GCT >> buildTest [
 
 { #category : #building }
 GCT >> buildTestSuffix: aSuffix [
-
+self resetObjectExample.
 	^ String
 		streamContents: [ :s |
 			s << 'testGENERATED'; << aSuffix; cr.
@@ -400,9 +405,21 @@ GCT >> resetObjectExample [
 		             perform: stm selector
 		             withArguments: arguments asArray.
 				stm objectExample: newObject.
+				 ].
+		stm class == GCTObjectCreationStatement
+			ifTrue: [ 
+				"May be better something like stm resetObjectExample"
+				stm classToBeInstantiated: stm classToBeInstantiated
 				 ]
 	].
 	
+]
+
+{ #category : #building }
+GCT >> shouldClassBeConsideredForAssertion: aClass [
+	"Return true if the class deserves to be in assertion. Classes that use hashcode in their printString should be excluded"
+	({ SystemWindow } includes: aClass) ifTrue: [ ^ false ].
+	^ true
 ]
 
 { #category : #accessing }

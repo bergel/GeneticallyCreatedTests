@@ -37,6 +37,16 @@ SmallEvoTest >> initialize [
 	executionScenario := [  ]
 ]
 
+{ #category : #initialization }
+SmallEvoTest >> populationSize [
+	^ populationSize
+]
+
+{ #category : #initialization }
+SmallEvoTest >> populationSize: nbOfIndividuals [
+	populationSize := nbOfIndividuals
+]
+
 { #category : #running }
 SmallEvoTest >> removeTestClassUnderGenerationIfNecessary [
 
@@ -62,7 +72,7 @@ SmallEvoTest >> run [
 	"-------"
 	
 	g := GAEngine new.
-	g endIfFitnessIsAbove: 1.0 orMax: 10.
+	g endIfFitnessIsAbove: 1.0 orMax: 5.
 	g populationSize: populationSize.
 	g numberOfGenes: chromosomeLength.
 
@@ -90,6 +100,8 @@ SmallEvoTest >> run [
 		
 	g run.
 	
+	self halt.
+		
 	"INSTALL TEST RESULTS"
 	g logs last population doWithIndex: [ :ind :index |
 		gct := GCT new.
@@ -98,21 +110,22 @@ SmallEvoTest >> run [
 	].
 	
 	evolution := g logs collect: [ :l | l fittestIndividual fitness ].
-	self halt.
+
 	"TO INSPECT:"
 	(GCT new chromosome: g logs last fittestIndividual genes) buildCodeWithAssertion.
 	
 	
 ]
 
-{ #category : #running }
+{ #category : #examples }
 SmallEvoTest >> runRSCanvas [
 	"
 	self new runRSCanvas
 	"
 SmallEvoTest new
 	targetClass: RSCanvas;
-	chromosomeLength: 8;
+	chromosomeLength: 15;
+	populationSize: 15;
 	generateTestNamed: #TRSCanvasTest;
 	executionScenario: [ 
 		| c |
@@ -124,57 +137,7 @@ SmallEvoTest new
 	run
 ]
 
-{ #category : #running }
-SmallEvoTest >> runRSCanvasOLD [
-	"
-	self new runRSCanvasOLD
-	"
-	| g indCache gct |
-	chromosomeLength := 4.
-	
-	"-------"
-	gct := GCT new.
-	gct random: (Random seed: 42).
-	gct targetClass: RSCanvas.
-	
-	gct spyRepository: (GCTAnalyzer profile: [ 
-		| c |
-		c := RSCanvas new.
-		c add: RSBox new.
-		c add: RSBox new.
-		RSGridLayout on: c shapes.
-		c open delete. ] onClasses: { RSCanvas }).
-
-	gct length: 4.	
-	gct buildChromosome.
-	"-------"
-	
-	g := GAEngine new.
-	g populationSize: 5.
-	g numberOfGenes: chromosomeLength.
-	
-	indCache := Dictionary new.
-	g createGeneBlock: [ :rand :index :ind | 
-		(indCache includesKey: ind) ifFalse: [ gct buildChromosome. indCache at: ind put: gct chromosome. ].
-		(indCache at: ind) atRandom: rand ].
-	
-	g fitnessBlock: [ :genes | 
-				self assert: [ (genes collect: #newVariable) = { #v1 . #v2 . #v3 . #v4 } ].
-			GCT new 
-				chromosome: genes; 
-				targetClass: gct targetClass; 
-				measureCoverage ].
-		
-	g run.
-	
-	self halt.
-	"TO INSPECT:"
-	(GCT new chromosome: g logs first fittestIndividual genes) buildCodeWithAssertion.
-	g logs collect: [ :l | l fittestIndividual fitness ].
-	
-]
-
-{ #category : #running }
+{ #category : #examples }
 SmallEvoTest >> runTPoint [
 	"
 	self new runTPoint
@@ -182,6 +145,7 @@ SmallEvoTest >> runTPoint [
 SmallEvoTest new
 	targetClass: TPoint;
 	chromosomeLength: 8;
+	populationSize: 10;
 	generateTestNamed: #TPointTest;
 	executionScenario: [ 
 		| p |
