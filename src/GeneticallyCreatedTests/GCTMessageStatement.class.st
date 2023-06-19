@@ -93,12 +93,12 @@ GCTMessageStatement >> selector: anObject [
 
 { #category : #accessing }
 GCTMessageStatement >> variable [
-
+	"Return the variable symbol"
 	^ receiver
 ]
 
 { #category : #accessing }
-GCTMessageStatement >> variable: anObject [
-
-	receiver := anObject
+GCTMessageStatement >> variable: aSymbol [
+	"Variable receiver."
+	receiver := aSymbol
 ]

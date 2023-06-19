@@ -30,39 +30,37 @@ GCT >> addObjectCreationStatementFor: aClass [
 
 { #category : #initialization }
 GCT >> adjustArguments [
-	| newVariables newVariable |
+
+	| newVariables newVariable newVarReceiver |
 	chromosome doWithIndex: [ :stmt :indexStmt |
-		stmt class == GCTMessageStatement 
-			ifTrue: [ 
-				newVariables := OrderedCollection new.
-				stmt arguments with: stmt expectedArgumentTypes do: [ :vName :vType |
+		stmt class == GCTMessageStatement ifTrue: [ 
+			"self haltIf: [ stmt newVariable == #v6 ]."
+			"ADJUST RECEIVER"
+			targetClass ~~ (self typeOfVariable: stmt variable) ifTrue: [
+				newVarReceiver := (self
+					                   definedVariablesOfType: targetClass
+					                   lowerThan: indexStmt) atRandom: random.
+				stmt variable: newVarReceiver ].
+
+			"ADJUST ARGUMENTS"
+			newVariables := OrderedCollection new.
+			stmt arguments
+				with: stmt expectedArgumentTypes
+				do: [ :vName :vType |
 					(self statementForVariable: vName) type ~~ vType
-						ifTrue: [ 
-							newVariable := ((self definedVariablesOfType: vType lowerThan: indexStmt) copyWithout: vName) atRandom: random.
-							newVariables add: newVariable
-							 ]
-						ifFalse: [
-							newVariables add: vName
-							].
-				"Could we have a variable as receiver and argument?"
-				"self assert: [ (newVariables includes: stmt variable) not ]."
-				self assert: [ (newVariables includes: stmt newVariable) not ].
-				stmt arguments: newVariables asArray.
-					
-				].
-"				s := self statementForVariable: stm variable.
-				
-				arguments := OrderedCollection new.
-				stm arguments do: [ :v | 
-					arguments add: (self statementForVariable: v) objectExample ].
-			
-				newObject := s objectExample
-		             perform: stm selector
-		             withArguments: arguments asArray.
-				stm objectExample: newObject."
-				 ]
-	].
-	
+						ifTrue: [
+							newVariable := ((self
+								                 definedVariablesOfType: vType
+								                 lowerThan: indexStmt) copyWithout: vName)
+								               atRandom: random.
+							newVariables add: newVariable ]
+						ifFalse: [ newVariables add: vName ].
+					"Could we have a variable as receiver and argument?"
+					"self assert: [ (newVariables includes: stmt variable) not ]."
+					self assert: [ (newVariables includes: stmt newVariable) not ].
+					stmt arguments: newVariables asArray ] ] ].
+
+	self resetObjectExample
 ]
 
 { #category : #building }
