@@ -20,5 +20,13 @@ BaselineOfGeneticallyCreatedTests >> baseline: spec [
 	spec
 		for: #common
 		do: [ spec package: 'Spy2-Core'.
-			spec package: 'GeneticallyCreatedTests' ]
+			spec package: 'GeneticallyCreatedTests'.
+			spec package: 'GeneticallyCreatedTests4Gt'.
+			spec
+				group: 'Pharo'
+					with: {'Spy2-Core'.
+							'GeneticallyCreatedTests'};
+				group: 'GT'
+					with: {'Pharo'.
+							'GeneticallyCreatedTests4Gt'} ]
 ]

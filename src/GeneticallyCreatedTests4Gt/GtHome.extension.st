@@ -1,6 +1,6 @@
 Extension { #name : #GtHome }
 
-{ #category : #'*GeneticallyCreatedTests' }
+{ #category : #'*GeneticallyCreatedTests4Gt' }
 GtHome >> geneticTestsHomeSection [
 	<gtHomeSection>
 	^ GtHomeStartPageSection new 
