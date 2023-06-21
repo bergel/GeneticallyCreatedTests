@@ -1,6 +1,6 @@
 Class {
 	#name : #GCTAnalyzerMethod,
-	#superclass : #AnObsoleteS2Method,
+	#superclass : #S2Method,
 	#instVars : [
 		'signature'
 	],
