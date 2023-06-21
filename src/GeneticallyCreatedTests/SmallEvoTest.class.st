@@ -37,6 +37,21 @@ SmallEvoTest >> initialize [
 	executionScenario := [  ]
 ]
 
+{ #category : #accessing }
+SmallEvoTest >> nbOfStatements: anInteger [
+	self chromosomeLength: anInteger
+]
+
+{ #category : #accessing }
+SmallEvoTest >> numberOfTestToBeCreated: anInteger [
+	self populationSize: anInteger
+]
+
+{ #category : #accessing }
+SmallEvoTest >> numberOfTestsToBeCreated: anInteger [
+	self populationSize: anInteger
+]
+
 { #category : #initialization }
 SmallEvoTest >> populationSize [
 	^ populationSize
@@ -138,14 +153,14 @@ SmallEvoTest >> runTPoint [
 	self new runTPoint
 	"
 SmallEvoTest new
-	targetClass: TPoint;
+	targetClass: GCPoint;
 	chromosomeLength: 8;
 	populationSize: 10;
 	generateTestNamed: #TPointTest;
 	executionScenario: [ 
 		| p |
-		p := TPoint new x: 3; y: 10.
-		p add: (TPoint new x: 1; y: 12) ];
+		p := GCPoint new x: 3; y: 10.
+		p add: (GCPoint new x: 1; y: 12) ];
 	run
 ]
 
@@ -158,16 +173,16 @@ SmallEvoTest >> tPointExample [
 	<gtExample>
 	<noTest>
 	SmallEvoTest new
-		targetClass: TPoint;
+		targetClass: GCPoint;
 		chromosomeLength: 8;
 		populationSize: 10;
 		generateTestNamed: #TPointTest;
 		executionScenario: [ | p |
-			p := TPoint new
+			p := GCPoint new
 					x: 3;
 					y: 10.
 			p
-				add: (TPoint new
+				add: (GCPoint new
 						x: 1;
 						y: 12) ];
 		run.

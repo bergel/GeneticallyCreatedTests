@@ -1,5 +1,5 @@
 Class {
-	#name : #TPoint,
+	#name : #GCPoint,
 	#superclass : #Object,
 	#instVars : [
 		'x',
@@ -9,38 +9,38 @@ Class {
 }
 
 { #category : #accessing }
-TPoint >> add: anotherPoint [
-	^ TPoint new x: x + anotherPoint x; y: y + anotherPoint y; yourself
+GCPoint >> add: anotherPoint [
+	^ GCPoint new x: x + anotherPoint x; y: y + anotherPoint y; yourself
 ]
 
 { #category : #initialization }
-TPoint >> initialize [
+GCPoint >> initialize [
 	super initialize.
 	x := 0.
 	y := 0
 ]
 
 { #category : #arithmetic }
-TPoint >> negated [
-	^ TPoint new x: x negated; y: y negated
+GCPoint >> negated [
+	^ GCPoint new x: x negated; y: y negated
 ]
 
 { #category : #accessing }
-TPoint >> x [
+GCPoint >> x [
 	^ x
 ]
 
 { #category : #accessing }
-TPoint >> x: anX [ 
+GCPoint >> x: anX [ 
 	x := anX
 ]
 
 { #category : #accessing }
-TPoint >> y [
+GCPoint >> y [
 	^ y
 ]
 
 { #category : #accessing }
-TPoint >> y: anY [
+GCPoint >> y: anY [
 	y := anY
 ]

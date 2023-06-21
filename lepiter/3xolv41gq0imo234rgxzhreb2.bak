@@ -18,6 +18,43 @@
 					"__type" : "time",
 					"time" : {
 						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T15:46:53.410995+02:00"
+					}
+				},
+				"editEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"editTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T15:50:36.379997+02:00"
+					}
+				},
+				"uid" : {
+					"__type" : "uid",
+					"uidString" : "c58nuAW7DQCVWZHuCKmfxQ=="
+				},
+				"paragraphStyle" : {
+					"__type" : "textStyle"
+				},
+				"string" : "It is largely acknowledged that automatically created test suites play an important role in helping producing robust software systems. Numerous techniques of unit test generation and fuzz-testing have been proposed over the last decade. The system described in this page is about a unit test generation framework for Smalltalk-like programming languages and systems.  "
+			},
+			{
+				"__type" : "textSnippet",
+				"children" : {
+					"__type" : "snippets",
+					"items" : [ ]
+				},
+				"createEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"createTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
 						"dateAndTimeString" : "2023-06-21T14:15:57.220005+02:00"
 					}
 				},
@@ -29,7 +66,7 @@
 					"__type" : "time",
 					"time" : {
 						"__type" : "dateAndTime",
-						"dateAndTimeString" : "2023-06-21T14:16:31.510161+02:00"
+						"dateAndTimeString" : "2023-06-21T15:51:13.837109+02:00"
 					}
 				},
 				"uid" : {
@@ -39,7 +76,7 @@
 				"paragraphStyle" : {
 					"__type" : "textStyle"
 				},
-				"string" : "The repo is here: [](https://github.com/bergel/GeneticallyCreatedTests)"
+				"string" : "The repository of SmallEvoTest is [](https://github.com/bergel/GeneticallyCreatedTests)"
 			},
 			{
 				"__type" : "textSnippet",
@@ -66,7 +103,7 @@
 					"__type" : "time",
 					"time" : {
 						"__type" : "dateAndTime",
-						"dateAndTimeString" : "2023-06-21T14:16:32.07069+02:00"
+						"dateAndTimeString" : "2023-06-21T16:00:26.419585+02:00"
 					}
 				},
 				"uid" : {
@@ -76,7 +113,7 @@
 				"paragraphStyle" : {
 					"__type" : "textStyle"
 				},
-				"string" : ""
+				"string" : "# Example"
 			},
 			{
 				"__type" : "textSnippet",
@@ -92,7 +129,7 @@
 					"__type" : "time",
 					"time" : {
 						"__type" : "dateAndTime",
-						"dateAndTimeString" : "2023-06-21T14:16:32.303698+02:00"
+						"dateAndTimeString" : "2023-06-21T16:10:08.448102+02:00"
 					}
 				},
 				"editEmail" : {
@@ -103,17 +140,17 @@
 					"__type" : "time",
 					"time" : {
 						"__type" : "dateAndTime",
-						"dateAndTimeString" : "2023-06-21T14:16:41.780546+02:00"
+						"dateAndTimeString" : "2023-06-21T16:10:54.834021+02:00"
 					}
 				},
 				"uid" : {
 					"__type" : "uid",
-					"uidString" : "bCakeQS7DQCCvtAFBll6Qg=="
+					"uidString" : "d0HqDwa7DQCsrtTrCKmfxQ=="
 				},
 				"paragraphStyle" : {
 					"__type" : "textStyle"
 				},
-				"string" : "**TODO** add a project description."
+				"string" : "Consider the class {{gtClass:name=GCPoint}} , which has two variables, x and y, and three methods {{gtMethod:name=GCPoint>>initialize}} , {{gtMethod:name=GCPoint>>add:}} (which need another point) and {{gtMethod:name=GCPoint>>negated}}(which simply returns the negated receiver point)."
 			},
 			{
 				"__type" : "textSnippet",
@@ -129,7 +166,7 @@
 					"__type" : "time",
 					"time" : {
 						"__type" : "dateAndTime",
-						"dateAndTimeString" : "2023-06-21T14:19:38.848226+02:00"
+						"dateAndTimeString" : "2023-06-21T16:09:55.193832+02:00"
 					}
 				},
 				"editEmail" : {
@@ -140,17 +177,17 @@
 					"__type" : "time",
 					"time" : {
 						"__type" : "dateAndTime",
-						"dateAndTimeString" : "2023-06-21T14:19:42.446116+02:00"
+						"dateAndTimeString" : "2023-06-21T16:11:19.50656+02:00"
 					}
 				},
 				"uid" : {
 					"__type" : "uid",
-					"uidString" : "F5TChAS7DQCDuwWrBll6Qg=="
+					"uidString" : "3f4fDwa7DQCsYpXUCKmfxQ=="
 				},
 				"paragraphStyle" : {
 					"__type" : "textStyle"
 				},
-				"string" : "Start here:"
+				"string" : "Consider the code snippet:"
 			},
 			{
 				"__type" : "pharoSnippet",
@@ -166,7 +203,7 @@
 					"__type" : "time",
 					"time" : {
 						"__type" : "dateAndTime",
-						"dateAndTimeString" : "2023-06-21T14:19:36.565047+02:00"
+						"dateAndTimeString" : "2023-06-21T16:11:27.426596+02:00"
 					}
 				},
 				"editEmail" : {
@@ -177,14 +214,270 @@
 					"__type" : "time",
 					"time" : {
 						"__type" : "dateAndTime",
-						"dateAndTimeString" : "2023-06-21T14:19:36.565047+02:00"
+						"dateAndTimeString" : "2023-06-21T16:30:38.666778+02:00"
 					}
 				},
 				"uid" : {
 					"__type" : "uid",
-					"uidString" : "wrqfhAS7DQCDtiP5Bll6Qg=="
+					"uidString" : "JFafFAa7DQCwJ6A3CKmfxQ=="
 				},
-				"code" : ""
+				"code" : "SmallEvoTest new\r\t\ttargetClass: GCPoint;\r\t\tgenerateTestNamed: #GCPointTest;\r\t\tnumberOfTestsToBeCreated: 10s;\r\t\tnbOfStatements: 5;\r\t\texecutionScenario: [ | p |\r\t\t\tp := GCPoint new\r\t\t\t\t\tx: 3;\r\t\t\t\t\ty: 10.\r\t\t\tp\r\t\t\t\tadd: (GCPoint new\r\t\t\t\t\t\tx: 1;\r\t\t\t\t\t\ty: 12) ];\r\t\trun."
+			},
+			{
+				"__type" : "textSnippet",
+				"children" : {
+					"__type" : "snippets",
+					"items" : [ ]
+				},
+				"createEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"createTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T15:52:29.177965+02:00"
+					}
+				},
+				"editEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"editTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T16:13:42.130237+02:00"
+					}
+				},
+				"uid" : {
+					"__type" : "uid",
+					"uidString" : "KhXH0AW7DQCmh8HLCKmfxQ=="
+				},
+				"paragraphStyle" : {
+					"__type" : "textStyle"
+				},
+				"string" : "You can now inspect the result with:"
+			},
+			{
+				"__type" : "pharoSnippet",
+				"children" : {
+					"__type" : "snippets",
+					"items" : [ ]
+				},
+				"createEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"createTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T16:13:52.940909+02:00"
+					}
+				},
+				"editEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"editTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T16:13:53.861382+02:00"
+					}
+				},
+				"uid" : {
+					"__type" : "uid",
+					"uidString" : "A7tLHQa7DQCxW+gRCKmfxQ=="
+				},
+				"code" : "#GCPointTest asClass"
+			},
+			{
+				"__type" : "textSnippet",
+				"children" : {
+					"__type" : "snippets",
+					"items" : [ ]
+				},
+				"createEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"createTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T16:18:19.507185+02:00"
+					}
+				},
+				"editEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"editTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T16:18:19.507185+02:00"
+					}
+				},
+				"uid" : {
+					"__type" : "uid",
+					"uidString" : "5DQvLQa7DQC7HAkICKmfxQ=="
+				},
+				"paragraphStyle" : {
+					"__type" : "textStyle"
+				},
+				"string" : "The class {{gtClass:name=SmallEvoTest}} is the entry point of the framework for a end-user. The message {{gtMethod:name=SmallEvoTest>>targetClass:}} is used to indicate the class for which the generated tests have to test. "
+			},
+			{
+				"__type" : "textSnippet",
+				"children" : {
+					"__type" : "snippets",
+					"items" : [ ]
+				},
+				"createEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"createTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T16:18:19.656658+02:00"
+					}
+				},
+				"editEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"editTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T16:19:26.338179+02:00"
+					}
+				},
+				"uid" : {
+					"__type" : "uid",
+					"uidString" : "oIMxLQa7DQC7IoOFCKmfxQ=="
+				},
+				"paragraphStyle" : {
+					"__type" : "textStyle"
+				},
+				"string" : "The name of the unit test to be generated is given with {{gtMethod:name=SmallEvoTest>>generateTestNamed:}}. If the class does not exist, then it is created, else its content is simply overriden."
+			},
+			{
+				"__type" : "textSnippet",
+				"children" : {
+					"__type" : "snippets",
+					"items" : [ ]
+				},
+				"createEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"createTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T16:17:38.483812+02:00"
+					}
+				},
+				"editEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"editTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T16:21:14.983503+02:00"
+					}
+				},
+				"uid" : {
+					"__type" : "uid",
+					"uidString" : "bCakeQS7DQCCvtAFBll6Qg=="
+				},
+				"paragraphStyle" : {
+					"__type" : "textStyle"
+				},
+				"string" : "{{gtMethod:name=SmallEvoTest>>numberOfTestsToBeCreated:}} indicates the number of test methods to be created in the unit test to be created."
+			},
+			{
+				"__type" : "textSnippet",
+				"children" : {
+					"__type" : "snippets",
+					"items" : [ ]
+				},
+				"createEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"createTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T16:17:05.055957+02:00"
+					}
+				},
+				"editEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"editTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T16:22:03.38834+02:00"
+					}
+				},
+				"uid" : {
+					"__type" : "uid",
+					"uidString" : "3y+/KAa7DQC5y/1QCKmfxQ=="
+				},
+				"paragraphStyle" : {
+					"__type" : "textStyle"
+				},
+				"string" : "The  {{gtMethod:name=SmallEvoTest>>nbOfStatements:}} indicates the number of statements each generated test method will have. Note that assertions are not accounted here. A statement is either an object creation or a message send."
+			},
+			{
+				"__type" : "textSnippet",
+				"children" : {
+					"__type" : "snippets",
+					"items" : [ ]
+				},
+				"createEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"createTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T16:22:35.892253+02:00"
+					}
+				},
+				"editEmail" : {
+					"__type" : "email",
+					"emailString" : "<unknown>"
+				},
+				"editTime" : {
+					"__type" : "time",
+					"time" : {
+						"__type" : "dateAndTime",
+						"dateAndTimeString" : "2023-06-21T16:23:44.886774+02:00"
+					}
+				},
+				"uid" : {
+					"__type" : "uid",
+					"uidString" : "F5TChAS7DQCDuwWrBll6Qg=="
+				},
+				"paragraphStyle" : {
+					"__type" : "textStyle"
+				},
+				"string" : "It is essential for the test generation to have some knowledge about the expected types. An example scenario is expected with {{gtMethod:name=SmallEvoTest>>executionScenario:}}. Prior to generate the test, the provided code is executed and profiled to collect type information."
 			},
 			{
 				"__type" : "textSnippet",

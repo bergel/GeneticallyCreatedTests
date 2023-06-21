@@ -12,12 +12,12 @@ GCTTest >> setUp [
 	super setUp.
 	gct := GCT new.
 	gct random: (Random seed: 42).
-	gct targetClass: TPoint.
+	gct targetClass: GCPoint.
 	
 	gct spyRepository: (GCTAnalyzer profile: [ 
 		| p |
-		p := TPoint new x: 3; y: 10.
-		p add: (TPoint new x: 1; y: 12) ] onClasses: { TPoint })
+		p := GCPoint new x: 3; y: 10.
+		p add: (GCPoint new x: 1; y: 12) ] onClasses: { GCPoint })
 
 "	gct typeRepository
 		classNamed: #MyPoint method: #x: argumentsTypes: #(#Number) returnType: #MyPoint;
@@ -56,7 +56,7 @@ GCTTest >> testAdjustArguments [
 '.
 
 
-	gct chromosome at: 2 put: (GCTObjectCreationStatement new gct: gct; classToBeInstantiated: TPoint; newVariable: #v2).
+	gct chromosome at: 2 put: (GCTObjectCreationStatement new gct: gct; classToBeInstantiated: GCPoint; newVariable: #v2).
 	gct chromosome at: 3 put: (GCTObjectCreationStatement new gct: gct; classToBeInstantiated: SmallInteger; newVariable: #v3).
 	
 	gct adjustArguments.
@@ -108,7 +108,7 @@ GCTTest >> testAdjustArguments02 [
 '.
 
 	gct chromosome at: 1 put: (GCTObjectCreationStatement new gct: gct; classToBeInstantiated: SmallInteger; newVariable: #v1).
-	gct chromosome at: 2 put: (GCTObjectCreationStatement new gct: gct; classToBeInstantiated: TPoint; newVariable: #v2).
+	gct chromosome at: 2 put: (GCTObjectCreationStatement new gct: gct; classToBeInstantiated: GCPoint; newVariable: #v2).
 	
 	
 	gct adjustArguments.
@@ -136,8 +136,8 @@ GCTTest >> testCoverage01 [
 	| prof |
 	prof := GCTCoverageProfiler profile: [ 
 		| p |
-		p := TPoint new x: 3; y: 10.
-		p add: (TPoint new x: 1; y: 12) ] onClasses: { TPoint }.
+		p := GCPoint new x: 3; y: 10.
+		p add: (GCPoint new x: 1; y: 12) ] onClasses: { GCPoint }.
 	self assert: prof coverage > 0.8
 ]
 
@@ -146,7 +146,7 @@ GCTTest >> testCreationStatement [
 	| obj |
 	obj := gct buildObjectCreationStatement.
 	self assert: obj class equals: GCTObjectCreationStatement.
-	self assert: obj classToBeInstantiated equals: TPoint.
+	self assert: obj classToBeInstantiated equals: GCPoint.
 	self assert: obj newVariable equals: #v1
 ]
 
@@ -158,8 +158,8 @@ GCTTest >> testCreationStatement02 [
 	
 	obj := gct chromosome first.
 	self assert: obj newVariable equals: #v1.
-	self assert: obj type equals: TPoint.
-	self assert: (gct typeOfVariable: #v1) equals: TPoint
+	self assert: obj type equals: GCPoint.
+	self assert: (gct typeOfVariable: #v1) equals: GCPoint
 ]
 
 { #category : #tests }
@@ -168,15 +168,15 @@ GCTTest >> testCreationStatement03 [
 	gct addMessageStatement.
 	self assert: gct chromosome size equals: 2.
 	
-	self assert: (gct typeOfVariable: #v1) == TPoint.
+	self assert: (gct typeOfVariable: #v1) == GCPoint.
 	self assert: (gct statementForVariable: #v1) class == GCTObjectCreationStatement.
-	self assert: (gct statementForVariable: #v1) objectExample class == TPoint.
-	self assert: (gct statementForVariable: #v1) type == TPoint.
+	self assert: (gct statementForVariable: #v1) objectExample class == GCPoint.
+	self assert: (gct statementForVariable: #v1) type == GCPoint.
 	
 	self assert: (gct typeOfVariable: #v2) == SmallInteger.
 	self assert: (gct statementForVariable: #v2) objectExample class == SmallInteger.
 	
-	self assert: (gct definedVariablesOfType: TPoint) = { #v1 }.
+	self assert: (gct definedVariablesOfType: GCPoint) = { #v1 }.
 	self assert: (gct definedVariablesOfType: SmallInteger) = { #v2 }.
 	
 	self assert: gct buildCode equals: 
@@ -193,9 +193,9 @@ GCTTest >> testCreationStatement04 [
 	gct addMessageStatement.
 	self assert: gct chromosome size equals: 4.
 	
-	self assert: (gct typeOfVariable: #v1) == TPoint.
+	self assert: (gct typeOfVariable: #v1) == GCPoint.
 	self assert: (gct typeOfVariable: #v2) == SmallInteger.
-	self assert: (gct typeOfVariable: #v3) == TPoint.
+	self assert: (gct typeOfVariable: #v3) == GCPoint.
 	
 	self assert: gct buildCode equals: 
 '	v1 := TPoint new.
@@ -227,9 +227,9 @@ GCTTest >> testCreationStatement05 [
 	gct addMessageStatement.
 	self assert: gct chromosome size equals: 5.
 	
-	self assert: (gct typeOfVariable: #v1) == TPoint.
+	self assert: (gct typeOfVariable: #v1) == GCPoint.
 	self assert: (gct typeOfVariable: #v2) == SmallInteger.
-	self assert: (gct typeOfVariable: #v3) == TPoint.
+	self assert: (gct typeOfVariable: #v3) == GCPoint.
 	
 	self assert: gct buildCode equals: 
 '	v1 := TPoint new.
