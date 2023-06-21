@@ -100,8 +100,6 @@ SmallEvoTest >> run [
 		
 	g run.
 	
-	self halt.
-		
 	"INSTALL TEST RESULTS"
 	g logs last population doWithIndex: [ :ind :index |
 		gct := GCT new.
@@ -110,11 +108,8 @@ SmallEvoTest >> run [
 	].
 	
 	evolution := g logs collect: [ :l | l fittestIndividual fitness ].
-
-	"TO INSPECT:"
-	(GCT new chromosome: g logs last fittestIndividual genes) buildCodeWithAssertion.
 	
-	
+	self testClassUnderGeneration compile: 'evolution', String cr, '	^ ', evolution asArray printString
 ]
 
 { #category : #examples }
@@ -122,7 +117,7 @@ SmallEvoTest >> runRSCanvas [
 	"
 	self new runRSCanvas
 	"
-SmallEvoTest new
+"SmallEvoTest new
 	targetClass: RSCanvas;
 	chromosomeLength: 15;
 	populationSize: 15;
@@ -134,7 +129,7 @@ SmallEvoTest new
 		c add: RSBox new.
 		RSGridLayout on: c shapes.
 		c open delete. ];
-	run
+	run"
 ]
 
 { #category : #examples }
