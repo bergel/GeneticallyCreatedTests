@@ -149,6 +149,31 @@ SmallEvoTest new
 	run
 ]
 
+{ #category : #examples }
+SmallEvoTest >> tPointExample [
+	"
+	self new runTPoint
+	"
+
+	<gtExample>
+	<noTest>
+	SmallEvoTest new
+		targetClass: TPoint;
+		chromosomeLength: 8;
+		populationSize: 10;
+		generateTestNamed: #TPointTest;
+		executionScenario: [ | p |
+			p := TPoint new
+					x: 3;
+					y: 10.
+			p
+				add: (TPoint new
+						x: 1;
+						y: 12) ];
+		run.
+	^ #TPointTest asClass
+]
+
 { #category : #accessing }
 SmallEvoTest >> targetClass: aClass [
 	targetClass := aClass
