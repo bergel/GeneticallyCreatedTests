@@ -2,8 +2,5 @@
 
 Load the project:
 ```
-Metacello new
-	baseline: 'GeneticallyCreatedTests';
-	repository: 'github://bergel/GeneticallyCreatedTests:main';
-	load.
+Metacello new	baseline: 'GeneticallyCreatedTests';	repository: 'github://bergel/GeneticallyCreatedTests:main';	load.#BaselineOfGeneticallyCreatedTests asClass loadLepiter.
 ```
