@@ -36,5 +36,5 @@ GATournamentSelection >> getGoodIndividual [
 { #category : #'as yet unclassified' }
 GATournamentSelection >> initialize [
 	super initialize.
-	tournamentSize := 3
+	tournamentSize := 5
 ]
