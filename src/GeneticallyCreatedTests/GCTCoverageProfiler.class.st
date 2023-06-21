@@ -1,6 +1,6 @@
 Class {
 	#name : #GCTCoverageProfiler,
-	#superclass : #S2Profiler,
+	#superclass : #AnObsoleteS2Profiler,
 	#category : #'GeneticallyCreatedTests-Profiling-CodeCoverage'
 }
 

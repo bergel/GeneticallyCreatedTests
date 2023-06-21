@@ -1,6 +1,6 @@
 Class {
 	#name : #GCTCoverageProfilerMethod,
-	#superclass : #S2Method,
+	#superclass : #AnObsoleteS2Method,
 	#instVars : [
 		'isExecuted'
 	],

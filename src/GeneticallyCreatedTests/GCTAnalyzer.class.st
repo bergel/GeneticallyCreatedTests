@@ -1,6 +1,6 @@
 Class {
 	#name : #GCTAnalyzer,
-	#superclass : #S2Profiler,
+	#superclass : #AnObsoleteS2Profiler,
 	#category : #'GeneticallyCreatedTests-Profiling-TypeProfiler'
 }
 
