@@ -1,9 +1,9 @@
 # GeneticallyCreatedTests
 
-Need to load Spy before:
+Load the project:
 ```
-Metacello new 
-	baseline: 'Spy2'; 
-	repository: 'github://ObjectProfile/Spy2'; 
-	load: 'Core'
+Metacello new
+	baseline: 'GeneticallyCreatedTests';
+	repository: 'github://bergel/GeneticallyCreatedTests:main';
+	load.
 ```
