@@ -7,7 +7,8 @@ Class {
 		'length',
 		'chromosome',
 		'typeRepository',
-		'classesToBeInstantiated'
+		'classesToBeInstantiated',
+		'methodNameToExclude'
 	],
 	#category : #'GeneticallyCreatedTests-Core-CodeGeneration'
 }
@@ -185,7 +186,7 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 
 	| s aSelector newObject relevantSelectors numberOfArguments arguments argumentsVariables signature expectedArgumentTypes |
 	s := self statementForVariable: aVariable.
-	relevantSelectors := s relevantSelectors.
+	relevantSelectors := s relevantSelectors copyWithoutAll: methodNameToExclude.
 	relevantSelectors ifEmpty: [
 		self error: 'Class ' , s type asString
 			, ' cannot be tested since it has no method' ].
@@ -303,7 +304,8 @@ GCT >> initialize [
 	super initialize.
 	length := 2.
 	chromosome := OrderedCollection new.
-	typeRepository := GCTProvidedTypeRepository new
+	typeRepository := GCTProvidedTypeRepository new.
+	methodNameToExclude := { }
 ]
 
 { #category : #testing }
@@ -337,6 +339,12 @@ GCT >> measureCoverageOnClass: aClassTest [
 	prof := GCTCoverageProfiler profile: [ aClassTest new testGENERATED ] onClasses: { targetClass }.
 	aClassTest removeSelector: #testGENERATED.
 	^ prof coverage
+]
+
+{ #category : #accessing }
+GCT >> methodNameToExclude: methodNames [
+	"Set a list of methods name that will not be tested"
+	methodNameToExclude := methodNames
 ]
 
 { #category : #building }
@@ -418,7 +426,7 @@ GCT >> resetObjectExample [
 { #category : #building }
 GCT >> shouldClassBeConsideredForAssertion: aClass [
 	"Return true if the class deserves to be in assertion. Classes that use hashcode in their printString should be excluded"
-	({ SystemWindow } includes: aClass) ifTrue: [ ^ false ].
+	({ Morph } anySatisfy: [ :v | aClass withAllSuperclasses includes: v ]) ifTrue: [ ^ false ].
 	^ true
 ]
 

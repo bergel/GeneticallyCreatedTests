@@ -266,3 +266,11 @@ GCTTest >> testDefinedVariables [
 	gct addObjectCreationStatement.
 	self assert: gct definedVariables equals: { #v1 . #v2 . #v3}.
 ]
+
+{ #category : #tests }
+GCTTest >> testShouldClassBeConsideredForAssertion [
+
+	self assert: (gct shouldClassBeConsideredForAssertion: Point).
+	self deny: (gct shouldClassBeConsideredForAssertion: SystemWindow).
+	self deny: (gct shouldClassBeConsideredForAssertion: CollapsedMorph)
+]

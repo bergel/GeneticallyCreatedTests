@@ -6,7 +6,9 @@ Class {
 		'populationSize',
 		'targetClass',
 		'executionScenario',
-		'generateTestNamed'
+		'generateTestNamed',
+		'methodNameBlackList',
+		'methodNameToExclude'
 	],
 	#category : #'GeneticallyCreatedTests-Core-Evolution'
 }
@@ -15,6 +17,11 @@ Class {
 SmallEvoTest >> chromosomeLength: anInteger [
 	chromosomeLength := anInteger 
 	
+]
+
+{ #category : #accessing }
+SmallEvoTest >> excludeMethodName: aSelector [
+	methodNameToExclude add: aSelector
 ]
 
 { #category : #accessing }
@@ -34,7 +41,8 @@ SmallEvoTest >> initialize [
 	chromosomeLength := 4.
 	populationSize := 5.
 	targetClass := nil. "Need to be manually set!"
-	executionScenario := [  ]
+	executionScenario := [  ].
+	methodNameToExclude := OrderedCollection new
 ]
 
 { #category : #accessing }
@@ -80,7 +88,7 @@ SmallEvoTest >> run [
 	gct := GCT new.
 	gct random: (Random seed: 42).
 	gct targetClass: targetClass.
-	
+	gct methodNameToExclude: methodNameToExclude asArray.
 	gct spyRepository: (GCTAnalyzer profile: executionScenario onClasses: { targetClass }).
 	gct length: chromosomeLength.	
 	gct buildChromosome.
@@ -135,7 +143,8 @@ SmallEvoTest >> runRSCanvas [
 "SmallEvoTest new
 	targetClass: RSCanvas;
 	chromosomeLength: 15;
-	populationSize: 15;
+	populationSize: 25;
+	excludeMethodName: #currentTime;
 	generateTestNamed: #TRSCanvasTest;
 	executionScenario: [ 
 		| c |
@@ -156,7 +165,7 @@ SmallEvoTest new
 	targetClass: GCPoint;
 	chromosomeLength: 8;
 	populationSize: 10;
-	generateTestNamed: #TPointTest;
+	generateTestNamed: #TPointTest2;
 	executionScenario: [ 
 		| p |
 		p := GCPoint new x: 3; y: 10.
