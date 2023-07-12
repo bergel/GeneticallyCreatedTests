@@ -8,7 +8,7 @@ Class {
 GATestCreationCrossoverOperation >> crossover: partnerA with: partnerB [
 	"Return a new child, which is the result of mixing myself with the argument"
 	| pointcut result wasFound |
-	1 to: 5 do: [ :i |
+	1 to: 10 do: [ :i |
 		pointcut := self pickCutPointFor: partnerA.
 		 
 		result := self crossover: partnerA with: partnerB midpoint: pointcut.

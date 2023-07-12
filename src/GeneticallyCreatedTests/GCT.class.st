@@ -15,18 +15,38 @@ Class {
 
 { #category : #building }
 GCT >> addMessageStatement [
-	chromosome add: self buildMessageStatement.
-
+	chromosome add: self buildMessageStatement
 ]
 
 { #category : #building }
 GCT >> addObjectCreationStatement [
-	chromosome add: self buildObjectCreationStatement.
+	chromosome add: self buildObjectCreationStatement
 ]
 
 { #category : #building }
 GCT >> addObjectCreationStatementFor: aClass [
 	chromosome add: (self buildObjectCreationStatementFor: aClass)
+]
+
+{ #category : #building }
+GCT >> addStatement [
+
+	^ self addStatementNbTry: 10
+]
+
+{ #category : #building }
+GCT >> addStatementNbTry: nb [
+	| r |
+	nb = 0 
+		ifTrue: [ self error: 'Cannot generate a statement. Adjust the parameter'. ^ self ].
+
+	[ random next > 0.3
+		  ifTrue: [ self addMessageStatement ]
+		  ifFalse: [ self addObjectCreationStatement ] 
+	] 
+		on: CannotCreateStatement 
+		do: [ :ex | self addStatementNbTry: (nb - 1) ].
+		
 ]
 
 { #category : #initialization }
@@ -76,7 +96,9 @@ GCT >> buildAssertionsOn: s [
 		st := self statementForVariable: v.
 		st isSelfEvaluating 
 			ifTrue: [ 
-				s nextPutAll: '	self assert: ', v asString, ' equals: (', st objectExample printString, ').'.
+				s isSymbol 
+					ifTrue: [ s nextPutAll: '	self assert: ', v asString, ' equals: (', st objectExample, ').' ]
+					ifFalse: [ s nextPutAll: '	self assert: ', v asString, ' equals: (', st objectExample printString, ').' ].
 				s cr ]
 			ifFalse: [ 
 				"Check for equality between variables"
@@ -91,7 +113,9 @@ GCT >> buildAssertionsOn: s [
 				"Check for printing"
 				st objectExample isString 
 					ifTrue: [ 
-					 	s nextPutAll: '	self assert: ', v asString, ' printString equals: ', st objectExample printString, '.' ]
+						st objectExample isSymbol
+							ifTrue: [ s nextPutAll: '	self assert: ', v asString, ' printString equals: ''', st objectExample printString, '''.' ]
+					 		ifFalse: [ s nextPutAll: '	self assert: ', v asString, ' printString equals: ', st objectExample printString, '.' ] ]
 					ifFalse: [ 
 						(self shouldClassBeConsideredForAssertion: st objectExample class)
 							ifTrue: [ 
@@ -103,14 +127,12 @@ GCT >> buildAssertionsOn: s [
 
 { #category : #building }
 GCT >> buildChromosome [
+
 	chromosome := OrderedCollection new.
-	
+
 	self addObjectCreationStatementFor: targetClass.
 
-	length - 1 timesRepeat: [ 
-		random next > 0.3
-			ifTrue: [ self addMessageStatement ]
-			ifFalse: [ self addObjectCreationStatement ] ].
+	length - 1 timesRepeat: [ self addStatement ].
 	^ chromosome asArray
 ]
 
@@ -155,11 +177,13 @@ GCT >> buildMessageStatementForVariable: aVariable [
 
 	"Need to check if the candidate statement already exist. If yes, then we check if the result is the same. If this is the case, then we can assume that the call does not do any side effect, and therefore can be discarded"
 	| s |
-	1 to: 10 do: [ :i |
+	1 to: 20 do: [ :i |
 		s := self buildRawMessageStatementForVariable: aVariable.
 		(s notNil and: [ (self isNewStatement: s) ]) ifTrue: [ ^ s ]
 	].
-	self error: 'Cannot create a new message statement'.
+	CannotCreateStatement new 
+		messageText: 'Cannot create a new message statement'; 
+		signal
 	
 ]
 
@@ -214,9 +238,15 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 			arguments := #(  ).
 			argumentsVariables := #(  ) ].
 
-	newObject := s objectExample
+	[ newObject := s objectExample
 		             perform: aSelector
-		             withArguments: arguments asArray.
+		             withArguments: arguments asArray ] 
+		on: Exception 
+		do: [ :ex | 
+				 CannotCreateStatement new 
+					messageText: 'Cannot create a new object'; 
+					signal
+			].
 	expectedArgumentTypes := arguments asArray collect: #class.
 	^ GCTMessageStatement new
 		  gct: self;
@@ -409,9 +439,14 @@ GCT >> resetObjectExample [
 				stm arguments do: [ :v | 
 					arguments add: (self statementForVariable: v) objectExample ].
 			
-				newObject := s objectExample
+				[ newObject := s objectExample
 		             perform: stm selector
-		             withArguments: arguments asArray.
+		             withArguments: arguments asArray 
+				] on: Exception do: [ :ex | 
+						CannotCreateStatement new 
+							messageText: 'Cannot reset an object creation'; 
+							signal
+				].
 				stm objectExample: newObject.
 				 ].
 		stm class == GCTObjectCreationStatement

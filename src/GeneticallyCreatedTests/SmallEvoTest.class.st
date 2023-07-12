@@ -80,9 +80,10 @@ SmallEvoTest >> removeTestClassUnderGenerationIfNecessary [
 
 { #category : #running }
 SmallEvoTest >> run [
-	| g indCache gct evolution cs mu |
+	| g indCache gct evolution cs mu allMorphs |
 	self assert: [ targetClass notNil ].
 	
+	allMorphs := World submorphs.
 	self removeTestClassUnderGenerationIfNecessary.
 	"-------"
 	gct := GCT new.
@@ -121,7 +122,7 @@ SmallEvoTest >> run [
 				targetClass: gct targetClass; 
 				measureCoverageOnClass: self testClassUnderGeneration ].
 		
-	g run.
+	[ g run ] ensure: [ (World submorphs copyWithoutAll: allMorphs) do: #delete ].
 	
 	"INSTALL TEST RESULTS"
 	g logs last population doWithIndex: [ :ind :index |
@@ -133,6 +134,31 @@ SmallEvoTest >> run [
 	evolution := g logs collect: [ :l | l fittestIndividual fitness ].
 	
 	self testClassUnderGeneration compile: 'evolution', String cr, '	^ ', evolution asArray printString
+]
+
+{ #category : #examples }
+SmallEvoTest >> runManyClasses [
+	"
+	self new runManyClasses
+	"
+"
+
+{ RSBox . RSGridLayout . RSCanvas . RSGroup } do: [ :class | 
+	SmallEvoTest new
+		targetClass: class;
+		chromosomeLength: 15;
+		populationSize: 25;
+		excludeMethodName: #currentTime;
+		generateTestNamed: ('GCT', class name, 'Test') asSymbol;
+		executionScenario: [ 
+			| c |
+			c := RSCanvas new.
+			c add: RSBox new.
+			c add: RSBox new.
+			RSGridLayout on: c shapes.
+			c open delete. ];
+	run ]
+"
 ]
 
 { #category : #examples }

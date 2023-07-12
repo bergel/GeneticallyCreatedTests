@@ -21,9 +21,11 @@ GCTObjectCreationStatement >> buildCodeOn: stream [
 		 
 	example isSelfEvaluating 
 		ifTrue: [ 
-			stream 
-				<< example asString
-				<< '.' ]
+			example isSymbol
+				ifTrue: [ stream << example printString ]
+				ifFalse: [ stream << example asString ].
+			stream << '.'
+			 ]
 		ifFalse: [ 
 			stream	
 				<< classToBeInstantiated asString;
@@ -48,6 +50,8 @@ GCTObjectCreationStatement >> classToBeInstantiated: aClass [
 	aClass == SmallInteger ifTrue: [ example := (gct random nextInteger: 1000) - 500. ^ self ].
 	aClass == Float ifTrue: [ example := (gct random next * 1000) - 500. ^ self ].
 	aClass == ByteString ifTrue: [ example := '''' , (ZnMessageBenchmark new randomAsciiString: 5 random: gct random), ''''. ^ self ].
+	aClass == ByteSymbol ifTrue: [ example := ((ZnMessageBenchmark new randomAsciiSymbol: 5 random: gct random)) asSymbol. ^ self ].
+	
 	example := aClass new
 ]
 
