@@ -8,7 +8,8 @@ Class {
 		'executionScenario',
 		'generateTestNamed',
 		'methodNameBlackList',
-		'methodNameToExclude'
+		'methodNameToExclude',
+		'maxNumberOfGenerations'
 	],
 	#category : #'GeneticallyCreatedTests-Core-Evolution'
 }
@@ -30,6 +31,14 @@ SmallEvoTest >> executionScenario: aBlock [
 ]
 
 { #category : #accessing }
+SmallEvoTest >> executionScenarioFromTestsInPackage: aPackageName [
+
+	self executionScenario: [ 
+		((RPackageOrganizer default packageNamed: aPackageName) definedClasses select: [ :cls | cls subclasses isEmpty and: [ cls inheritsFrom: TestCase ] ]) do: [ :cls | cls  buildSuite run ]
+ ]
+]
+
+{ #category : #accessing }
 SmallEvoTest >> generateTestNamed: aSymbol [
 	"Set the name of the unit test to be generated"
 	generateTestNamed := aSymbol
@@ -42,7 +51,14 @@ SmallEvoTest >> initialize [
 	populationSize := 5.
 	targetClass := nil. "Need to be manually set!"
 	executionScenario := [  ].
-	methodNameToExclude := OrderedCollection new
+	methodNameToExclude := OrderedCollection new.
+	self maxNumberOfGenerations: 5
+]
+
+{ #category : #accessing }
+SmallEvoTest >> maxNumberOfGenerations: anInteger [
+
+	maxNumberOfGenerations := anInteger
 ]
 
 { #category : #accessing }
@@ -96,7 +112,7 @@ SmallEvoTest >> run [
 	"-------"
 	
 	g := GAEngine new.
-	g endIfFitnessIsAbove: 1.0 orMax: 5.
+	g endIfFitnessIsAbove: 1.0 orMax: maxNumberOfGenerations.
 	g populationSize: populationSize.
 	g numberOfGenes: chromosomeLength.
 
@@ -137,6 +153,26 @@ SmallEvoTest >> run [
 ]
 
 { #category : #examples }
+SmallEvoTest >> runGeometry [
+	"
+	self new runGeometry
+	"
+"
+
+G1DElement allSubclasses do: [ :class | 
+	SmallEvoTest new
+		targetClass: class;
+		chromosomeLength: 15;
+		populationSize: 25;
+		maxNumberOfGenerations: 7;
+		excludeMethodName: #currentTime;
+		generateTestNamed: ('GCT', class name, 'Test') asSymbol;
+		executionScenarioFromTestsInPackage: 'Geometry-Tests';
+		run ]
+"
+]
+
+{ #category : #examples }
 SmallEvoTest >> runManyClasses [
 	"
 	self new runManyClasses
@@ -148,6 +184,7 @@ SmallEvoTest >> runManyClasses [
 		targetClass: class;
 		chromosomeLength: 15;
 		populationSize: 25;
+		maxNumberOfGenerations: 7;
 		excludeMethodName: #currentTime;
 		generateTestNamed: ('GCT', class name, 'Test') asSymbol;
 		executionScenario: [ 
@@ -189,8 +226,8 @@ SmallEvoTest >> runTPoint [
 	"
 SmallEvoTest new
 	targetClass: GCPoint;
-	chromosomeLength: 8;
-	populationSize: 10;
+	chromosomeLength: 5;
+	populationSize: 5;
 	generateTestNamed: #TPointTest2;
 	executionScenario: [ 
 		| p |

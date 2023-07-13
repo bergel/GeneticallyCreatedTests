@@ -89,10 +89,8 @@ GCT >> adjustArguments [
 ]
 
 { #category : #building }
-GCT >> buildAssertionsOn: s [
-	| vars |
-	self variableLeaves do: [ :v |
-		| st |
+GCT >> buildAssertionsForVariable: v on: s [
+		| st vars |
 		st := self statementForVariable: v.
 		st isSelfEvaluating 
 			ifTrue: [ 
@@ -122,6 +120,13 @@ GCT >> buildAssertionsOn: s [
 								s nextPutAll: '	self assert: ', v asString, ' printString equals: ''', st objectExample printString, '''.' ] ] .
 				s cr
 				 ]
+]
+
+{ #category : #building }
+GCT >> buildAssertionsOn: s [
+	
+	self variableLeaves do: [ :v |
+		[ self buildAssertionsForVariable: v on: s ] on: Error do: [ :ex | "Cannot create an assertion" ].
 			 ]
 ]
 
@@ -269,7 +274,7 @@ GCT >> buildTest [
 
 { #category : #building }
 GCT >> buildTestSuffix: aSuffix [
-self resetObjectExample.
+	self resetObjectExample.
 	^ String
 		streamContents: [ :s |
 			s << 'testGENERATED'; << aSuffix; cr.
@@ -429,33 +434,56 @@ GCT >> random: aRandom [
 
 { #category : #initialization }
 GCT >> resetObjectExample [
-	| s arguments newObject |
-	chromosome do: [ :stm |
-		stm class == GCTMessageStatement 
-			ifTrue: [ 
-				s := self statementForVariable: stm variable.
-				
-				arguments := OrderedCollection new.
-				stm arguments do: [ :v | 
-					arguments add: (self statementForVariable: v) objectExample ].
-			
-				[ newObject := s objectExample
-		             perform: stm selector
-		             withArguments: arguments asArray 
-				] on: Exception do: [ :ex | 
-						CannotCreateStatement new 
-							messageText: 'Cannot reset an object creation'; 
-							signal
-				].
-				stm objectExample: newObject.
-				 ].
-		stm class == GCTObjectCreationStatement
-			ifTrue: [ 
-				"May be better something like stm resetObjectExample"
-				stm classToBeInstantiated: stm classToBeInstantiated
-				 ]
-	].
+	chromosome do: [ :stm | self resetObjectExampleFor: stm nbTry: 10 ].
 	
+]
+
+{ #category : #initialization }
+GCT >> resetObjectExampleFor: stm [
+
+	| s arguments newObject |
+	stm class == GCTMessageStatement ifTrue: [
+		s := self statementForVariable: stm variable.
+
+		arguments := OrderedCollection new.
+		stm arguments do: [ :v |
+			arguments add: (self statementForVariable: v) objectExample ].
+
+		[
+			newObject := s objectExample
+			             perform: stm selector
+			             withArguments: arguments asArray ]
+			on: Exception
+			do: [ :ex |
+				CannotCreateStatement new
+					messageText: 'Cannot reset an object creation';
+					signal ].
+		stm objectExample: newObject ].
+	
+	stm class == GCTObjectCreationStatement ifTrue: [ "May be better something like stm resetObjectExample"
+		stm classToBeInstantiated: stm classToBeInstantiated ]
+]
+
+{ #category : #initialization }
+GCT >> resetObjectExampleFor: stm nbTry: nbTry [
+
+	nbTry = 0 ifTrue: [ self error: 'Cannot generate example' ].
+	
+	[ self resetObjectExampleFor: stm  ] 
+		on: CannotCreateStatement 
+		do: [ :ex | self resetObjectExampleFor: stm nbTry: (nbTry-1) ]
+	
+]
+
+{ #category : #initialization }
+GCT >> resetObjectExampleNbTry: nbTry [
+	nbTry = 0 ifTrue: [ self error: 'Cannote create examples' ].
+	
+	[
+		chromosome do: [ :stm | self resetObjectExampleFor: stm ].
+	] 
+		on: CannotCreateStatement 
+		do: [ :ex | self resetObjectExampleNbTry: nbTry - 1 ]
 ]
 
 { #category : #building }
