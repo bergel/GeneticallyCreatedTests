@@ -67,11 +67,6 @@ SmallEvoTest >> nbOfStatements: anInteger [
 ]
 
 { #category : #accessing }
-SmallEvoTest >> numberOfTestToBeCreated: anInteger [
-	self populationSize: anInteger
-]
-
-{ #category : #accessing }
 SmallEvoTest >> numberOfTestsToBeCreated: anInteger [
 	self populationSize: anInteger
 ]
