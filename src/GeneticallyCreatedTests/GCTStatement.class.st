@@ -75,7 +75,6 @@ GCTStatement >> objectExample [
 
 { #category : #accessing }
 GCTStatement >> objectExample: anObject [
-self haltIf: [ anObject = -122 ].
 	example := anObject
 ]
 

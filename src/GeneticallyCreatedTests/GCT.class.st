@@ -274,6 +274,7 @@ GCT >> buildTest [
 
 { #category : #building }
 GCT >> buildTestSuffix: aSuffix [
+	self adjustArguments.
 	self resetObjectExample.
 	^ String
 		streamContents: [ :s |
@@ -303,6 +304,7 @@ GCT >> definedVariables [
 
 { #category : #'accessing - statements' }
 GCT >> definedVariablesOfExampleObject: anObject [
+	"Useful for building assertions"
 	^ (chromosome select: [ :s | s objectExample == anObject ]) collect: #newVariable as: Array
 ]
 

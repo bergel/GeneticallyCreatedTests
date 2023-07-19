@@ -142,9 +142,11 @@ SmallEvoTest >> run [
 	
 	"INSTALL TEST RESULTS"
 	g logs last population doWithIndex: [ :ind :index |
-		gct := GCT new.
-		gct chromosome: ind genes.
-		self testClassUnderGeneration compile: (gct buildTestSuffix: index asString).
+		| gct2 |
+		gct2 := GCT new.
+		gct2 chromosome: ind genes.
+		gct2 random: gct random.
+		self testClassUnderGeneration compile: (gct2 buildTestSuffix: index asString).
 	].
 	
 	evolution := g logs collect: [ :l | l fittestIndividual fitness ].
