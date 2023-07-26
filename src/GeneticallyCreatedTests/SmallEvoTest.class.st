@@ -1,3 +1,24 @@
+"
+The class `SmallEvoTest` is the entry point of the framework to generate tests. 
+Here is an example on how to use it:
+```
+SmallEvoTest new
+		targetClass: GCPoint;
+		generateTestNamed: #GCPointTest;
+		numberOfTestsToBeCreated: 10;
+		nbOfStatements: 5;
+		executionScenario: [ | p |
+			p := GCPoint new
+					x: 3;
+					y: 10.
+			p
+				add: (GCPoint new
+						x: 1;
+						y: 12) ];
+		run.
+```
+
+"
 Class {
 	#name : #SmallEvoTest,
 	#superclass : #Object,
