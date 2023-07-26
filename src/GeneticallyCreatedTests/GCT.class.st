@@ -36,9 +36,10 @@ GCT >> addStatement [
 
 { #category : #building }
 GCT >> addStatementNbTry: nb [
-	| r |
 	nb = 0 
-		ifTrue: [ self error: 'Cannot generate a statement. Adjust the parameter'. ^ self ].
+		ifTrue: [ 
+			(length - chromosome  size) timesRepeat: [ chromosome add: GCTNoStatement new ].
+			^ self ].
 
 	[ random next > 0.3
 		  ifTrue: [ self addMessageStatement ]
@@ -183,8 +184,15 @@ GCT >> buildMessageStatementForVariable: aVariable [
 	"Need to check if the candidate statement already exist. If yes, then we check if the result is the same. If this is the case, then we can assume that the call does not do any side effect, and therefore can be discarded"
 	| s |
 	1 to: 20 do: [ :i |
+		| canCreateExample |
+		canCreateExample := true.
 		s := self buildRawMessageStatementForVariable: aVariable.
-		(s notNil and: [ (self isNewStatement: s) ]) ifTrue: [ ^ s ]
+		[ self resetObjectExampleFor: s ] 
+			on: CannotCreateStatement 
+			do: [ :ex | canCreateExample := false ].
+		
+		"(s notNil and: [ (self isNewStatement: s) ]) ifTrue: [ ^ s ]"
+		(s notNil and: [ canCreateExample ]) ifTrue: [ ^ s ]
 	].
 	CannotCreateStatement new 
 		messageText: 'Cannot create a new message statement'; 
@@ -280,7 +288,7 @@ GCT >> buildTestSuffix: aSuffix [
 		streamContents: [ :s |
 			s << 'testGENERATED'; << aSuffix; cr.
 			s << '	| '.
-			chromosome do: [ :st | s << st newVariable << ' ' ].
+			chromosome do: [ :st | st class ~~ GCTNoStatement ifTrue: [ s << st newVariable << ' ' ] ].
 			s << '| '; cr.
 			self buildCodeOn: s.
 			self buildAssertionsOn: s ]
@@ -299,7 +307,7 @@ GCT >> chromosome: chromo [
 
 { #category : #building }
 GCT >> definedVariables [
-	^ chromosome collect: #newVariable as: Array
+	^ (chromosome collect: #newVariable as: Array) copyWithout: nil
 ]
 
 { #category : #'accessing - statements' }
@@ -436,7 +444,7 @@ GCT >> random: aRandom [
 
 { #category : #initialization }
 GCT >> resetObjectExample [
-	chromosome do: [ :stm | self resetObjectExampleFor: stm nbTry: 10 ].
+	chromosome do: [ :stm | self resetObjectExampleFor: stm nbTry: 5 ].
 	
 ]
 
@@ -471,10 +479,15 @@ GCT >> resetObjectExampleFor: stm nbTry: nbTry [
 
 	nbTry = 0 ifTrue: [ self error: 'Cannot generate example' ].
 	
-	[ self resetObjectExampleFor: stm  ] 
-		on: CannotCreateStatement 
-		do: [ :ex | self resetObjectExampleFor: stm nbTry: (nbTry-1) ]
-	
+	 self resetObjectExampleFor: stm 
+"	1 to: nbTry do: [ :i |
+		| t |
+		t := true.
+		[ self resetObjectExampleFor: stm ]
+			on: CannotCreateStatement do: [ :ex | t := false ].
+		t ifTrue:[ ^ self ]
+	].
+"
 ]
 
 { #category : #initialization }
