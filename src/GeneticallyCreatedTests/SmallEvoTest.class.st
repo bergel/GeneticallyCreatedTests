@@ -44,6 +44,17 @@ SmallEvoTest >> generateTestNamed: aSymbol [
 	generateTestNamed := aSymbol
 ]
 
+{ #category : #accessing }
+SmallEvoTest >> gtMethodsFor: aView [
+	<gtView>
+	(Smalltalk globals includesKey: generateTestNamed) ifFalse: [ ^ aView empty ].
+	^ aView forward
+		title: 'Test methods';
+		priority: 10;
+		object: generateTestNamed asClass;
+		view: #gtTestsFor:
+]
+
 { #category : #initialization }
 SmallEvoTest >> initialize [
 	super initialize.
