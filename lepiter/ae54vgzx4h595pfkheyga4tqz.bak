@@ -103,14 +103,14 @@
 					"__type" : "time",
 					"time" : {
 						"__type" : "dateAndTime",
-						"dateAndTimeString" : "2023-07-19T14:34:07.93465+02:00"
+						"dateAndTimeString" : "2023-07-26T14:08:05.608462+02:00"
 					}
 				},
 				"uid" : {
 					"__type" : "uid",
 					"uidString" : "q58r7Te9DQCHMBpzCDmMrw=="
 				},
-				"code" : "SmallEvoTest new\r\ttargetClass: GtLudoRecordingGame;\r\tgenerateTestNamed: #GtLudoRecordingGameGenTests;\r\tnumberOfTestsToBeCreated: 10;\r\tnbOfStatements: 10;\r\texecutionScenario: [ GtLudoRecordingGame new\r\t\t\troll: 1;\r\t\t\troll: 6;\r\t\t\tmoveTokenNamed: 'B';\r\t\t\tyourself ];\r\trun"
+				"code" : "SmallEvoTest new\r\ttargetClass: GtLudoRecordingGame;\r\tgenerateTestNamed: #GtLudoRecordingGameGenTests;\r\tnumberOfTestsToBeCreated: 5;\r\tnbOfStatements: 10;\r\texcludeMethodName: #updateOnRoll;\r\texecutionScenario: [ GtLudoRecordingGame new\r\t\t\troll: 1;\r\t\t\troll: 6;\r\t\t\tmoveTokenNamed: 'B';\r\t\t\tyourself ];\r\trun"
 			},
 			{
 				"__type" : "pharoSnippet",

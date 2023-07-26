@@ -282,7 +282,7 @@ GCT >> buildTest [
 
 { #category : #building }
 GCT >> buildTestSuffix: aSuffix [
-	self adjustArguments.
+	"self adjustArguments."
 	self resetObjectExample.
 	^ String
 		streamContents: [ :s |
