@@ -36,10 +36,11 @@ GCTMessageStatement >> buildCodeOn: stream [
 	
 	(selector includes: $:)
 		ifTrue: 
-			[	selector keywords doWithIndex: [ :key :index | 
+			[	selector keywords doWithIndex: [ :key :anIndex | 
 					stream << key.
 					stream << ' '.
-					stream << (arguments at: index).
+					stream << (arguments at: anIndex).
+					stream << ' '.
 				].]
 		ifFalse: [ 
 			stream << selector ].

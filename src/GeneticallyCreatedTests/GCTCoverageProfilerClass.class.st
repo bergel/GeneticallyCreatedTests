@@ -1,7 +1,7 @@
 Class {
 	#name : #GCTCoverageProfilerClass,
 	#superclass : #S2Class,
-	#category : #'GeneticallyCreatedTests-Profiling-CodeCoverage'
+	#category : #'GeneticallyCreatedTests-Profiling-CodeCoverage-OLD'
 }
 
 { #category : #hooks }

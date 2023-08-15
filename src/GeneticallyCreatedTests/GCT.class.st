@@ -224,6 +224,7 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 	| s aSelector newObject relevantSelectors numberOfArguments arguments argumentsVariables signature expectedArgumentTypes |
 	s := self statementForVariable: aVariable.
 	relevantSelectors := s relevantSelectors copyWithoutAll: methodNameToExclude.
+	self haltOnce.
 	relevantSelectors ifEmpty: [
 		self error: 'Class ' , s type asString
 			, ' cannot be tested since it has no method' ].
@@ -381,7 +382,10 @@ GCT >> measureCoverage [
 GCT >> measureCoverageOnClass: aClassTest [
 	| prof |
 	aClassTest compile: self buildTest.
-	prof := GCTCoverageProfiler profile: [ aClassTest new testGENERATED ] onClasses: { targetClass }.
+	"prof := GCTCoverageProfiler profile: [ aClassTest new perform: #testGENERATED ] onClasses: { targetClass }."
+	prof := GCTMethodProxyInstallerCoverage new 
+				targetClass: targetClass;
+				run: [ aClassTest new perform: #testGENERATED ].
 	aClassTest removeSelector: #testGENERATED.
 	^ prof coverage
 ]
@@ -444,7 +448,7 @@ GCT >> random: aRandom [
 
 { #category : #initialization }
 GCT >> resetObjectExample [
-	chromosome do: [ :stm | self resetObjectExampleFor: stm nbTry: 5 ].
+	chromosome do: [ :stm | self resetObjectExampleFor: stm ].
 	
 ]
 

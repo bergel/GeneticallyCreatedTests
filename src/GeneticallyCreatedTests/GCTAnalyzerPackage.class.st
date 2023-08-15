@@ -1,7 +1,7 @@
 Class {
 	#name : #GCTAnalyzerPackage,
 	#superclass : #S2Package,
-	#category : #'GeneticallyCreatedTests-Profiling-TypeProfiler'
+	#category : #'GeneticallyCreatedTests-Profiling-TypeProfiler-OLD'
 }
 
 { #category : #hooks }

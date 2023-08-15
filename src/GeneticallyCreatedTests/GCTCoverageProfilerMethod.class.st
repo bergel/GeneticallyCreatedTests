@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'isExecuted'
 	],
-	#category : #'GeneticallyCreatedTests-Profiling-CodeCoverage'
+	#category : #'GeneticallyCreatedTests-Profiling-CodeCoverage-OLD'
 }
 
 { #category : #hooks }

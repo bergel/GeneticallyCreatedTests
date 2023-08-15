@@ -260,15 +260,16 @@ SmallEvoTest new
 	generateTestNamed: #TPointTest2;
 	executionScenario: [ 
 		| p |
-		p := GCPoint new x: 3; y: 10.
-		p add: (GCPoint new x: 1; y: 12) ];
+		p := GCPoint new x: 3 y: 10.
+		p add: (GCPoint new x: 1 y: 12) ];
 	run
 ]
 
 { #category : #examples }
 SmallEvoTest >> tPointExample [
+
 	"
-	self new runTPoint
+	self new tPointExample
 	"
 
 	<gtExample>
@@ -278,14 +279,10 @@ SmallEvoTest >> tPointExample [
 		chromosomeLength: 8;
 		populationSize: 10;
 		generateTestNamed: #TPointTest;
-		executionScenario: [ | p |
-			p := GCPoint new
-					x: 3;
-					y: 10.
-			p
-				add: (GCPoint new
-						x: 1;
-						y: 12) ];
+		executionScenario: [ 
+			| p |
+			p := GCPoint new x: 3 y: 10.
+			p add: (GCPoint new x: 1 y: 12) ];
 		run.
 	^ #TPointTest asClass
 ]
