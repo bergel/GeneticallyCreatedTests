@@ -170,6 +170,7 @@ SmallEvoTest >> run [
 	"INSTALL TEST RESULTS"
 	g logs last population doWithIndex: [ :ind :index |
 		| gct2 |
+		ind resetObjectExample.
 		gct2 := GCT new.
 		gct2 chromosome: ind genes.
 		gct2 random: gct random.
@@ -254,14 +255,14 @@ SmallEvoTest >> runTPoint [
 	self new runTPoint
 	"
 SmallEvoTest new
-	targetClass: GCPoint;
+	targetClass: GCPointOLD;
 	chromosomeLength: 5;
 	populationSize: 5;
 	generateTestNamed: #TPointTest2;
 	executionScenario: [ 
 		| p |
-		p := GCPoint new x: 3 y: 10.
-		p add: (GCPoint new x: 1 y: 12) ];
+		p := GCPointOLD new x: 3 y: 10.
+		p add: (GCPointOLD new x: 1 y: 12) ];
 	run
 ]
 
@@ -275,14 +276,14 @@ SmallEvoTest >> tPointExample [
 	<gtExample>
 	<noTest>
 	SmallEvoTest new
-		targetClass: GCPoint;
+		targetClass: GCPointOLD;
 		chromosomeLength: 8;
 		populationSize: 10;
 		generateTestNamed: #TPointTest;
 		executionScenario: [ 
 			| p |
-			p := GCPoint new x: 3 y: 10.
-			p add: (GCPoint new x: 1 y: 12) ];
+			p := GCPointOLD new x: 3 y: 10.
+			p add: (GCPointOLD new x: 1 y: 12) ];
 		run.
 	^ #TPointTest asClass
 ]

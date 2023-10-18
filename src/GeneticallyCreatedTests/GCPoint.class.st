@@ -8,45 +8,45 @@ Class {
 	#category : #'GeneticallyCreatedTests-Tests'
 }
 
-{ #category : #accessing }
-GCPoint >> add: anotherPoint [
-	^ GCPoint new x: x + anotherPoint x y: y + anotherPoint y; yourself
+{ #category : #initialization }
+GCPoint >> add: aPoint [
+	^ GCPoint new x: aPoint x + x y: aPoint y + y; yourself
 ]
 
 { #category : #initialization }
-GCPoint >> initialize [
+GCPoint >> initialize [ 
 	super initialize.
 	x := 0.
-	y := 0
+	y := 0.
+	
 ]
 
-{ #category : #arithmetic }
-GCPoint >> negated [
+{ #category : #initialization }
+GCPoint >> negated [ 
 	^ GCPoint new x: x negated y: y negated
 ]
 
-{ #category : #'instance creation' }
+{ #category : #initialization }
 GCPoint >> printOn: str [
-	str 
-		nextPutAll: 'GCPoint(';
-		nextPutAll: x asString; 
-		nextPutAll: ',';
-		nextPutAll: y asString;
-		nextPutAll: ')'
+	str nextPutAll: 'Point('.
+	str nextPutAll: x asString.
+	str nextPutAll: ','.
+	str nextPutAll: y asString.
+	str nextPutAll: ')'.
 ]
 
-{ #category : #accessing }
-GCPoint >> x [
+{ #category : #initialization }
+GCPoint >> x [ 
 	^ x
 ]
 
-{ #category : #'instance creation' }
-GCPoint >> x: xValue y: yValue [
-	x := xValue.
-	y := yValue.
+{ #category : #initialization }
+GCPoint >> x: anX y: aY [
+	x := anX.
+	y := aY
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 GCPoint >> y [
 	^ y
 ]

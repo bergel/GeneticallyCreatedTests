@@ -60,11 +60,11 @@ GCT >> adjustArguments [
 			"self haltIf: [ stmt newVariable == #v6 ]."
 			"ADJUST RECEIVER"
 			targetClass := stmt receiverType.
-			targetClass ~~ (self typeOfVariable: stmt variable) ifTrue: [
+			targetClass ~~ (self typeOfVariable: stmt receiver) ifTrue: [
 				newVarReceiver := (self
 					                   definedVariablesOfType: targetClass
 					                   lowerThan: indexStmt) atRandom: random.
-				stmt variable: newVarReceiver ].
+				stmt receiver: newVarReceiver ].
 
 			"ADJUST ARGUMENTS"
 			newVariables := OrderedCollection new.
@@ -224,7 +224,6 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 	| s aSelector newObject relevantSelectors numberOfArguments arguments argumentsVariables signature expectedArgumentTypes |
 	s := self statementForVariable: aVariable.
 	relevantSelectors := s relevantSelectors copyWithoutAll: methodNameToExclude.
-	self haltOnce.
 	relevantSelectors ifEmpty: [
 		self error: 'Class ' , s type asString
 			, ' cannot be tested since it has no method' ].
@@ -269,7 +268,7 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 		  expectedArgumentTypes: expectedArgumentTypes;
 		  arguments: argumentsVariables;
 		  selector: aSelector;
-		  variable: aVariable;
+		  receiver: aVariable;
 		  objectExample: newObject;
 		  type: newObject class;
 		  yourself
@@ -457,7 +456,7 @@ GCT >> resetObjectExampleFor: stm [
 
 	| s arguments newObject |
 	stm class == GCTMessageStatement ifTrue: [
-		s := self statementForVariable: stm variable.
+		s := self statementForVariable: stm receiver.
 
 		arguments := OrderedCollection new.
 		stm arguments do: [ :v |
@@ -555,7 +554,7 @@ GCT >> variableLeaves [
 	usedVariables := Set new.
 	chromosome do: [ :s |
 		s class == GCTMessageStatement 
-			ifTrue: [ usedVariables addAll: s arguments; add: s variable ] ].
+			ifTrue: [ usedVariables addAll: s arguments; add: s receiver ] ].
 	^ (self definedVariables copyWithoutAll: usedVariables) asSet asArray asSortedCollection asArray
 ]
 

@@ -16,6 +16,7 @@ GATournamentSelection >> createNewPopulation [
       partnerA := self getGoodIndividual.
       partnerB := self getGoodIndividual.
       child := self mutate: (self crossover: partnerA with: partnerB).
+		child resetObjectExample.
       child computeFitnessUsing: engine fitnessBlock.
       child.
     ]

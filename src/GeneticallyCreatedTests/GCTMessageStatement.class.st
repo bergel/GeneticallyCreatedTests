@@ -73,12 +73,24 @@ GCTMessageStatement >> isSimilarTo: aStatement [
 
 { #category : #testing }
 GCTMessageStatement >> isSimilarToMessage: aStatement [
-	^ (self variable == aStatement variable) and: [ self selector == aStatement selector ]
+	^ (self receiver == aStatement receiver) and: [ self selector == aStatement selector ]
 ]
 
 { #category : #testing }
 GCTMessageStatement >> isSimilarToObjectCreation: aStatement [
 	^ false
+]
+
+{ #category : #accessing }
+GCTMessageStatement >> receiver [
+	"Return the variable symbol"
+	^ receiver
+]
+
+{ #category : #accessing }
+GCTMessageStatement >> receiver: aSymbol [
+	"Variable receiver."
+	receiver := aSymbol
 ]
 
 { #category : #accessing }
@@ -103,16 +115,4 @@ GCTMessageStatement >> selector [
 GCTMessageStatement >> selector: anObject [
 
 	selector := anObject
-]
-
-{ #category : #accessing }
-GCTMessageStatement >> variable [
-	"Return the variable symbol"
-	^ receiver
-]
-
-{ #category : #accessing }
-GCTMessageStatement >> variable: aSymbol [
-	"Variable receiver."
-	receiver := aSymbol
 ]

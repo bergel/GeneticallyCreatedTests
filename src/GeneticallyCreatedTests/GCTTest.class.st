@@ -16,8 +16,8 @@ GCTTest >> setUp [
 	
 	gct spyRepository: (GCTAnalyzer profile: [ 
 		| p |
-		p := GCPoint new x: 3; y: 10.
-		p add: (GCPoint new x: 1; y: 12) ] onClasses: { GCPoint })
+		p := GCPoint new x: 3 y: 10.
+		p add: (GCPoint new x: 1 y: 12) ] onClasses: { GCPoint })
 
 "	gct typeRepository
 		classNamed: #MyPoint method: #x: argumentsTypes: #(#Number) returnType: #MyPoint;
