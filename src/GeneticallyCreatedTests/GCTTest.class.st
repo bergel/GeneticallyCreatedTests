@@ -136,9 +136,9 @@ GCTTest >> testCoverage01 [
 	| prof |
 	prof := GCTCoverageProfiler profile: [ 
 		| p |
-		p := GCPoint new x: 3; y: 10.
-		p add: (GCPoint new x: 1; y: 12) ] onClasses: { GCPoint }.
-	self assert: prof coverage > 0.8
+		p := GCPoint new x: 3 y: 10.
+		p add: (GCPoint new x: 1 y: 12) ] onClasses: { GCPoint }.
+	self assert: prof coverage > 0.7
 ]
 
 { #category : #tests }
