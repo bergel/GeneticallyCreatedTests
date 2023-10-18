@@ -220,6 +220,25 @@ G1DElement allSubclasses do: [ :class |
 ]
 
 { #category : #examples }
+SmallEvoTest >> runGeometryGSegment [
+	"
+	self new runGeometryGSegment
+	"
+"
+	
+	SmallEvoTest new
+		targetClass: GSegment;
+		chromosomeLength: 15;
+		populationSize: 25;
+		maxNumberOfGenerations: 7;
+		excludeMethodName: #currentTime;
+		generateTestNamed: ('GCT', 'GSegment', 'Test') asSymbol;
+		executionScenarioFromTestsInPackage: 'Geometry-Tests';
+		run
+"
+]
+
+{ #category : #examples }
 SmallEvoTest >> runManyClasses [
 	"
 	self new runManyClasses
