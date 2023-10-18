@@ -43,18 +43,18 @@ GCTTest >> testAdjustArguments [
 	
 	genCode := gct buildCode.
 	self assert: genCode equals: 
-'	v1 := TPoint new.
-	v2 := 236.
-	v3 := TPoint new.
-	v4 := v1 negated.
-	v5 := v4 y: v2.
-	v6 := v3 x.
-	v7 := v5 add: v3.
-	v8 := v3 negated.
-	v9 := v3 y.
-	v10 := v5 x.
+'	v1 := 25.
+	v2 := GCPoint new.
+	v3 := -123.
+	v4 := v2 x: v3 y: v3 .
+	v5 := v2 x.
+	v6 := v4 negated.
+	v7 := v2 add: v2 .
+	v8 := v4 x.
+	v9 := v6 x: v5 y: v1 .
+	v10 := v6 x: v3 y: v3 .
 '.
-
+	self assert: (OpalCompiler new source: genCode; evaluate) printString equals: 'Point(-123,-123)'.
 
 	gct chromosome at: 2 put: (GCTObjectCreationStatement new gct: gct; classToBeInstantiated: GCPoint; newVariable: #v2).
 	gct chromosome at: 3 put: (GCTObjectCreationStatement new gct: gct; classToBeInstantiated: SmallInteger; newVariable: #v3).
@@ -63,17 +63,19 @@ GCTTest >> testAdjustArguments [
 
 	self deny: gct buildCode equals: genCode.
 	self assert: gct buildCode equals:
-'	v1 := TPoint new.
-	v2 := TPoint new.
-	v3 := -266.
-	v4 := v1 negated.
-	v5 := v4 y: v3.
-	v6 := v5 x.
-	v7 := v5 add: v2.
-	v8 := v4 negated.
-	v9 := v4 y.
-	v10 := v5 x.
-'
+'	v1 := -266.
+	v2 := GCPoint new.
+	v3 := -487.
+	v4 := v2 x: v3 y: v3 .
+	v5 := v2 x.
+	v6 := v4 negated.
+	v7 := v2 add: v2 .
+	v8 := v4 x.
+	v9 := v6 x: v5 y: v1 .
+	v10 := v6 x: v3 y: v3 .
+'.
+
+	self assert: (OpalCompiler new source: gct buildCode; evaluate) printString equals: 'Point(-487,-487)'.
 	
 
 ]
@@ -95,16 +97,16 @@ GCTTest >> testAdjustArguments02 [
 	
 	genCode := gct buildCode.
 	self assert: genCode equals: 
-'	v1 := TPoint new.
-	v2 := 236.
-	v3 := TPoint new.
-	v4 := v1 negated.
-	v5 := v4 y: v2.
-	v6 := v3 x.
-	v7 := v5 add: v3.
-	v8 := v3 negated.
-	v9 := v3 y.
-	v10 := v5 x.
+'	v1 := 25.
+	v2 := GCPoint new.
+	v3 := -123.
+	v4 := v2 x: v3 y: v3 .
+	v5 := v2 x.
+	v6 := v4 negated.
+	v7 := v2 add: v2 .
+	v8 := v4 x.
+	v9 := v6 x: v5 y: v1 .
+	v10 := v6 x: v3 y: v3 .
 '.
 
 	gct chromosome at: 1 put: (GCTObjectCreationStatement new gct: gct; classToBeInstantiated: SmallInteger; newVariable: #v1).
@@ -115,16 +117,16 @@ GCTTest >> testAdjustArguments02 [
 
 	self deny: gct buildCode equals: genCode.
 	self assert: gct buildCode equals:
-'	v1 := -35.
-	v2 := TPoint new.
-	v3 := TPoint new.
-	v4 := v2 negated.
-	v5 := v4 y: v1.
-	v6 := v3 x.
-	v7 := v5 add: v3.
-	v8 := v3 negated.
-	v9 := v3 y.
-	v10 := v5 x.
+'	v1 := -266.
+	v2 := GCPoint new.
+	v3 := -487.
+	v4 := v2 x: v3 y: v3 .
+	v5 := v2 x.
+	v6 := v4 negated.
+	v7 := v2 add: v2 .
+	v8 := v4 x.
+	v9 := v6 x: v5 y: v1 .
+	v10 := v6 x: v3 y: v3 .
 '
 	
 
