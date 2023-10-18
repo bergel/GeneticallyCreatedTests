@@ -15,6 +15,7 @@ Class {
 
 { #category : #building }
 GCT >> addMessageStatement [
+	"Add a message statement randomly and correctly created"
 	chromosome add: self buildMessageStatement
 ]
 
