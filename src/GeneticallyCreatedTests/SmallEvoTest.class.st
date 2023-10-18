@@ -183,6 +183,23 @@ SmallEvoTest >> run [
 ]
 
 { #category : #examples }
+SmallEvoTest >> runGCPoint [
+	"
+	self new runTPoint
+	"
+SmallEvoTest new
+	targetClass: GCPoint;
+	chromosomeLength: 5;
+	populationSize: 5;
+	generateTestNamed: #GCPointTest;
+	executionScenario: [ 
+		| p |
+		p := GCPoint new x: 3 y: 10.
+		p add: (GCPoint new x: 1 y: 12) ];
+	run
+]
+
+{ #category : #examples }
 SmallEvoTest >> runGeometry [
 	"
 	self new runGeometry
@@ -250,23 +267,6 @@ SmallEvoTest >> runRSCanvas [
 ]
 
 { #category : #examples }
-SmallEvoTest >> runTPoint [
-	"
-	self new runTPoint
-	"
-SmallEvoTest new
-	targetClass: GCPointOLD;
-	chromosomeLength: 5;
-	populationSize: 5;
-	generateTestNamed: #TPointTest2;
-	executionScenario: [ 
-		| p |
-		p := GCPointOLD new x: 3 y: 10.
-		p add: (GCPointOLD new x: 1 y: 12) ];
-	run
-]
-
-{ #category : #examples }
 SmallEvoTest >> tPointExample [
 
 	"
@@ -276,16 +276,16 @@ SmallEvoTest >> tPointExample [
 	<gtExample>
 	<noTest>
 	SmallEvoTest new
-		targetClass: GCPointOLD;
+		targetClass: GCPoint;
 		chromosomeLength: 8;
 		populationSize: 10;
-		generateTestNamed: #TPointTest;
+		generateTestNamed: #GCPointTest;
 		executionScenario: [ 
 			| p |
-			p := GCPointOLD new x: 3 y: 10.
-			p add: (GCPointOLD new x: 1 y: 12) ];
+			p := GCPoint new x: 3 y: 10.
+			p add: (GCPoint new x: 1 y: 12) ];
 		run.
-	^ #TPointTest asClass
+	^ #GCPointTest asClass
 ]
 
 { #category : #accessing }
