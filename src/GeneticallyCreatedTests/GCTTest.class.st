@@ -131,6 +131,57 @@ GCTTest >> testAdjustArguments02 [
 ]
 
 { #category : #tests }
+GCTTest >> testAdjustArgumentsRaw [
+	| genCode |
+	gct addObjectCreationStatementFor: GCPoint.
+	gct addObjectCreationStatementFor: SmallInteger.
+	gct addObjectCreationStatementFor: GCPoint.
+	gct addMessageStatementVariable: #v1 selector: #negated.
+	gct addMessageStatementVariable: #v4 selector: #x:y:.
+	gct addMessageStatementVariable: #v3 selector: #x.
+	gct addMessageStatementVariable: #v5 selector: #add:.
+	gct addMessageStatementVariable: #v3 selector: #negated.
+	gct addMessageStatementVariable: #v3 selector: #y.
+	gct addMessageStatementVariable: #v5 selector: #x.
+	self assert: gct chromosome size equals: 10.
+	
+	genCode := gct buildCode.
+	self assert: genCode equals: 
+'	v1 := GCPoint new.
+	v2 := -499.
+	v3 := GCPoint new.
+	v4 := v1 negated.
+	v5 := v4 x: v2 y: v2 .
+	v6 := v3 x.
+	v7 := v5 add: v3 .
+	v8 := v3 negated.
+	v9 := v3 y.
+	v10 := v5 x.
+'.
+
+	gct chromosome at: 2 put: (GCTObjectCreationStatement new gct: gct; classToBeInstantiated: GCPoint; newVariable: #v2).
+	gct chromosome at: 3 put: (GCTObjectCreationStatement new gct: gct; classToBeInstantiated: SmallInteger; newVariable: #v3).
+	
+	gct adjustArguments.
+
+	self deny: gct buildCode equals: genCode.
+	self assert: gct buildCode equals:
+'	v1 := GCPoint new.
+	v2 := GCPoint new.
+	v3 := 316.
+	v4 := v1 negated.
+	v5 := v4 x: v3 y: v3 .
+	v6 := v4 x.
+	v7 := v5 add: v4 .
+	v8 := v2 negated.
+	v9 := v1 y.
+	v10 := v5 x.
+'
+	
+
+]
+
+{ #category : #tests }
 GCTTest >> testCoverage01 [
 
 	| prof |

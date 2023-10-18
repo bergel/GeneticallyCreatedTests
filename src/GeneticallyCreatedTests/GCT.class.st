@@ -19,6 +19,11 @@ GCT >> addMessageStatement [
 ]
 
 { #category : #building }
+GCT >> addMessageStatementVariable: var selector: selector [
+	chromosome add: (self buildRawMessageStatementForVariable: var selector: selector)
+]
+
+{ #category : #building }
 GCT >> addObjectCreationStatement [
 	chromosome add: self buildObjectCreationStatement
 ]
@@ -224,13 +229,32 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 				- We look for a variable that has the expected type, or
 				- We create a few (1 - 3?) statements (both objectcreation and messages) to create the expected argument"
 
-	| s aSelector newObject relevantSelectors numberOfArguments arguments argumentsVariables signature expectedArgumentTypes |
+	| s aSelector relevantSelectors |
 	s := self statementForVariable: aVariable.
 	relevantSelectors := s relevantSelectors copyWithoutAll: methodNameToExclude.
 	relevantSelectors ifEmpty: [
 		self error: 'Class ' , s type asString
 			, ' cannot be tested since it has no method' ].
 	aSelector := relevantSelectors atRandom: random.
+	
+	^ self buildRawMessageStatementForVariable: aVariable selector: aSelector
+]
+
+{ #category : #building }
+GCT >> buildRawMessageStatementForVariable: aVariable selector: aSelector [
+	"This method adds one or more statements to send a selector to aVariable. Two situations may happen:
+		- If the selector does not have any argument, then creating the MessageStatement is trivial
+		- If the selector excepts arguments, then:
+				- We look for a variable that has the expected type, or
+				- We create a few (1 - 3?) statements (both objectcreation and messages) to create the expected argument"
+
+	| s newObject relevantSelectors numberOfArguments arguments argumentsVariables signature expectedArgumentTypes |
+	s := self statementForVariable: aVariable.
+	relevantSelectors := s relevantSelectors copyWithoutAll: methodNameToExclude.
+	relevantSelectors ifEmpty: [
+		self error: 'Class ' , s type asString
+			, ' cannot be tested since it has no method' ].
+	self assert: [ relevantSelectors includes: aSelector ].
 
 	numberOfArguments := self numberOfArgumentsOfSelector: aSelector.
 
