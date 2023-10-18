@@ -146,14 +146,14 @@ GCTTest >> testCreationStatement [
 	| obj |
 	obj := gct buildObjectCreationStatement.
 	self assert: obj class equals: GCTObjectCreationStatement.
-	self assert: obj classToBeInstantiated equals: GCPoint.
+	self assert: obj classToBeInstantiated equals: SmallInteger.
 	self assert: obj newVariable equals: #v1
 ]
 
 { #category : #tests }
 GCTTest >> testCreationStatement02 [
 	| obj |
-	gct addObjectCreationStatement.
+	gct addObjectCreationStatementFor: GCPoint.
 	self assert: gct chromosome size equals: 1.
 	
 	obj := gct chromosome first.
@@ -164,7 +164,7 @@ GCTTest >> testCreationStatement02 [
 
 { #category : #tests }
 GCTTest >> testCreationStatement03 [
-	gct addObjectCreationStatement.
+	gct addObjectCreationStatementFor: GCPoint.
 	gct addMessageStatement.
 	self assert: gct chromosome size equals: 2.
 	
@@ -180,14 +180,14 @@ GCTTest >> testCreationStatement03 [
 	self assert: (gct definedVariablesOfType: SmallInteger) = { #v2 }.
 	
 	self assert: gct buildCode equals: 
-'	v1 := TPoint new.
+'	v1 := GCPoint new.
 	v2 := v1 y.
 '
 ]
 
 { #category : #tests }
 GCTTest >> testCreationStatement04 [
-	gct addObjectCreationStatement.
+	gct addObjectCreationStatementFor: GCPoint.
 	gct addMessageStatement.
 	gct addMessageStatement.
 	gct addMessageStatement.
@@ -198,29 +198,29 @@ GCTTest >> testCreationStatement04 [
 	self assert: (gct typeOfVariable: #v3) == GCPoint.
 	
 	self assert: gct buildCode equals: 
-'	v1 := TPoint new.
+'	v1 := GCPoint new.
 	v2 := v1 y.
-	v3 := v1 x: v2.
-	v4 := v3 y: v2.
+	v3 := v1 add: v1 .
+	v4 := v1 x: v2 y: v2 .
 '.
 
-	self assert: gct variableLeaves equals: #(#v4).
+	self assert: gct variableLeaves equals: #(#v3 #v4).
 	
 	self assert: gct buildCodeWithAssertion equals: 
-'	v1 := TPoint new.
+'	v1 := GCPoint new.
 	v2 := v1 y.
-	v3 := v1 x: v2.
-	v4 := v3 y: v2.
+	v3 := v1 add: v1 .
+	v4 := v1 x: v2 y: v2 .
+	self assert: v3 printString equals: ''Point(0,0)''.
 	self assert: v4 equals: v1.
-	self assert: v4 equals: v3.
-	self assert: v4 printString equals: ''a TPoint''.
+	self assert: v4 printString equals: ''Point(0,0)''.
 '.
 
 ]
 
 { #category : #tests }
 GCTTest >> testCreationStatement05 [
-	gct addObjectCreationStatement.
+	gct addObjectCreationStatementFor: GCPoint.
 	gct addMessageStatement.
 	gct addMessageStatement.
 	gct addMessageStatement.
@@ -232,24 +232,24 @@ GCTTest >> testCreationStatement05 [
 	self assert: (gct typeOfVariable: #v3) == GCPoint.
 	
 	self assert: gct buildCode equals: 
-'	v1 := TPoint new.
+'	v1 := GCPoint new.
 	v2 := v1 y.
-	v3 := v1 x: v2.
-	v4 := v3 y: v2.
+	v3 := v1 add: v1 .
+	v4 := v1 x: v2 y: v2 .
 	v5 := v1 x.
 '.
 
-	self assert: gct variableLeaves equals: #(#v4 #v5).
+	self assert: gct variableLeaves equals: #(#v3 #v4 #v5).
 	
 	self assert: gct buildCodeWithAssertion equals: 
-'	v1 := TPoint new.
+'	v1 := GCPoint new.
 	v2 := v1 y.
-	v3 := v1 x: v2.
-	v4 := v3 y: v2.
+	v3 := v1 add: v1 .
+	v4 := v1 x: v2 y: v2 .
 	v5 := v1 x.
+	self assert: v3 printString equals: ''Point(0,0)''.
 	self assert: v4 equals: v1.
-	self assert: v4 equals: v3.
-	self assert: v4 printString equals: ''a TPoint''.
+	self assert: v4 printString equals: ''Point(0,0)''.
 	self assert: v5 equals: (0).
 '.
 

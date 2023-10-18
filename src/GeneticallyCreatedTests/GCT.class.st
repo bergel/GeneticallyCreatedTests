@@ -170,7 +170,10 @@ GCT >> buildCodeWithAssertion [
 
 { #category : #building }
 GCT >> buildMessageStatement [
-	^ self buildMessageStatementForVariable: ((self definedVariablesOfType: targetClass) atRandom: random)
+	| vars |
+	vars := self definedVariablesOfType: targetClass.
+	self assert: [ vars notEmpty ].
+	^ self buildMessageStatementForVariable: (vars atRandom: random)
 ]
 
 { #category : #building }
