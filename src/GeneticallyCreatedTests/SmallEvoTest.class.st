@@ -30,7 +30,8 @@ Class {
 		'generateTestNamed',
 		'methodNameBlackList',
 		'methodNameToExclude',
-		'maxNumberOfGenerations'
+		'maxNumberOfGenerations',
+		'testSuperclass'
 	],
 	#category : #'GeneticallyCreatedTests-Core-Evolution'
 }
@@ -84,7 +85,10 @@ SmallEvoTest >> initialize [
 	targetClass := nil. "Need to be manually set!"
 	executionScenario := [  ].
 	methodNameToExclude := OrderedCollection new.
-	self maxNumberOfGenerations: 5
+	self maxNumberOfGenerations: 5.
+	
+	"Set the default superclass for the test"
+	testSuperclass := TestCase
 ]
 
 { #category : #accessing }
@@ -123,10 +127,11 @@ SmallEvoTest >> removeTestClassUnderGenerationIfNecessary [
 
 { #category : #running }
 SmallEvoTest >> run [
-	| g indCache gct evolution cs mu allMorphs |
+	| g indCache gct evolution cs mu morphCleaner |
 	self assert: [ targetClass notNil ].
 	
-	allMorphs := World submorphs.
+	morphCleaner := MorphCleaner new.
+	morphCleaner setUp.
 	self removeTestClassUnderGenerationIfNecessary.
 	"-------"
 	gct := GCT new.
@@ -165,7 +170,7 @@ SmallEvoTest >> run [
 				targetClass: gct targetClass; 
 				measureCoverageOnClass: self testClassUnderGeneration ].
 		
-	[ g run ] ensure: [ (World submorphs copyWithoutAll: allMorphs) do: #delete ].
+	[ g run ] ensure: [ morphCleaner tearDown ].
 	
 	"INSTALL TEST RESULTS"
 	g logs last population doWithIndex: [ :ind :index |
@@ -179,7 +184,9 @@ SmallEvoTest >> run [
 	
 	evolution := g logs collect: [ :l | l fittestIndividual fitness ].
 	
-	self testClassUnderGeneration compile: 'evolution', String cr, '	^ ', evolution asArray printString
+	self testClassUnderGeneration compile: 'evolution', String cr, '	^ ', evolution asArray printString.
+
+	morphCleaner tearDown 
 ]
 
 { #category : #examples }
@@ -275,6 +282,7 @@ SmallEvoTest >> runRSCanvas [
 	populationSize: 25;
 	excludeMethodName: #currentTime;
 	generateTestNamed: #TRSCanvasTest;
+	testSuperclass: MorphTestCase;
 	executionScenario: [ 
 		| c |
 		c := RSCanvas new.
@@ -316,10 +324,16 @@ SmallEvoTest >> targetClass: aClass [
 SmallEvoTest >> testClassUnderGeneration [
 
 	(Smalltalk includesKey: generateTestNamed) ifFalse: [
-		TestCase
+		testSuperclass
 			subclass: generateTestNamed
 			instanceVariableNames: ''
 			classVariableNames: ''
 			package: 'GeneticallyCreatedTestsResults' ].
 	^ Smalltalk at: generateTestNamed
+]
+
+{ #category : #accessing }
+SmallEvoTest >> testSuperclass: aSuperclass [
+	"Set the base test class that a subclass will be created from. The default is TestCase, but could be other"
+	testSuperclass := aSuperclass
 ]
