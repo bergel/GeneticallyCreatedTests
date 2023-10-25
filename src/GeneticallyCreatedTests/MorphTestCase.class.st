@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'morphCleaner'
 	],
-	#category : #'GeneticallyCreatedTests-Core-Evolution'
+	#category : #'GeneticallyCreatedTests-MorphicUtility'
 }
 
 { #category : #initialization }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'allMorphs'
 	],
-	#category : #'GeneticallyCreatedTests-Core-Evolution'
+	#category : #'GeneticallyCreatedTests-MorphicUtility'
 }
 
 { #category : #initialization }
