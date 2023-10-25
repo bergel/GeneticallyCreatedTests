@@ -1,5 +1,5 @@
 Class {
-	#name : #GCTTest2,
+	#name : #GCTBugTrackingTest1,
 	#superclass : #TestCase,
 	#instVars : [
 		'gct'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #running }
-GCTTest2 >> setUp [
+GCTBugTrackingTest1 >> setUp [
 
 	super setUp.
 	gct := GCT new.
@@ -25,7 +25,7 @@ GCTTest2 >> setUp [
 ]
 
 { #category : #tests }
-GCTTest2 >> testBasic [
+GCTBugTrackingTest1 >> testBasic [
 	"This test is failing because we do not deal with class methods / constructors"
 	<expectedFailure>
 	| genCode |

@@ -375,6 +375,11 @@ GCT >> determineClassesToBeInstantiated [
 
 ]
 
+{ #category : #accessing }
+GCT >> executionScenario: executionScenario [
+	self spyRepository: (GCTAnalyzer profile: executionScenario onClasses: { targetClass })
+]
+
 { #category : #initialization }
 GCT >> initialize [
 	super initialize.
@@ -411,6 +416,7 @@ GCT >> measureCoverage [
 { #category : #'as yet unclassified' }
 GCT >> measureCoverageOnClass: aClassTest [
 	| prof |
+	self assert: [ aClassTest isBehavior ].
 	aClassTest compile: self buildTest.
 	"prof := GCTCoverageProfiler profile: [ aClassTest new perform: #testGENERATED ] onClasses: { targetClass }."
 	prof := GCTMethodProxyInstallerCoverage new 

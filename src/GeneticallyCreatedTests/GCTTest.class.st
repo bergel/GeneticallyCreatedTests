@@ -14,10 +14,10 @@ GCTTest >> setUp [
 	gct random: (Random seed: 42).
 	gct targetClass: GCPoint.
 	
-	gct spyRepository: (GCTAnalyzer profile: [ 
+	gct executionScenario: [  
 		| p |
 		p := GCPoint new x: 3 y: 10.
-		p add: (GCPoint new x: 1 y: 12) ] onClasses: { GCPoint })
+		p add: (GCPoint new x: 1 y: 12) ].
 
 "	gct typeRepository
 		classNamed: #MyPoint method: #x: argumentsTypes: #(#Number) returnType: #MyPoint;
