@@ -178,7 +178,10 @@ GCT >> buildCodeWithAssertion [
 GCT >> buildMessageStatement [
 	| vars |
 	vars := self definedVariablesOfType: targetClass.
-	self assert: [ vars notEmpty ].
+	vars isEmpty ifTrue: [ 
+			CannotCreateStatement new 
+					messageText: 'Cannot create a new object of targetClass. Need to have some objects of the proper type.'; 
+					signal ].
 	^ self buildMessageStatementForVariable: (vars atRandom: random)
 ]
 
@@ -285,7 +288,7 @@ GCT >> buildRawMessageStatementForVariable: aVariable selector: aSelector [
 		on: Exception 
 		do: [ :ex | 
 				 CannotCreateStatement new 
-					messageText: 'Cannot create a new object'; 
+					messageText: 'Cannot create a new message statement'; 
 					signal
 			].
 	expectedArgumentTypes := arguments asArray collect: #class.
