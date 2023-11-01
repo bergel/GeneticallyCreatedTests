@@ -322,14 +322,17 @@ SmallEvoTest >> targetClass: aClass [
 
 { #category : #running }
 SmallEvoTest >> testClassUnderGeneration [
-
+	| cls |
 	(Smalltalk includesKey: generateTestNamed) ifFalse: [
 		testSuperclass
 			subclass: generateTestNamed
 			instanceVariableNames: ''
 			classVariableNames: ''
 			package: 'GeneticallyCreatedTestsResults' ].
-	^ Smalltalk at: generateTestNamed
+	cls := Smalltalk at: generateTestNamed.
+	cls class compile: 'isGenerated
+	^ true '.
+	^ cls
 ]
 
 { #category : #accessing }
