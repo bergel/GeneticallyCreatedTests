@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfGeneticallyCreatedTests,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfGeneticallyCreatedTests
+	#name : 'BaselineOfGeneticallyCreatedTests',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfGeneticallyCreatedTests',
+	#package : 'BaselineOfGeneticallyCreatedTests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BaselineOfGeneticallyCreatedTests class >> loadLepiter [
 	| currentProperties |
 	currentProperties := LeDatabasesRegistry defaultLogicalDatabase properties.
@@ -14,18 +15,17 @@ BaselineOfGeneticallyCreatedTests class >> loadLepiter [
 	LeDatabasesRegistry default defaultLogicalDatabase reload
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfGeneticallyCreatedTests >> baseline: spec [
 	<baseline>
 	spec
 		for: #common
-		do: [ spec package: 'Spy2-Core'.
+		do: [
 			spec package: 'GeneticallyCreatedTests'.
 			spec package: 'GeneticallyCreatedTests4Gt'.
 			spec
 				group: 'Pharo'
-					with: {'Spy2-Core'.
-							'GeneticallyCreatedTests'};
+					with: {'GeneticallyCreatedTests'};
 				group: 'GT'
 					with: {'Pharo'.
 							'GeneticallyCreatedTests4Gt'} ]

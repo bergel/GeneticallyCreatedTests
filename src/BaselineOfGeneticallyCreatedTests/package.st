@@ -1,1 +1,1 @@
-Package { #name : #BaselineOfGeneticallyCreatedTests }
+Package { #name : 'BaselineOfGeneticallyCreatedTests' }
