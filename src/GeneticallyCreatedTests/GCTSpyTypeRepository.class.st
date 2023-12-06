@@ -29,6 +29,6 @@ GCTSpyTypeRepository >> profiler [
 
 { #category : 'accessing' }
 GCTSpyTypeRepository >> profiler: aSpyProfiler [
-	self assert: [ aSpyProfiler class == GCTAnalyzer ].
+	self assert: [ aSpyProfiler class == GCTMethodProxyInstallerType ].
 	profiler := aSpyProfiler
 ]

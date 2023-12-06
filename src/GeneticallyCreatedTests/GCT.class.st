@@ -266,13 +266,16 @@ GCT >> buildRawMessageStatementForVariable: aVariable selector: aSelector [
 
 	numberOfArguments > 0
 		ifTrue: [
-			signature := typeRepository
+			targetClass == s objectExample class
+				ifFalse: [ ^ nil ].
+			signature := typeRepository profiler signatureOf: aSelector.
+"OLD:			signature := typeRepository targetClass
 				             classNamed: s objectExample class name
-				             method: aSelector.
+				             method: aSelector."
 			signature ifNil: [ ^ nil ].
 			argumentsVariables := self
 				                      pick: numberOfArguments
-				                      withTypes: signature third.
+				                      withTypes: (signature argTypes collect: #name).
 
 			"If we cannot build it, then we simply return nil, to build another statement"
 			argumentsVariables ifEmpty: [ ^ nil ].
@@ -366,12 +369,12 @@ GCT >> definedVariablesOfType: aType lowerThan: aMaxIndex [
 
 { #category : 'building' }
 GCT >> determineClassesToBeInstantiated [
-	| spyCls |
-	spyCls := typeRepository profiler >> targetClass name.
-	self assert: [ spyCls notNil ].
+	| clss |
+	clss := typeRepository profiler allClassesUsedAsArguments.
+	self assert: [ clss notNil ].
 	
 	classesToBeInstantiated := OrderedCollection new.
-	classesToBeInstantiated addAll: spyCls allClassesUsedAsArguments.
+	classesToBeInstantiated addAll: clss.
 	classesToBeInstantiated add: targetClass.
 	classesToBeInstantiated removeDuplicates.
 
@@ -379,7 +382,7 @@ GCT >> determineClassesToBeInstantiated [
 
 { #category : 'accessing' }
 GCT >> executionScenario: executionScenario [
-	self spyRepository: (GCTAnalyzer profile: executionScenario onClasses: { targetClass })
+	self spyRepository: (GCTMethodProxyInstallerType new targetClass: targetClass; run: executionScenario)
 ]
 
 { #category : 'initialization' }

@@ -46,12 +46,12 @@ GCTTest >> testAdjustArgumentsRaw [
 	genCode := gct buildCode.
 	self assert: genCode equals: 
 '	v1 := GCPoint new.
-	v2 := -499.
+	v2 := 24.
 	v3 := GCPoint new.
 	v4 := v1 negated.
 	v5 := v4 x: v2 y: v2 .
 	v6 := v3 x.
-	v7 := v5 add: v3 .
+	v7 := v5 add: v4 .
 	v8 := v3 negated.
 	v9 := v3 y.
 	v10 := v5 x.
@@ -66,13 +66,13 @@ GCTTest >> testAdjustArgumentsRaw [
 	self assert: gct buildCode equals:
 '	v1 := GCPoint new.
 	v2 := GCPoint new.
-	v3 := 316.
+	v3 := -81.
 	v4 := v1 negated.
 	v5 := v4 x: v3 y: v3 .
 	v6 := v4 x.
 	v7 := v5 add: v4 .
-	v8 := v2 negated.
-	v9 := v1 y.
+	v8 := v7 negated.
+	v9 := v8 y.
 	v10 := v5 x.
 '
 	
@@ -83,10 +83,10 @@ GCTTest >> testAdjustArgumentsRaw [
 GCTTest >> testCoverage01 [
 
 	| prof |
-	prof := GCTCoverageProfiler profile: [ 
+	prof := GCTMethodProxyInstallerCoverage new targetClass: GCPoint; run: [ 
 		| p |
 		p := GCPoint new x: 3 y: 10.
-		p add: (GCPoint new x: 1 y: 12) ] onClasses: { GCPoint }.
+		p add: (GCPoint new x: 1 y: 12) ].
 	self assert: prof coverage > 0.7
 ]
 
@@ -122,15 +122,15 @@ GCTTest >> testCreationStatement03 [
 	self assert: (gct statementForVariable: #v1) objectExample class == GCPoint.
 	self assert: (gct statementForVariable: #v1) type == GCPoint.
 	
-	self assert: (gct typeOfVariable: #v2) == SmallInteger.
-	self assert: (gct statementForVariable: #v2) objectExample class == SmallInteger.
+	self assert: (gct typeOfVariable: #v2) == GCPoint.
+	self assert: (gct statementForVariable: #v2) objectExample class == GCPoint.
 	
-	self assert: (gct definedVariablesOfType: GCPoint) = { #v1 }.
-	self assert: (gct definedVariablesOfType: SmallInteger) = { #v2 }.
+	self assert: (gct definedVariablesOfType: GCPoint) = { #v1 . #v2 }.
+	self assert: (gct definedVariablesOfType: SmallInteger) = { }.
 	
 	self assert: gct buildCode equals: 
 '	v1 := GCPoint new.
-	v2 := v1 y.
+	v2 := v1 add: v1 .
 '
 ]
 
