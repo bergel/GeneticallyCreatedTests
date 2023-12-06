@@ -1,6 +1,6 @@
 Class {
-	#name : #GCT,
-	#superclass : #Object,
+	#name : 'GCT',
+	#superclass : 'Object',
 	#instVars : [
 		'random',
 		'targetClass',
@@ -10,37 +10,39 @@ Class {
 		'classesToBeInstantiated',
 		'methodNameToExclude'
 	],
-	#category : #'GeneticallyCreatedTests-Core-CodeGeneration'
+	#category : 'GeneticallyCreatedTests-Core-CodeGeneration',
+	#package : 'GeneticallyCreatedTests',
+	#tag : 'Core-CodeGeneration'
 }
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> addMessageStatement [
 	"Add a message statement randomly and correctly created"
 	chromosome add: self buildMessageStatement
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> addMessageStatementVariable: var selector: selector [
 	chromosome add: (self buildRawMessageStatementForVariable: var selector: selector)
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> addObjectCreationStatement [
 	chromosome add: self buildObjectCreationStatement
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> addObjectCreationStatementFor: aClass [
 	chromosome add: (self buildObjectCreationStatementFor: aClass)
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> addStatement [
 
 	^ self addStatementNbTry: 10
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> addStatementNbTry: nb [
 	nb = 0 
 		ifTrue: [ 
@@ -56,7 +58,7 @@ GCT >> addStatementNbTry: nb [
 		
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCT >> adjustArguments [
 
 	| newVariables newVariable newVarReceiver candidateVariables |
@@ -95,7 +97,7 @@ GCT >> adjustArguments [
 	self resetObjectExample
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildAssertionsForVariable: v on: s [
 		| st vars |
 		st := self statementForVariable: v.
@@ -129,7 +131,7 @@ GCT >> buildAssertionsForVariable: v on: s [
 				 ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildAssertionsOn: s [
 	
 	self variableLeaves do: [ :v |
@@ -137,7 +139,7 @@ GCT >> buildAssertionsOn: s [
 			 ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildChromosome [
 
 	chromosome := OrderedCollection new.
@@ -148,7 +150,7 @@ GCT >> buildChromosome [
 	^ chromosome asArray
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildCode [
 
 	^ String
@@ -157,14 +159,14 @@ GCT >> buildCode [
 
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildCodeOn: s [
 
 	chromosome do: [ :g | g buildCodeOn: s ]
 
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildCodeWithAssertion [
 
 	^ String
@@ -174,7 +176,7 @@ GCT >> buildCodeWithAssertion [
 
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildMessageStatement [
 	| vars |
 	vars := self definedVariablesOfType: targetClass.
@@ -185,7 +187,7 @@ GCT >> buildMessageStatement [
 	^ self buildMessageStatementForVariable: (vars atRandom: random)
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildMessageStatementForVariable: aVariable [
 	"This method adds one or more statements to send a selector to aVariable. Two situations may happen:
 		- If the selector does not have any argument, then creating the MessageStatement is trivial
@@ -212,12 +214,12 @@ GCT >> buildMessageStatementForVariable: aVariable [
 	
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildObjectCreationStatement [
 	^ self buildObjectCreationStatementFor: (classesToBeInstantiated atRandom: random)
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildObjectCreationStatementFor: aClass [
 	^ GCTObjectCreationStatement new
 			gct: self;
@@ -225,7 +227,7 @@ GCT >> buildObjectCreationStatementFor: aClass [
 			newVariable: self newVarName
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildRawMessageStatementForVariable: aVariable [
 	"This method adds one or more statements to send a selector to aVariable. Two situations may happen:
 		- If the selector does not have any argument, then creating the MessageStatement is trivial
@@ -244,7 +246,7 @@ GCT >> buildRawMessageStatementForVariable: aVariable [
 	^ self buildRawMessageStatementForVariable: aVariable selector: aSelector
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildRawMessageStatementForVariable: aVariable selector: aSelector [
 	"This method adds one or more statements to send a selector to aVariable. Two situations may happen:
 		- If the selector does not have any argument, then creating the MessageStatement is trivial
@@ -305,13 +307,13 @@ GCT >> buildRawMessageStatementForVariable: aVariable selector: aSelector [
 		  yourself
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildTest [
 
 	^ self buildTestSuffix: ''
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> buildTestSuffix: aSuffix [
 	"self adjustArguments."
 	self resetObjectExample.
@@ -326,34 +328,34 @@ GCT >> buildTestSuffix: aSuffix [
 
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> chromosome [
 	^ chromosome
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCT >> chromosome: chromo [
 	chromosome := chromo
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> definedVariables [
 	^ (chromosome collect: #newVariable as: Array) copyWithout: nil
 ]
 
-{ #category : #'accessing - statements' }
+{ #category : 'accessing - statements' }
 GCT >> definedVariablesOfExampleObject: anObject [
 	"Useful for building assertions"
 	^ (chromosome select: [ :s | s objectExample == anObject ]) collect: #newVariable as: Array
 ]
 
-{ #category : #'accessing - statements' }
+{ #category : 'accessing - statements' }
 GCT >> definedVariablesOfType: aType [
 	self assert: [ aType isBehavior ].
 	^ (chromosome select: [ :s | s type == aType ]) collect: #newVariable as: Array
 ]
 
-{ #category : #'accessing - statements' }
+{ #category : 'accessing - statements' }
 GCT >> definedVariablesOfType: aType lowerThan: aMaxIndex [
 	self assert: [ aType isBehavior ].
 	
@@ -362,7 +364,7 @@ GCT >> definedVariablesOfType: aType lowerThan: aMaxIndex [
 	"^ (chromosome select: [ :s | s type == aType ]) collect: #newVariable as: Array"
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> determineClassesToBeInstantiated [
 	| spyCls |
 	spyCls := typeRepository profiler >> targetClass name.
@@ -375,12 +377,12 @@ GCT >> determineClassesToBeInstantiated [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCT >> executionScenario: executionScenario [
 	self spyRepository: (GCTAnalyzer profile: executionScenario onClasses: { targetClass })
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCT >> initialize [
 	super initialize.
 	length := 2.
@@ -389,31 +391,31 @@ GCT >> initialize [
 	methodNameToExclude := { }
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GCT >> isNewStatement: aStatement [
 	self assert: [ aStatement isKindOf: GCTStatement ].
 	^ chromosome noneSatisfy: [ :s | s isSimilarTo: aStatement ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCT >> length [
 
 	^ length
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCT >> length: anInteger [
 	"Set the length of a chromosome (ie. number of statements in the generated test)"
 
 	length := anInteger
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 GCT >> measureCoverage [
 	^ self measureCoverageOnClass: GCTTest
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 GCT >> measureCoverageOnClass: aClassTest [
 	| prof |
 	self assert: [ aClassTest isBehavior ].
@@ -426,24 +428,24 @@ GCT >> measureCoverageOnClass: aClassTest [
 	^ prof coverage
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCT >> methodNameToExclude: methodNames [
 	"Set a list of methods name that will not be tested"
 	methodNameToExclude := methodNames
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> newVarName [
 	^ ('v', ((chromosome size + 1) asString)) asSymbol
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> numberOfArgumentsOfSelector: aSelector [
 
 	^ (aSelector select: [ :c | c == $: ]) size
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> pick: numberOfArguments withTypes: someTypes [
 	"someTypes is not used for now"
 	| result vs |
@@ -470,25 +472,25 @@ GCT >> pick: numberOfArguments withTypes: someTypes [
 	^ result
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCT >> random [
 
 	^ random
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCT >> random: aRandom [
 
 	random := aRandom
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCT >> resetObjectExample [
 	chromosome do: [ :stm | self resetObjectExampleFor: stm ].
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCT >> resetObjectExampleFor: stm [
 
 	| s arguments newObject |
@@ -514,7 +516,7 @@ GCT >> resetObjectExampleFor: stm [
 		stm classToBeInstantiated: stm classToBeInstantiated ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCT >> resetObjectExampleFor: stm nbTry: nbTry [
 
 	nbTry = 0 ifTrue: [ self error: 'Cannot generate example' ].
@@ -530,7 +532,7 @@ GCT >> resetObjectExampleFor: stm nbTry: nbTry [
 "
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCT >> resetObjectExampleNbTry: nbTry [
 	nbTry = 0 ifTrue: [ self error: 'Cannote create examples' ].
 	
@@ -541,50 +543,50 @@ GCT >> resetObjectExampleNbTry: nbTry [
 		do: [ :ex | self resetObjectExampleNbTry: nbTry - 1 ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> shouldClassBeConsideredForAssertion: aClass [
 	"Return true if the class deserves to be in assertion. Classes that use hashcode in their printString should be excluded"
 	({ Morph } anySatisfy: [ :v | aClass withAllSuperclasses includes: v ]) ifTrue: [ ^ false ].
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCT >> spyRepository: aSpyProfiler [
 	typeRepository := GCTSpyTypeRepository new profiler: aSpyProfiler.
 	self determineClassesToBeInstantiated.
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GCT >> statementForVariable: aSymbol [
 	"Return the statement of variable provided as argument"
 
 	^ chromosome detect: [ :tp | tp newVariable == aSymbol ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCT >> targetClass [
 
 	^ targetClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCT >> targetClass: aPharoClass [
 
 	targetClass := aPharoClass
 ]
 
-{ #category : #'accessing - variables' }
+{ #category : 'accessing - variables' }
 GCT >> typeOfVariable: aSymbol [
 
 	^ (self statementForVariable: aSymbol) type
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCT >> typeRepository [
 	^ typeRepository
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCT >> variableLeaves [
 	"Return variables that are not used. Useful when writing the assertions"
 	| usedVariables |
@@ -595,7 +597,7 @@ GCT >> variableLeaves [
 	^ (self definedVariables copyWithoutAll: usedVariables) asSet asArray asSortedCollection asArray
 ]
 
-{ #category : #'accessing - variables' }
+{ #category : 'accessing - variables' }
 GCT >> variablesOfType: aSymbol [
 
 	| result |

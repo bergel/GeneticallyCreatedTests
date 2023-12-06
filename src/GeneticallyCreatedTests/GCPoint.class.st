@@ -1,19 +1,21 @@
 Class {
-	#name : #GCPoint,
-	#superclass : #Object,
+	#name : 'GCPoint',
+	#superclass : 'Object',
 	#instVars : [
 		'x',
 		'y'
 	],
-	#category : #'GeneticallyCreatedTests-Tests'
+	#category : 'GeneticallyCreatedTests-Tests',
+	#package : 'GeneticallyCreatedTests',
+	#tag : 'Tests'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCPoint >> add: aPoint [
 	^ GCPoint new x: aPoint x + x y: aPoint y + y; yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCPoint >> initialize [ 
 	super initialize.
 	x := 0.
@@ -21,12 +23,12 @@ GCPoint >> initialize [
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCPoint >> negated [ 
 	^ GCPoint new x: x negated y: y negated
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCPoint >> printOn: str [
 	str nextPutAll: 'Point('.
 	str nextPutAll: x asString.
@@ -35,18 +37,18 @@ GCPoint >> printOn: str [
 	str nextPutAll: ')'.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCPoint >> x [ 
 	^ x
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCPoint >> x: anX y: aY [
 	x := anX.
 	y := aY
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCPoint >> y [
 	^ y
 ]

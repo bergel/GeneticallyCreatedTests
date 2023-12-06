@@ -1,20 +1,22 @@
 Class {
-	#name : #MorphTestCase,
-	#superclass : #TestCase,
+	#name : 'MorphTestCase',
+	#superclass : 'TestCase',
 	#instVars : [
 		'morphCleaner'
 	],
-	#category : #'GeneticallyCreatedTests-MorphicUtility'
+	#category : 'GeneticallyCreatedTests-MorphicUtility',
+	#package : 'GeneticallyCreatedTests',
+	#tag : 'MorphicUtility'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MorphTestCase >> setUp [
 	super setUp.
 	morphCleaner := MorphCleaner new.
 	morphCleaner setUp.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MorphTestCase >> tearDown [
 	morphCleaner tearDown
 ]

@@ -1,15 +1,17 @@
 Class {
-	#name : #GCTMethodProxyInstallerCoverage,
-	#superclass : #GCTMethodProxyInstaller,
-	#category : #'GeneticallyCreatedTests-Profiling-Core'
+	#name : 'GCTMethodProxyInstallerCoverage',
+	#superclass : 'GCTMethodProxyInstaller',
+	#category : 'GeneticallyCreatedTests-Profiling-Core',
+	#package : 'GeneticallyCreatedTests',
+	#tag : 'Profiling-Core'
 }
 
-{ #category : #coverage }
+{ #category : 'coverage' }
 GCTMethodProxyInstallerCoverage >> coverage [
 	^ ((proxies select: #isMarked) size / proxies size) asFloat
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCTMethodProxyInstallerCoverage >> initialize [
 	super initialize.
 	self proxyClass: GCTMethodProxyCoverage

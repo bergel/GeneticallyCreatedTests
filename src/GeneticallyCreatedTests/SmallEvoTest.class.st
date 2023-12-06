@@ -20,8 +20,8 @@ SmallEvoTest new
 
 "
 Class {
-	#name : #SmallEvoTest,
-	#superclass : #Object,
+	#name : 'SmallEvoTest',
+	#superclass : 'Object',
 	#instVars : [
 		'chromosomeLength',
 		'populationSize',
@@ -33,26 +33,28 @@ Class {
 		'maxNumberOfGenerations',
 		'testSuperclass'
 	],
-	#category : #'GeneticallyCreatedTests-Core-Evolution'
+	#category : 'GeneticallyCreatedTests-Core-Evolution',
+	#package : 'GeneticallyCreatedTests',
+	#tag : 'Core-Evolution'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallEvoTest >> chromosomeLength: anInteger [
 	chromosomeLength := anInteger 
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallEvoTest >> excludeMethodName: aSelector [
 	methodNameToExclude add: aSelector
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallEvoTest >> executionScenario: aBlock [
 	executionScenario := aBlock 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallEvoTest >> executionScenarioFromTestsInPackage: aPackageName [
 
 	self executionScenario: [ 
@@ -60,13 +62,13 @@ SmallEvoTest >> executionScenarioFromTestsInPackage: aPackageName [
  ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallEvoTest >> generateTestNamed: aSymbol [
 	"Set the name of the unit test to be generated"
 	generateTestNamed := aSymbol
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallEvoTest >> gtMethodsFor: aView [
 	<gtView>
 	(Smalltalk globals includesKey: generateTestNamed) ifFalse: [ ^ aView empty ].
@@ -77,7 +79,7 @@ SmallEvoTest >> gtMethodsFor: aView [
 		view: #gtTestsFor:
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SmallEvoTest >> initialize [
 	super initialize.
 	chromosomeLength := 4.
@@ -91,33 +93,33 @@ SmallEvoTest >> initialize [
 	testSuperclass := TestCase
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallEvoTest >> maxNumberOfGenerations: anInteger [
 
 	maxNumberOfGenerations := anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallEvoTest >> nbOfStatements: anInteger [
 	self chromosomeLength: anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallEvoTest >> numberOfTestsToBeCreated: anInteger [
 	self populationSize: anInteger
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SmallEvoTest >> populationSize [
 	^ populationSize
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SmallEvoTest >> populationSize: nbOfIndividuals [
 	populationSize := nbOfIndividuals
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SmallEvoTest >> removeTestClassUnderGenerationIfNecessary [
 
 	(Smalltalk includesKey: generateTestNamed) ifTrue: [
@@ -125,7 +127,7 @@ SmallEvoTest >> removeTestClassUnderGenerationIfNecessary [
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SmallEvoTest >> run [
 	| g indCache gct evolution cs mu morphCleaner |
 	self assert: [ targetClass notNil ].
@@ -189,7 +191,7 @@ SmallEvoTest >> run [
 	morphCleaner tearDown 
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 SmallEvoTest >> runGCPoint [
 	"
 	self new runTPoint
@@ -206,7 +208,7 @@ SmallEvoTest new
 	run
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 SmallEvoTest >> runGeometry [
 	"
 	self new runGeometry
@@ -226,7 +228,7 @@ G1DElement allSubclasses do: [ :class |
 "
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 SmallEvoTest >> runGeometryGSegment [
 	"
 	self new runGeometryGSegment
@@ -245,7 +247,7 @@ SmallEvoTest >> runGeometryGSegment [
 "
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 SmallEvoTest >> runManyClasses [
 	"
 	self new runManyClasses
@@ -271,7 +273,7 @@ SmallEvoTest >> runManyClasses [
 "
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 SmallEvoTest >> runRSCanvas [
 	"
 	self new runRSCanvas
@@ -293,7 +295,7 @@ SmallEvoTest >> runRSCanvas [
 	run"
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 SmallEvoTest >> tPointExample [
 
 	"
@@ -315,12 +317,12 @@ SmallEvoTest >> tPointExample [
 	^ #GCPointTest asClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallEvoTest >> targetClass: aClass [
 	targetClass := aClass
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SmallEvoTest >> testClassUnderGeneration [
 	| cls |
 	(Smalltalk includesKey: generateTestNamed) ifFalse: [
@@ -335,7 +337,7 @@ SmallEvoTest >> testClassUnderGeneration [
 	^ cls
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallEvoTest >> testSuperclass: aSuperclass [
 	"Set the base test class that a subclass will be created from. The default is TestCase, but could be other"
 	testSuperclass := aSuperclass

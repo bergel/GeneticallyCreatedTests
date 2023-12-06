@@ -1,13 +1,15 @@
 Class {
-	#name : #GANoMutationOperation,
-	#superclass : #GAAbstractMutationOperation,
+	#name : 'GANoMutationOperation',
+	#superclass : 'GAAbstractMutationOperation',
 	#instVars : [
 		'geneFactoryBlock'
 	],
-	#category : #'GeneticallyCreatedTests-GeneticAlgorithm-Core'
+	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Core',
+	#package : 'GeneticallyCreatedTests',
+	#tag : 'GeneticAlgorithm-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 GANoMutationOperation >> doMutate: individual [
 	"Do not do mutation for now"
 	^ individual

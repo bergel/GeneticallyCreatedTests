@@ -1,6 +1,6 @@
 Class {
-	#name : #GCTStatement,
-	#superclass : #Object,
+	#name : 'GCTStatement',
+	#superclass : 'Object',
 	#instVars : [
 		'gct',
 		'newVariable',
@@ -8,94 +8,96 @@ Class {
 		'example',
 		'index'
 	],
-	#category : #'GeneticallyCreatedTests-Core-CodeGeneration'
+	#category : 'GeneticallyCreatedTests-Core-CodeGeneration',
+	#package : 'GeneticallyCreatedTests',
+	#tag : 'Core-CodeGeneration'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 GCTStatement >> buildCodeOn: stream [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCTStatement >> gct [
 
 	^ gct
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCTStatement >> gct: aGCT [
 
 	gct := aGCT
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCTStatement >> index [
 
 	^ index
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCTStatement >> index: anObject [
 
 	index := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GCTStatement >> isSimilarTo: aStatement [
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GCTStatement >> isSimilarToMessage: aStatement [
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GCTStatement >> isSimilarToObjectCreation: aStatement [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCTStatement >> newVariable [
 
 	^ newVariable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCTStatement >> newVariable: anObject [
 
 	newVariable := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCTStatement >> objectExample [
 
 	^ example
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCTStatement >> objectExample: anObject [
 	example := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 GCTStatement >> relevantSelectors [
 	"Return the relevant selectors to be invoked"
 	^ type selectors copyWithoutAll: #( #initialize )
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GCTStatement >> resetObjectExample [
 	example := nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCTStatement >> type [
 
 	^ type
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GCTStatement >> type: aClass [
 	type := aClass
 ]

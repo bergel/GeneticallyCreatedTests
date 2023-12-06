@@ -1,6 +1,6 @@
-Extension { #name : #ZnMessageBenchmark }
+Extension { #name : 'ZnMessageBenchmark' }
 
-{ #category : #'*GeneticallyCreatedTests' }
+{ #category : '*GeneticallyCreatedTests' }
 ZnMessageBenchmark >> randomAsciiString: count random: random [
 	^ String
 		new: count
@@ -8,7 +8,7 @@ ZnMessageBenchmark >> randomAsciiString: count random: random [
 			count timesRepeat: [ stream nextPut: ('0123456789ABCDEF' atRandom: random) ] ]
 ]
 
-{ #category : #'*GeneticallyCreatedTests' }
+{ #category : '*GeneticallyCreatedTests' }
 ZnMessageBenchmark >> randomAsciiSymbol: count random: random [
 	^ Symbol
 		new: count

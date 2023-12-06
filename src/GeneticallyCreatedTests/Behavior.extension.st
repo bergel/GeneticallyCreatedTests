@@ -1,12 +1,12 @@
-Extension { #name : #Behavior }
+Extension { #name : 'Behavior' }
 
-{ #category : #'*GeneticallyCreatedTests' }
+{ #category : '*GeneticallyCreatedTests' }
 Behavior >> methods [
 	
 	^ self methodDict values
 ]
 
-{ #category : #'*GeneticallyCreatedTests' }
+{ #category : '*GeneticallyCreatedTests' }
 Behavior >> testMethods [
 	^ self methods select: [ :m | m selector beginsWith: 'test' ]
 ]

@@ -1,20 +1,22 @@
 Class {
-	#name : #GAMutationOperation,
-	#superclass : #GAAbstractMutationOperation,
+	#name : 'GAMutationOperation',
+	#superclass : 'GAAbstractMutationOperation',
 	#instVars : [
 		'geneFactoryBlock'
 	],
-	#category : #'GeneticallyCreatedTests-GeneticAlgorithm-Core'
+	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Core',
+	#package : 'GeneticallyCreatedTests',
+	#tag : 'GeneticAlgorithm-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 GAMutationOperation >> checkForGeneFactory [
 	self
 		assert: [ geneFactoryBlock notNil ]
 		description: 'Need to provide a block to create gene'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 GAMutationOperation >> doMutate: individual [
 	"Mutate genes of the argument"
 	self checkForRandomNumber.
@@ -24,7 +26,7 @@ GAMutationOperation >> doMutate: individual [
 			ifTrue: [ individual genes at: index put: (geneFactoryBlock cull: random cull: index cull: individual) ] ]	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 GAMutationOperation >> geneFactoryBlock [
 	"Return the three-arg block used to create a gene, following the pattern
 	[ :rand :index :ind | ... ]
@@ -35,7 +37,7 @@ GAMutationOperation >> geneFactoryBlock [
 	^ geneFactoryBlock
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 GAMutationOperation >> geneFactoryBlock: oneArgBlock [
 	"The block receive a random number as argument"
 	geneFactoryBlock := oneArgBlock

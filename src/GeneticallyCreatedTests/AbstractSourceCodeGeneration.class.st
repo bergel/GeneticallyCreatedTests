@@ -1,10 +1,12 @@
 Class {
-	#name : #AbstractSourceCodeGeneration,
-	#superclass : #Object,
-	#category : #'GeneticallyCreatedTests-Core-SourceCodeGeneration'
+	#name : 'AbstractSourceCodeGeneration',
+	#superclass : 'Object',
+	#category : 'GeneticallyCreatedTests-Core-SourceCodeGeneration',
+	#package : 'GeneticallyCreatedTests',
+	#tag : 'Core-SourceCodeGeneration'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AbstractSourceCodeGeneration >> generateTestsOnClass: aClass [
 	"Argument should be the test class that is freshly created"
 	self subclassResponsibility

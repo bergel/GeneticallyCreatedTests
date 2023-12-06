@@ -1,13 +1,15 @@
 Class {
-	#name : #GAConstrainedCrossoverOperation,
-	#superclass : #GAAbstractCrossoverOperation,
+	#name : 'GAConstrainedCrossoverOperation',
+	#superclass : 'GAAbstractCrossoverOperation',
 	#instVars : [
 		'possibleCutpoints'
 	],
-	#category : #'GeneticallyCreatedTests-GeneticAlgorithm-Core'
+	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Core',
+	#package : 'GeneticallyCreatedTests',
+	#tag : 'GeneticAlgorithm-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 GAConstrainedCrossoverOperation >> pickCutPointFor: partnerA [
 	"Return a cutpoint"
 	self assert: [ possibleCutpoints notNil ] description: 
@@ -15,7 +17,7 @@ GAConstrainedCrossoverOperation >> pickCutPointFor: partnerA [
 	^ possibleCutpoints at: (random nextInt: possibleCutpoints size)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 GAConstrainedCrossoverOperation >> possibleCutpoints: indexes [
 	"Set the possible pointcuts considered by the operator"
 	possibleCutpoints := indexes
