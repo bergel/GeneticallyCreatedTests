@@ -1,6 +1,6 @@
 Class {
-	#name : 'GAEngine',
-	#superclass : 'GAObject',
+	#name : #GAEngine,
+	#superclass : #GAObject,
 	#instVars : [
 		'fitnessBlock',
 		'createGeneBlock',
@@ -15,19 +15,17 @@ Class {
 		'selection',
 		'beforeCreatingInitialIndividual'
 	],
-	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Core',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'GeneticAlgorithm-Core'
+	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Core'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> beforeCreatingInitialIndividual: aOneArgBlock [
 	"Set the behavior to be executed before creating an individual.
 	The block takes a random number generator as argument."
 	beforeCreatingInitialIndividual := aOneArgBlock
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> beforeRun [
     "Method executed before creating the initial population"
     self checkIfReadyToRun.  
@@ -35,7 +33,7 @@ GAEngine >> beforeRun [
     selection populationSize: populationSize 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> buildNewIndividual [
 	| ind |
 	ind := GAIndividual new.
@@ -46,7 +44,7 @@ GAEngine >> buildNewIndividual [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> checkIfReadyToRun [
 	"Raise an exception if the configuration is not ready to be run"
 	self assert: [ fitnessBlock notNil ] 
@@ -59,54 +57,54 @@ GAEngine >> checkIfReadyToRun [
 		description: 'Already been run'.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> createGeneBlock: threeArgBlock [
 	"Three arguments must be provided rand, index, and the individual being filled"
 	createGeneBlock := threeArgBlock.
 	mutationOperator geneFactoryBlock: threeArgBlock
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> crossover: partnerA with: partnerB [
 	"Perform a crossover operation between the two arguments"
 	^ crossoverOperator crossover: partnerA with: partnerB
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> crossoverOperator: aCrossoverOperator [
 	"Set the crossover operator used in the algorithm"
 	crossoverOperator := aCrossoverOperator.
 	crossoverOperator random: random
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> endForMaxNumberOfGeneration: nbOfGenerations [
 	"End the algorithm after a fixed number of generations"
 	terminationBlock := 
 		[ logs last generationNumber >= nbOfGenerations ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> endIfFitnessIsAbove: aFitnessValueThreshold [
 	"End the algorithm if the best fitness value is above a particular threshold"
 	terminationBlock := 
 		[ logs last fittestIndividual fitness >= aFitnessValueThreshold ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> endIfFitnessIsAbove: aFitnessValueThreshold orMax: aMaximum [
 	"End the algorithm if the best fitness value is above a particular threshold"
 	terminationBlock := 
 		[ (logs last fittestIndividual fitness >= aFitnessValueThreshold) or: [ logs last generationNumber >= aMaximum ] ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> endIfNoImprovementFor: nbOfGenerations [
 	"End if no improvement occurred within a given number of generations"
 	^ self endIfNoImprovementFor: nbOfGenerations withinRangeOf: 0
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> endIfNoImprovementFor: nbOfGenerations withinRangeOf: delta [
 	"End if no improvement occurred (within a delta value) within a given number of generations"
 	terminationBlock := [ 
@@ -117,20 +115,20 @@ GAEngine >> endIfNoImprovementFor: nbOfGenerations withinRangeOf: delta [
 			 ] ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> fitnessBlock [
 	"Return the fitness block used by the engine"
 	^ fitnessBlock
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> fitnessBlock: aOneArgBlock [
 	"The argument is evaluated on the genes of each individual.
 	The block argument has to compute the fitness."
 	fitnessBlock := aOneArgBlock
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> gtInspectorLogsIn: composite [
 	<gtInspectorPresentationOrder: -5>
 	composite list
@@ -138,7 +136,7 @@ GAEngine >> gtInspectorLogsIn: composite [
 		display: [ self logs ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> gtInspectorViewIn: composite [
 	<gtInspectorPresentationOrder: -10>
 	composite roassal2
@@ -146,7 +144,7 @@ GAEngine >> gtInspectorViewIn: composite [
 		initializeView: [ self visualize ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> initialize [
 	super initialize.
 	logs := OrderedCollection new.
@@ -167,7 +165,7 @@ GAEngine >> initialize [
 			[ :rand | "do nothing per default" ] 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> initializePopulation [
 	self checkForRandomNumber.
 	population := OrderedCollection new.
@@ -181,68 +179,68 @@ GAEngine >> initializePopulation [
 				set: numberOfGenes genesUsing: createGeneBlock) ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> isIndividual: anIndividual betterThan: aFittestIndividual [
 	"Compare an individual against the fittest individual of the population"
 	^ compareFitness value: anIndividual fitness value: aFittestIndividual fitness
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> logs [
 	"Return the logs of the run"
 	^ logs
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> maximizeComparator [
 	"A better individual is the one with the highest fitness value"
 	compareFitness := [ :f1 :f2 | f1 > f2 ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> microPause [
 	"Useful when you wish to log in the Transcript and see progresses"
 	(Delay forMilliseconds: 1) wait.
 	World doOneCycleNow.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> minimizeComparator [
 	"A better individual is the one with the lowest fitness value"
 	compareFitness := [ :f1 :f2 | f1 < f2 ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> mutate: individual [
 	"Mutate the child provided as argument"
 	^ mutationOperator mutate: individual
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> mutationOperator: aMutationOperator [
 	mutationOperator := aMutationOperator.
 	aMutationOperator random: random
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> mutationRate: aFloat [
 	"Set the mutation rate used by the engine. The default value is 0.01"
 	mutationOperator mutationRate: aFloat.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> numberOfGenes: anInteger [
 	"Set the number of genes each individual will have"
 	numberOfGenes := anInteger
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> populationSize: anInteger [
 	"Set the population size"
 	populationSize := anInteger
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> produceNewPopulation [
 	"This method  
 		- produces a new population, set in the variable 'population'
@@ -251,7 +249,7 @@ GAEngine >> produceNewPopulation [
 	population := selection population.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> randomNumber: maxNumber [
 
 	"Return a number between 1 and maxNumber"
@@ -259,13 +257,13 @@ GAEngine >> randomNumber: maxNumber [
 	^ random nextInteger: maxNumber
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> result [
 	"Return the genes of the fittest individual. This method is expected to be executed after #run has completed"
 	^ self logs last fittestIndividual genes
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> run [
     "Public method -- Run the genetic algorithm"
 
@@ -295,26 +293,26 @@ GAEngine >> run [
                 logs add: log ] ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> selection [
 	"Return the selection operator"
 	^ selection
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> selection: aSelection [
 	"Set the selection method to be used to create a new population"
 	selection := aSelection.
 	aSelection engine: self.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> shouldTerminate [
 	logs ifEmpty: [ ^ false ].
 	^ terminationBlock value
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> timeTaken [
 	"Return the time taken to compute all the generations"
 	| lastLog |
@@ -322,7 +320,7 @@ GAEngine >> timeTaken [
 	^ lastLog time - self logs first time 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngine >> visualize [
 	"Visualize the evolution of the population"
 	| g d |

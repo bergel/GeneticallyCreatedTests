@@ -1,6 +1,6 @@
 Class {
-	#name : 'GCTMessageStatement',
-	#superclass : 'GCTStatement',
+	#name : #GCTMessageStatement,
+	#superclass : #GCTStatement,
 	#instVars : [
 		'selector',
 		'arguments',
@@ -8,18 +8,16 @@ Class {
 		'receiver',
 		'receiverType'
 	],
-	#category : 'GeneticallyCreatedTests-Core-CodeGeneration',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'Core-CodeGeneration'
+	#category : 'GeneticallyCreatedTests-Core-CodeGeneration'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMessageStatement >> arguments [
 
 	^ arguments
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMessageStatement >> arguments: variableArguments [
 	self assert: [ variableArguments isCollection ].
 	self assert: [ variableArguments allSatisfy: [ :k | k isSymbol ] ].
@@ -27,7 +25,7 @@ GCTMessageStatement >> arguments: variableArguments [
 	arguments := variableArguments
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GCTMessageStatement >> buildCodeOn: stream [
 	stream 
 		<< '	';
@@ -52,68 +50,68 @@ GCTMessageStatement >> buildCodeOn: stream [
 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMessageStatement >> expectedArgumentTypes [
 	^ expectedArgumentTypes
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMessageStatement >> expectedArgumentTypes: someTypes [
 	expectedArgumentTypes := someTypes 
 	
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GCTMessageStatement >> isSelfEvaluating [
 	^ example isSelfEvaluating
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GCTMessageStatement >> isSimilarTo: aStatement [
 	^ aStatement isSimilarToMessage: self
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GCTMessageStatement >> isSimilarToMessage: aStatement [
 	^ (self receiver == aStatement receiver) and: [ self selector == aStatement selector ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GCTMessageStatement >> isSimilarToObjectCreation: aStatement [
 	^ false
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMessageStatement >> receiver [
 	"Return the variable symbol"
 	^ receiver
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMessageStatement >> receiver: aSymbol [
 	"Variable receiver."
 	receiver := aSymbol
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMessageStatement >> receiverType [
 
 	^ receiverType
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMessageStatement >> receiverType: aClass [
 	self assert: [ aClass isBehavior ].
 	receiverType := aClass
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMessageStatement >> selector [
 
 	^ selector
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMessageStatement >> selector: anObject [
 
 	selector := anObject

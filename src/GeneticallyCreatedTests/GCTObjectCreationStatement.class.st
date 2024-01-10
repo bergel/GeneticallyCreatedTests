@@ -1,20 +1,18 @@
 Class {
-	#name : 'GCTObjectCreationStatement',
-	#superclass : 'GCTStatement',
+	#name : #GCTObjectCreationStatement,
+	#superclass : #GCTStatement,
 	#instVars : [
 		'classToBeInstantiated'
 	],
-	#category : 'GeneticallyCreatedTests-Core-CodeGeneration',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'Core-CodeGeneration'
+	#category : 'GeneticallyCreatedTests-Core-CodeGeneration'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTObjectCreationStatement >> arguments [
 	^ #()
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GCTObjectCreationStatement >> buildCodeOn: stream [
 	stream 
 		<< '	';
@@ -37,13 +35,13 @@ GCTObjectCreationStatement >> buildCodeOn: stream [
 		<< String cr
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTObjectCreationStatement >> classToBeInstantiated [
 
 	^ classToBeInstantiated
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTObjectCreationStatement >> classToBeInstantiated: aClass [
 
 	classToBeInstantiated := aClass.
@@ -57,17 +55,17 @@ GCTObjectCreationStatement >> classToBeInstantiated: aClass [
 	example := aClass new
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GCTObjectCreationStatement >> isSimilarTo: aStatement [
 	^ aStatement isSimilarToObjectCreation: self
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GCTObjectCreationStatement >> isSimilarToMessage: aStatement [
 	^ false
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GCTObjectCreationStatement >> isSimilarToObjectCreation: aStatement [
 	^ self classToBeInstantiated == aStatement classToBeInstantiated
 ]

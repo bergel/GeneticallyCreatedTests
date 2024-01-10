@@ -1,22 +1,20 @@
 Class {
-	#name : 'GCTMethodProxyInstaller',
-	#superclass : 'Object',
+	#name : #GCTMethodProxyInstaller,
+	#superclass : #Object,
 	#instVars : [
 		'targetClass',
 		'proxyClass',
 		'proxies'
 	],
-	#category : 'GeneticallyCreatedTests-Profiling-Core',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'Profiling-Core'
+	#category : 'GeneticallyCreatedTests-Profiling-Core'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GCTMethodProxyInstaller >> computeProxies [
 	^ (targetClass methods, targetClass class methods) select: [ :p | p isKindOf: GCTMethodProxy ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GCTMethodProxyInstaller >> doInstallOn: aClass [
 	| d |
 	d := aClass methodDictionary.
@@ -24,13 +22,13 @@ GCTMethodProxyInstaller >> doInstallOn: aClass [
 		d at: k put: (proxyClass new originalMethod: (aClass >> k)) ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GCTMethodProxyInstaller >> initialize [
 	super initialize.
 	self proxyClass: GCTMethodProxyLog
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GCTMethodProxyInstaller >> install [
 	self uninstall.
 	self doInstallOn: targetClass.
@@ -38,43 +36,43 @@ GCTMethodProxyInstaller >> install [
 	proxies := self computeProxies
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMethodProxyInstaller >> proxyClass [
 
 	^ proxyClass
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMethodProxyInstaller >> proxyClass: aClass [
 	self assert: [ aClass isBehavior ].
 	proxyClass := aClass
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 GCTMethodProxyInstaller >> run: aBlock [
 	self install.
 	[ aBlock value ] ensure: [ self uninstall ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMethodProxyInstaller >> targetClass [
 
 	^ targetClass
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GCTMethodProxyInstaller >> targetClass: aClass [
 	self assert: [ aClass isBehavior ].
 	targetClass := aClass
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GCTMethodProxyInstaller >> uninstall [
 	self uninstallOn: targetClass.
 	self uninstallOn: targetClass class.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GCTMethodProxyInstaller >> uninstallOn: aClass [
 	aClass selectors copy do: [ :k |
 		| cm |

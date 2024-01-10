@@ -1,15 +1,13 @@
 Class {
-	#name : 'GATournamentSelection',
-	#superclass : 'GASelection',
+	#name : #GATournamentSelection,
+	#superclass : #GASelection,
 	#instVars : [
 		'tournamentSize'
 	],
-	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Core',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'GeneticAlgorithm-Core'
+	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Core'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GATournamentSelection >> createNewPopulation [
    "Return a new population made of newly breed individual"
     | partnerA partnerB child |
@@ -24,7 +22,7 @@ GATournamentSelection >> createNewPopulation [
     ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GATournamentSelection >> getGoodIndividual [
 	"Return the best individual from tournamentSize individual randomly chosen from the population"
 	| best ind |
@@ -36,7 +34,7 @@ GATournamentSelection >> getGoodIndividual [
 	^ best
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GATournamentSelection >> initialize [
 	super initialize.
 	tournamentSize := 3

@@ -1,17 +1,15 @@
 Class {
-	#name : 'GCTNoStatement',
-	#superclass : 'GCTStatement',
-	#category : 'GeneticallyCreatedTests-Core-CodeGeneration',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'Core-CodeGeneration'
+	#name : #GCTNoStatement,
+	#superclass : #GCTStatement,
+	#category : 'GeneticallyCreatedTests-Core-CodeGeneration'
 }
 
-{ #category : 'building' }
+{ #category : #building }
 GCTNoStatement >> buildCodeOn: stream [
 	"do nothing"
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GCTNoStatement >> initialize [
 	super initialize.
 	type := self class

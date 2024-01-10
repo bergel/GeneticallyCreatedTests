@@ -1,23 +1,21 @@
 Class {
-	#name : 'GAMutationOperationTest',
-	#superclass : 'TestCase',
+	#name : #GAMutationOperationTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'i',
 		'op'
 	],
-	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Tests',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'GeneticAlgorithm-Tests'
+	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Tests'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAMutationOperationTest >> setUp [
 	super setUp.
 	i := GAIndividual new genes: 'abcd' asArray.
 	op := GAMutationOperation new.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAMutationOperationTest >> testMutation [
 	| i2 |	
 	op random: (Random seed: 7).
@@ -34,7 +32,7 @@ GAMutationOperationTest >> testMutation [
 	self assert: i2 genes equals: 'tfjd' asArray.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAMutationOperationTest >> testRandomAndGeneFactoryMustBeSet [
 	self should: [ op mutate: i ] raise: AssertionFailure.
 	

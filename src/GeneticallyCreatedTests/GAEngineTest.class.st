@@ -1,12 +1,10 @@
 Class {
-	#name : 'GAEngineTest',
-	#superclass : 'TestCase',
-	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Tests',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'GeneticAlgorithm-Tests'
+	#name : #GAEngineTest,
+	#superclass : #TestCase,
+	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Tests'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAEngineTest >> testExamples01 [
 	| g |
 	g := GAEngine new.

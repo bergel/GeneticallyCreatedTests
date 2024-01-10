@@ -1,15 +1,13 @@
 Class {
-	#name : 'GCTBugTrackingTest1',
-	#superclass : 'TestCase',
+	#name : #GCTBugTrackingTest1,
+	#superclass : #TestCase,
 	#instVars : [
 		'gct'
 	],
-	#category : 'GeneticallyCreatedTests-Tests',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'Tests'
+	#category : 'GeneticallyCreatedTests-Tests'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 GCTBugTrackingTest1 >> setUp [
 
 	super setUp.
@@ -26,7 +24,7 @@ GCTBugTrackingTest1 >> setUp [
 			 onClasses: { GSegment })
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 GCTBugTrackingTest1 >> testBasic [
 	"This test is failing because we do not deal with class methods / constructors"
 	<expectedFailure>

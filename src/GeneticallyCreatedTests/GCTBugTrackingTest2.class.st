@@ -1,15 +1,13 @@
 Class {
-	#name : 'GCTBugTrackingTest2',
-	#superclass : 'TestCase',
+	#name : #GCTBugTrackingTest2,
+	#superclass : #TestCase,
 	#instVars : [
 		'gct'
 	],
-	#category : 'GeneticallyCreatedTests-Tests',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'Tests'
+	#category : 'GeneticallyCreatedTests-Tests'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 GCTBugTrackingTest2 >> setUp [
 
 	super setUp.
@@ -27,7 +25,7 @@ GCTBugTrackingTest2 >> setUp [
 			c open delete. ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 GCTBugTrackingTest2 >> testBasic [
 	"This test is failing because we do not deal with class methods / constructors"
 	| genCode |
@@ -51,7 +49,7 @@ gct addMessageStatement.
 	genCode := gct buildCode.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 GCTBugTrackingTest2 >> testBasic2 [
 	"This test is failing because we do not deal with class methods / constructors"
 	| fs |

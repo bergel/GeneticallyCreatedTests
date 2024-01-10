@@ -1,12 +1,10 @@
 Class {
-	#name : 'GAOrderedCrossoverOperation',
-	#superclass : 'GAAbstractCrossoverOperation',
-	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Core',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'GeneticAlgorithm-Core'
+	#name : #GAOrderedCrossoverOperation,
+	#superclass : #GAAbstractCrossoverOperation,
+	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Core'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAOrderedCrossoverOperation >> crossover: individualA with: individualB [
     "Return a new child, which is the result of mixing the two individuals"
  	| i1 i2 |
@@ -18,7 +16,7 @@ GAOrderedCrossoverOperation >> crossover: individualA with: individualB [
 	^ self crossover: individualA with: individualB from: i1 to: i2
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAOrderedCrossoverOperation >> crossover: individualA with: individualB from: i1 to: i2 [
     "Return a new child, which is the result of mixing myself the two individuals. The method assumes that i1 <= i2."
 
@@ -40,7 +38,7 @@ GAOrderedCrossoverOperation >> crossover: individualA with: individualB from: i1
     ^ child
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAOrderedCrossoverOperation >> pickCutPointFor: partner [
     "Simply return a random number between 1 and the number of genes of the individual provided as argument"
     ^ random nextInt: partner genes size

@@ -1,12 +1,10 @@
 Class {
-	#name : 'GAIndividualTest',
-	#superclass : 'TestCase',
-	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Tests',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'GeneticAlgorithm-Tests'
+	#name : #GAIndividualTest,
+	#superclass : #TestCase,
+	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Tests'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GAIndividualTest >> testCreationWithCharacters [
 	| r individuals f ind |
 	r := Random seed: 42.

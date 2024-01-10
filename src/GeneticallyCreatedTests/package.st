@@ -1,1 +1,1 @@
-Package { #name : 'GeneticallyCreatedTests' }
+Package { #name : #GeneticallyCreatedTests }

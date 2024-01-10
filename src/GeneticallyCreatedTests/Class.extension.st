@@ -1,6 +1,6 @@
-Extension { #name : 'Class' }
+Extension { #name : #Class }
 
-{ #category : '*GeneticallyCreatedTests' }
+{ #category : #'*GeneticallyCreatedTests' }
 Class >> isGenerated [
 	^ false
 ]

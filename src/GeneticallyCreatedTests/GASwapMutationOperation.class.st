@@ -1,12 +1,10 @@
 Class {
-	#name : 'GASwapMutationOperation',
-	#superclass : 'GAAbstractMutationOperation',
-	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Core',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'GeneticAlgorithm-Core'
+	#name : #GASwapMutationOperation,
+	#superclass : #GAAbstractMutationOperation,
+	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Core'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GASwapMutationOperation >> doMutate: individual [
 	"Mutate genes of the argument by swapping two gene values"
 

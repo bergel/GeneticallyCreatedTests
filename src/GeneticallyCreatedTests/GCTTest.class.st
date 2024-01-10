@@ -1,15 +1,13 @@
 Class {
-	#name : 'GCTTest',
-	#superclass : 'TestCase',
+	#name : #GCTTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'gct'
 	],
-	#category : 'GeneticallyCreatedTests-Tests',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'Tests'
+	#category : 'GeneticallyCreatedTests-Tests'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 GCTTest >> setUp [
 	super setUp.
 	gct := GCT new.
@@ -28,7 +26,7 @@ GCTTest >> setUp [
 		."
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 GCTTest >> testAdjustArgumentsRaw [
 	| genCode |
 	gct addObjectCreationStatementFor: GCPoint.
@@ -79,7 +77,7 @@ GCTTest >> testAdjustArgumentsRaw [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 GCTTest >> testCoverage01 [
 
 	| prof |
@@ -90,7 +88,7 @@ GCTTest >> testCoverage01 [
 	self assert: prof coverage > 0.7
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 GCTTest >> testCreationStatement [
 	| obj |
 	obj := gct buildObjectCreationStatement.
@@ -99,7 +97,7 @@ GCTTest >> testCreationStatement [
 	self assert: obj newVariable equals: #v1
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 GCTTest >> testCreationStatement02 [
 	| obj |
 	gct addObjectCreationStatementFor: GCPoint.
@@ -111,7 +109,7 @@ GCTTest >> testCreationStatement02 [
 	self assert: (gct typeOfVariable: #v1) equals: GCPoint
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 GCTTest >> testCreationStatement03 [
 	gct addObjectCreationStatementFor: GCPoint.
 	gct addMessageStatement.
@@ -134,7 +132,7 @@ GCTTest >> testCreationStatement03 [
 '
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 GCTTest >> testCreationStatement04 [
 	gct addObjectCreationStatementFor: GCPoint.
 	gct addMessageStatementVariable: #v1 selector: #y.
@@ -167,7 +165,7 @@ GCTTest >> testCreationStatement04 [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 GCTTest >> testCreationStatement05 [
 	gct addObjectCreationStatementFor: GCPoint.
 	gct addMessageStatementVariable: #v1 selector: #y.
@@ -204,7 +202,7 @@ GCTTest >> testCreationStatement05 [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 GCTTest >> testDefinedVariables [
 
 	self assert: gct definedVariables isEmpty.
@@ -216,7 +214,7 @@ GCTTest >> testDefinedVariables [
 	self assert: gct definedVariables equals: { #v1 . #v2 . #v3}.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 GCTTest >> testShouldClassBeConsideredForAssertion [
 
 	self assert: (gct shouldClassBeConsideredForAssertion: Point).

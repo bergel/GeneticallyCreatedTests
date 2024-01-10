@@ -1,26 +1,24 @@
 Class {
-	#name : 'GCTMethodProxyCoverage',
-	#superclass : 'GCTMethodProxy',
+	#name : #GCTMethodProxyCoverage,
+	#superclass : #GCTMethodProxy,
 	#instVars : [
 		'isMarked'
 	],
-	#category : 'GeneticallyCreatedTests-Profiling-Core',
-	#package : 'GeneticallyCreatedTests',
-	#tag : 'Profiling-Core'
+	#category : 'GeneticallyCreatedTests-Profiling-Core'
 }
 
-{ #category : 'evaluation' }
+{ #category : #evaluation }
 GCTMethodProxyCoverage >> hookRun: aSelector with: anArray in: aReceiver [
 	isMarked := true
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GCTMethodProxyCoverage >> initialize [
 	super initialize.
 	isMarked := false
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GCTMethodProxyCoverage >> isMarked [
 	^ isMarked
 ]
