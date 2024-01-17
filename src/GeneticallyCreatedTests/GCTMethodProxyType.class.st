@@ -3,7 +3,8 @@ Class {
 	#superclass : #GCTMethodProxy,
 	#instVars : [
 		'returnType',
-		'argTypes'
+		'argTypes',
+		'isMarked'
 	],
 	#category : #'GeneticallyCreatedTests-Profiling-Core'
 }
@@ -21,7 +22,13 @@ GCTMethodProxyType >> hookRun: aSelector with: anArray in: aReceiver [
 { #category : #accessing }
 GCTMethodProxyType >> initialize [
 	super initialize.
-	argTypes := #()
+	argTypes := #().
+	isMarked := false
+]
+
+{ #category : #accessing }
+GCTMethodProxyType >> isMarked [
+	^ isMarked
 ]
 
 { #category : #accessing }
@@ -34,6 +41,7 @@ GCTMethodProxyType >> run: aSelector with: anArray in: aReceiver [
 	| result |
 	result := super run: aSelector with: anArray in: aReceiver.
 	returnType := result class.
+	isMarked := true.
 	^ result
 
 ]

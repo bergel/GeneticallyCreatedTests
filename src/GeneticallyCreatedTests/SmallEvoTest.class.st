@@ -127,21 +127,23 @@ SmallEvoTest >> removeTestClassUnderGenerationIfNecessary [
 
 { #category : #running }
 SmallEvoTest >> run [
-	| g indCache gct evolution cs mu morphCleaner |
+	| g indCache gct evolution cs mu morphCleaner profilingRepo initialMarkedMethods newProf |
 	self assert: [ targetClass notNil ].
 	
 	morphCleaner := MorphCleaner new.
 	morphCleaner setUp.
 	self removeTestClassUnderGenerationIfNecessary.
 	"-------"
+	profilingRepo := GCTMethodProxyInstallerType new targetClass: targetClass; run: executionScenario.
 	gct := GCT new.
 	gct random: (Random seed: 42).
 	gct targetClass: targetClass.
 	gct methodNameToExclude: methodNameToExclude asArray.
 	"gct spyRepository: (GCTAnalyzer profile: executionScenario onClasses: { targetClass })."
-	gct spyRepository: (GCTMethodProxyInstallerType new targetClass: targetClass; run: executionScenario).
+	gct spyRepository: profilingRepo.
 	gct length: chromosomeLength.	
 	gct buildChromosome.
+	initialMarkedMethods := profilingRepo allMarkedMethods.
 	"-------"
 	
 	g := GAEngine new.
@@ -182,11 +184,22 @@ SmallEvoTest >> run [
 		gct2 random: gct random.
 		self testClassUnderGeneration compile: (gct2 buildTestSuffix: index asString).
 	].
-	
-	evolution := g logs collect: [ :l | l fittestIndividual fitness ].
-	
-	self testClassUnderGeneration compile: 'evolution', String cr, '	^ ', evolution asArray printString.
 
+	"GET THE COVERED METHODS"
+	newProf := GCTMethodProxyInstallerType new 
+					targetClass: targetClass; 
+					run: [ self testClassUnderGeneration buildSuite run ].
+	newProf allMarkedMethods.
+	self halt.
+
+	"WRITE THE EVOLUTIONARY METADATA"
+	evolution := g logs collect: [ :l | l fittestIndividual fitness ].
+	self testClassUnderGeneration compile: 
+		'evolution', String cr, 
+			' "Initial marked methods: ', initialMarkedMethods printString, '"', String cr,
+			'	^ ', evolution asArray printString.
+
+	"CLEANING THE SPACE, IF NECESSARY"
 	morphCleaner tearDown 
 ]
 

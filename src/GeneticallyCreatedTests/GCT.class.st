@@ -63,7 +63,6 @@ GCT >> adjustArguments [
 	
 	chromosome doWithIndex: [ :stmt :indexStmt |
 		stmt class == GCTMessageStatement ifTrue: [ 
-			"self haltIf: [ stmt newVariable == #v6 ]."
 			"ADJUST RECEIVER"
 			targetClass := stmt receiverType.
 			targetClass ~~ (self typeOfVariable: stmt receiver) ifTrue: [
@@ -82,7 +81,7 @@ GCT >> adjustArguments [
 							candidateVariables := self
 								                 definedVariablesOfType: vType
 								                 lowerThan: indexStmt.
-							candidateVariables ifEmpty: [ ^ nil ].
+							candidateVariables ifEmpty: [ "Nothing we can do, just abort" ^ nil ].
 							newVariable := (candidateVariables copyWithout: vName)
 								               atRandom: random.
 							newVariables add: newVariable ]
@@ -158,9 +157,9 @@ GCT >> buildCode [
 ]
 
 { #category : #building }
-GCT >> buildCodeOn: s [
+GCT >> buildCodeOn: aStream [
 
-	chromosome do: [ :g | g buildCodeOn: s ]
+	chromosome do: [ :g | g buildCodeOn: aStream ]
 
 ]
 
@@ -421,8 +420,8 @@ GCT >> measureCoverageOnClass: aClassTest [
 	| prof |
 	self assert: [ aClassTest isBehavior ].
 	aClassTest compile: self buildTest.
-	"prof := GCTCoverageProfiler profile: [ aClassTest new perform: #testGENERATED ] onClasses: { targetClass }."
-	prof := GCTMethodProxyInstallerCoverage new 
+
+	prof := GCTMethodProxyInstallerType new 
 				targetClass: targetClass;
 				run: [ aClassTest new perform: #testGENERATED ].
 	aClassTest removeSelector: #testGENERATED.
