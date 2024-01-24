@@ -8,7 +8,8 @@ Class {
 		'chromosome',
 		'typeRepository',
 		'classesToBeInstantiated',
-		'methodNameToExclude'
+		'methodNameToExclude',
+		'objectBuilders'
 	],
 	#category : #'GeneticallyCreatedTests-Core-CodeGeneration'
 }
@@ -220,6 +221,7 @@ GCT >> buildObjectCreationStatement [
 GCT >> buildObjectCreationStatementFor: aClass [
 	^ GCTObjectCreationStatement new
 			gct: self;
+			objectBuilders: objectBuilders;
 			classToBeInstantiated: aClass;
 			newVariable: self newVarName
 ]
@@ -382,13 +384,22 @@ GCT >> executionScenario: executionScenario [
 	self spyRepository: (GCTMethodProxyInstallerType new targetClass: targetClass; run: executionScenario)
 ]
 
+{ #category : #accessing }
+GCT >> forType: aBehavior buildObject: aOneArgBlock [
+
+	self assert: [ aBehavior isBehavior ].
+	self assert: [ aOneArgBlock isBlock and: [ aOneArgBlock numArgs = 1 ] ].
+	objectBuilders at: aBehavior put: aOneArgBlock
+]
+
 { #category : #initialization }
 GCT >> initialize [
 	super initialize.
 	length := 2.
 	chromosome := OrderedCollection new.
 	typeRepository := GCTProvidedTypeRepository new.
-	methodNameToExclude := { }
+	methodNameToExclude := { }.
+	objectBuilders := Dictionary new
 ]
 
 { #category : #testing }
@@ -410,12 +421,12 @@ GCT >> length: anInteger [
 	length := anInteger
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'measuring coverage' }
 GCT >> measureCoverage [
 	^ self measureCoverageOnClass: GCTTest
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'measuring coverage' }
 GCT >> measureCoverageOnClass: aClassTest [
 	| prof |
 	self assert: [ aClassTest isBehavior ].
@@ -443,6 +454,11 @@ GCT >> newVarName [
 GCT >> numberOfArgumentsOfSelector: aSelector [
 
 	^ (aSelector select: [ :c | c == $: ]) size
+]
+
+{ #category : #accessing }
+GCT >> objectBuilders: aDictionary [
+	objectBuilders := aDictionary
 ]
 
 { #category : #building }

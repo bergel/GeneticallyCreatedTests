@@ -5,8 +5,16 @@ Class {
 		'x',
 		'y'
 	],
-	#category : 'GeneticallyCreatedTests-Tests'
+	#category : #'GeneticallyCreatedTests-Tests'
 }
+
+{ #category : #'instance creation' }
+GCPoint class >> x: aValue y: anotherValue [
+	"
+	GCPoint x: 10 y: 23
+	"
+	^ self new x: aValue y: anotherValue
+]
 
 { #category : #initialization }
 GCPoint >> add: aPoint [

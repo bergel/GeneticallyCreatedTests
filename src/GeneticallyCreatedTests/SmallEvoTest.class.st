@@ -206,7 +206,7 @@ SmallEvoTest >> run [
 { #category : #examples }
 SmallEvoTest >> runGCPoint [
 	"
-	self new runTPoint
+	self new runGCPoint
 	"
 SmallEvoTest new
 	targetClass: GCPoint;

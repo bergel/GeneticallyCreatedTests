@@ -85,7 +85,7 @@ GCTTest >> testCoverage01 [
 		| p |
 		p := GCPoint new x: 3 y: 10.
 		p add: (GCPoint new x: 1 y: 12) ].
-	self assert: prof coverage > 0.7
+	self assert: prof coverage > 0.6
 ]
 
 { #category : #tests }
@@ -213,6 +213,26 @@ GCTTest >> testDefinedVariables [
 	gct addObjectCreationStatement.
 	gct addObjectCreationStatement.
 	self assert: gct definedVariables equals: { #v1 . #v2 . #v3}.
+]
+
+{ #category : #tests }
+GCTTest >> testObjectBuilders [
+	gct forType: GCPoint buildObject: [ :r | 'GCPoint x: 5 y: 10' ].
+	
+	gct addObjectCreationStatementFor: GCPoint.
+	gct addMessageStatementVariable: #v1 selector: #y.
+	gct addMessageStatementVariable: #v1 selector: #add:.
+	gct addMessageStatementVariable: #v1 selector: #x:y:.
+	gct addMessageStatementVariable: #v1 selector: #x.
+	
+	self assert: gct buildCode equals: 
+'	v1 := GCPoint x: 5 y: 10.
+	v2 := v1 y.
+	v3 := v1 add: v1 .
+	v4 := v1 x: v2 y: v2 .
+	v5 := v1 x.
+'.
+
 ]
 
 { #category : #tests }
