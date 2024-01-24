@@ -389,7 +389,8 @@ GCT >> forType: aBehavior buildObject: aOneArgBlock [
 
 	self assert: [ aBehavior isBehavior ].
 	self assert: [ aOneArgBlock isBlock and: [ aOneArgBlock numArgs = 1 ] ].
-	objectBuilders at: aBehavior put: aOneArgBlock
+	objectBuilders at: aBehavior ifAbsentPut: [ OrderedCollection new ].
+	(objectBuilders at: aBehavior) add: aOneArgBlock
 ]
 
 { #category : #initialization }

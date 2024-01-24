@@ -236,6 +236,33 @@ GCTTest >> testObjectBuilders [
 ]
 
 { #category : #tests }
+GCTTest >> testObjectBuilders2 [
+	gct forType: GCPoint buildObject: [ :r | 'GCPoint x: 5 y: 10' ].
+	gct forType: GCPoint buildObject: [ :r | 'GCPoint x: 1 y: 2' ].
+	
+	gct addObjectCreationStatementFor: GCPoint.
+	gct addObjectCreationStatementFor: GCPoint.
+	gct addObjectCreationStatementFor: GCPoint.
+	gct addObjectCreationStatementFor: GCPoint.
+	gct addMessageStatementVariable: #v1 selector: #y.
+	gct addMessageStatementVariable: #v1 selector: #add:.
+	gct addMessageStatementVariable: #v1 selector: #x:y:.
+	gct addMessageStatementVariable: #v1 selector: #x.
+	
+	self assert: gct buildCode equals: 
+'	v1 := GCPoint x: 5 y: 10.
+	v2 := GCPoint x: 1 y: 2.
+	v3 := GCPoint x: 1 y: 2.
+	v4 := GCPoint x: 5 y: 10.
+	v5 := v1 y.
+	v6 := v1 add: v2 .
+	v7 := v1 x: v5 y: v5 .
+	v8 := v1 x.
+'.
+
+]
+
+{ #category : #tests }
 GCTTest >> testShouldClassBeConsideredForAssertion [
 
 	self assert: (gct shouldClassBeConsideredForAssertion: Point).

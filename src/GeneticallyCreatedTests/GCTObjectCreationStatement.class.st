@@ -50,7 +50,7 @@ GCTObjectCreationStatement >> classToBeInstantiated: aClass [
 	
 	"CHECK IF THERE IS A BUILDER"
 	(objectBuilders keys includes: aClass) ifTrue: [
-		codeStatement := (objectBuilders at: aClass) value: gct random.
+		codeStatement := ((objectBuilders at: aClass) atRandom: gct random) value: gct random.
 		example := OpalCompiler new source: codeStatement; evaluate.
 		^ self
 	].
@@ -98,6 +98,6 @@ GCTObjectCreationStatement >> objectBuilders: aDictionary [
 	"Set a dictionary as object builder"
 	self assert: [ aDictionary isDictionary ].
 	self assert: [ aDictionary keys allSatisfy: #isBehavior ].
-	self assert: [ aDictionary values allSatisfy: #isBlock ].
+	self assert: [ aDictionary values allSatisfy: #isCollection ].
 	objectBuilders := aDictionary
 ]
