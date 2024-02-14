@@ -1,7 +1,7 @@
 Class {
 	#name : #GATestCreationCrossoverOperation,
 	#superclass : #GAAbstractCrossoverOperation,
-	#category : 'GeneticallyCreatedTests-GeneticAlgorithm-Core'
+	#category : #'GeneticallyCreatedTests-GeneticAlgorithm-Core'
 }
 
 { #category : #'as yet unclassified' }
@@ -18,7 +18,8 @@ GATestCreationCrossoverOperation >> crossover: partnerA with: partnerB [
 			"result resetObjectExample."
 			^ result ]
 	].
-	self error: 'Cannot do an crossover'
+	"self error: 'Cannot do an crossover'."
+	^ partnerA
 ]
 
 { #category : #'as yet unclassified' }
