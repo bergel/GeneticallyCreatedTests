@@ -31,7 +31,8 @@ Class {
 		'methodNameBlackList',
 		'methodNameToExclude',
 		'maxNumberOfGenerations',
-		'testSuperclass'
+		'testSuperclass',
+		'objectBuilders'
 	],
 	#category : #'GeneticallyCreatedTests-Core-Evolution'
 }
@@ -58,6 +59,11 @@ SmallEvoTest >> executionScenarioFromTestsInPackage: aPackageName [
 	self executionScenario: [ 
 		((RPackageOrganizer default packageNamed: aPackageName) definedClasses select: [ :cls | cls subclasses isEmpty and: [ cls inheritsFrom: TestCase ] ]) do: [ :cls | cls  buildSuite run ]
  ]
+]
+
+{ #category : #accessing }
+SmallEvoTest >> forType: aBehavior buildObject: oneArgBlock [
+	objectBuilders add: aBehavior -> oneArgBlock
 ]
 
 { #category : #accessing }
@@ -88,7 +94,9 @@ SmallEvoTest >> initialize [
 	self maxNumberOfGenerations: 5.
 	
 	"Set the default superclass for the test"
-	testSuperclass := TestCase
+	testSuperclass := TestCase.
+	
+	objectBuilders := OrderedCollection new.
 ]
 
 { #category : #accessing }
@@ -139,6 +147,10 @@ SmallEvoTest >> run [
 	gct random: (Random seed: 42).
 	gct targetClass: targetClass.
 	gct methodNameToExclude: methodNameToExclude asArray.
+	
+	objectBuilders do: [ :assoc |
+		gct forType: assoc key buildObject: assoc value ].
+	
 	"gct spyRepository: (GCTAnalyzer profile: executionScenario onClasses: { targetClass })."
 	gct spyRepository: profilingRepo.
 	gct length: chromosomeLength.	
@@ -190,7 +202,7 @@ SmallEvoTest >> run [
 					targetClass: targetClass; 
 					run: [ self testClassUnderGeneration buildSuite run ].
 	newProf allMarkedMethods.
-	self halt.
+	
 
 	"WRITE THE EVOLUTIONARY METADATA"
 	evolution := g logs collect: [ :l | l fittestIndividual fitness ].
